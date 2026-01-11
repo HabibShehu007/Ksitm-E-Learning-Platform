@@ -45,18 +45,13 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       }, 2000);
     }
 
-    // Success modal
+    // Success modal (no auto redirect)
     setTimeout(() => {
       showModal(
         "success",
-        "🎉 Account created successfully! Redirecting to login..."
+        "🎉 Account created successfully! Please check your email (and spam folder) for a verification link. Once verified, you’ll be redirected to the login page."
       );
     }, 2000);
-
-    // Redirect after success
-    setTimeout(() => {
-      window.location.href = "login.html";
-    }, 5000);
   } catch (err) {
     setTimeout(() => {
       showModal("error", "⚠️ Something went wrong. Please try again.");
@@ -115,7 +110,8 @@ function showModal(type, message) {
   closeBtn.onclick = () => {
     closeModal();
     if (type === "success") {
-      window.location.href = "login.html";
+      // Redirect ONLY when user presses Okay
+      window.location.href = "verify.html";
     }
   };
 }

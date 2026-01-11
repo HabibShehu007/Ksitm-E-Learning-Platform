@@ -5,6 +5,7 @@
     <title>KSITM Signup</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="../src/output.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="./images/ksitm logo.png" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -218,32 +219,46 @@
         <div class="flex flex-col items-center mb-6">
           <div
             id="modalIconWrapper"
-            class="w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md"
+            class="w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-lg bg-gradient-to-r from-blue-500 to-indigo-600"
           >
             <i
               id="modalIcon"
               class="fas fa-info-circle text-4xl text-white"
             ></i>
           </div>
-          <h5 id="modalTitleText" class="text-2xl font-extrabold text-gray-900">
-            Message
+          <h5
+            id="modalTitleText"
+            class="text-2xl font-extrabold text-gray-900 tracking-wide"
+          >
+            Important Message
           </h5>
         </div>
 
         <!-- Body -->
         <div class="mb-6">
-          <p id="modalMessage" class="text-gray-700 text-lg leading-relaxed">
-            ...
+          <p
+            id="modalMessage"
+            class="text-gray-700 text-lg leading-relaxed px-2"
+          >
+            <!-- Text will be injected dynamically from signup.js -->
           </p>
         </div>
 
-        <!-- Footer -->
+        <!-- Footer Button -->
         <button
           id="modalCloseBtn"
           class="w-full py-3 rounded-full bg-gradient-to-r from-pink-500 to-violet-600 text-white font-bold flex items-center justify-center gap-2 shadow hover:scale-105 transition"
         >
-          <i class="fas fa-check text-xl"></i> Close
+          <i class="fas fa-check text-xl"></i> Okay
         </button>
+
+        <!-- Footer Note -->
+        <div
+          class="mt-6 text-sm text-gray-500 flex items-center justify-center gap-2"
+        >
+          <i class="fas fa-shield-alt"></i>
+          <span>Secure authentication powered by Supabase</span>
+        </div>
       </div>
     </div>
 

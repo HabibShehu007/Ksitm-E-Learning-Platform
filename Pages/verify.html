@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Verification</title>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(135deg, #f0f4f8, #d9e4ec);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .verify-box {
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 450px;
+      }
+      .verify-box i {
+        font-size: 60px;
+        color: #007bff;
+        margin-bottom: 20px;
+      }
+      .verify-box h1 {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 15px;
+      }
+      .verify-box p {
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 25px;
+      }
+      .verify-box .highlight {
+        font-weight: 600;
+        color: #007bff;
+      }
+      .verify-box .footer {
+        font-size: 13px;
+        color: #888;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="verify-box">
+      <i class="fas fa-envelope-open-text"></i>
+      <h1>Verify Your Email</h1>
+      <p>
+        Thank you for signing up to
+        <span class="highlight">KSITM E‑Learning Platform</span>.<br />
+        We’ve sent a verification link to your email address.<br />
+        Please check your inbox — and don’t forget to look in your
+        <span class="highlight">spam folder</span> just in case.
+      </p>
+      <p>
+        Once you click the verification button in the email, you’ll be
+        redirected to our <span class="highlight">Login Page</span> to continue.
+      </p>
+      <div class="footer">
+        <i class="fas fa-shield-alt"></i> Secure authentication powered by
+        Supabase
+      </div>
+    </div>
+  </body>
+</html>
