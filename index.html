@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>KSITM Onboarding</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="./src/output.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <script defer src="./Js/script.js"></script>
+    <style>
+      .step {
+        will-change: transform, opacity;
+      }
+    </style>
+  </head>
+  <body class="font-sans">
+    <main
+      id="onboarding"
+      class="relative overflow-hidden min-h-screen bg-gradient-to-br from-pink-500 via-purple-600 to-indigo-700"
+    >
+      <!-- Step 0 -->
+      <section
+        id="step0"
+        data-step="0"
+        class="step absolute inset-0 flex flex-col items-center justify-center text-center text-white p-6 transition-transform duration-500 ease-in-out translate-x-0 opacity-100 pointer-events-auto"
+      >
+        <i class="fas fa-graduation-cap text-6xl mb-6"></i>
+        <h1 class="text-3xl sm:text-5xl font-extrabold mb-4">
+          KSITM E-Learning
+        </h1>
+        <p class="text-lg sm:text-xl mb-8">
+          Your journey into innovation starts here.
+        </p>
+        <button
+          class="bg-white text-indigo-700 font-bold rounded-full px-6 py-3 shadow-lg hover:scale-105 transition"
+          onclick="goToStep(1)"
+        >
+          Continue <i class="fas fa-arrow-right ml-2"></i>
+        </button>
+      </section>
+
+      <!-- Step 1 -->
+      <section
+        id="step1"
+        data-step="1"
+        class="step absolute inset-0 flex flex-col items-center justify-center text-center text-white p-6 transition-transform duration-500 ease-in-out translate-x-full opacity-0 pointer-events-none"
+      >
+        <img
+          src="./images/ksitm logo.png"
+          alt="KSITM Logo"
+          class="w-40 sm:w-48 mb-6"
+        />
+        <h1 class="text-3xl sm:text-5xl font-extrabold mb-4">
+          Welcome to KSITM E-Learning Platform
+        </h1>
+        <p class="text-lg sm:text-xl mb-8">
+          Empowering Innovation Through <strong>Technology</strong> &
+          <strong>Management</strong>
+        </p>
+        <div class="flex gap-4">
+          <button
+            class="bg-white/20 border border-white rounded-full px-6 py-2 hover:bg-white/30 transition"
+            onclick="goToStep(0)"
+          >
+            <i class="fas fa-arrow-left mr-2"></i> Back
+          </button>
+          <button
+            class="bg-white text-indigo-700 font-bold rounded-full px-6 py-3 shadow-lg hover:scale-105 transition"
+            onclick="goToStep(2)"
+          >
+            Get Started <i class="fas fa-play ml-2"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- Step 2 -->
+      <section
+        id="step2"
+        data-step="2"
+        class="step absolute inset-0 flex flex-col items-center justify-center text-center text-white p-6 transition-transform duration-500 ease-in-out translate-x-full opacity-0 pointer-events-none"
+      >
+        <h2 class="text-2xl sm:text-4xl font-bold mb-8">Why Choose KSITM?</h2>
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl"
+        >
+          <div
+            class="bg-white text-gray-800 rounded-xl shadow-lg p-6 transform hover:-translate-y-2 transition"
+          >
+            <i class="fas fa-laptop-code text-4xl text-indigo-600 mb-4"></i>
+            <h5 class="font-bold text-lg mb-2">Virtual Diplomas</h5>
+            <p>Study from anywhere with our tech-powered diploma programs.</p>
+          </div>
+          <div
+            class="bg-white text-gray-800 rounded-xl shadow-lg p-6 transform hover:-translate-y-2 transition"
+          >
+            <i class="fas fa-briefcase text-4xl text-green-600 mb-4"></i>
+            <h5 class="font-bold text-lg mb-2">Career-Focused</h5>
+            <p>
+              Programs designed to launch you into the workforce with
+              confidence.
+            </p>
+          </div>
+          <div
+            class="bg-white text-gray-800 rounded-xl shadow-lg p-6 transform hover:-translate-y-2 transition"
+          >
+            <i class="fas fa-network-wired text-4xl text-yellow-500 mb-4"></i>
+            <h5 class="font-bold text-lg mb-2">Tech-Driven Learning</h5>
+            <p>
+              Modern tools and platforms to keep you ahead in the digital age.
+            </p>
+          </div>
+        </div>
+        <div class="mt-8 flex gap-4">
+          <button
+            class="bg-white/20 border border-white rounded-full px-6 py-2 hover:bg-white/30 transition"
+            onclick="goToStep(1)"
+          >
+            <i class="fas fa-arrow-left mr-2"></i> Back
+          </button>
+          <button
+            class="bg-white text-pink-600 font-bold rounded-full px-6 py-3 shadow-lg hover:scale-105 transition"
+            onclick="goToStep(3)"
+          >
+            Next <i class="fas fa-arrow-right ml-2"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- Step 3 -->
+      <section
+        id="step3"
+        data-step="3"
+        class="step absolute inset-0 flex flex-col items-center justify-center text-center text-white p-6 transition-transform duration-500 ease-in-out translate-x-full opacity-0 pointer-events-none"
+      >
+        <!-- Card container -->
+        <div
+          class="bg-white text-gray-800 rounded-xl shadow-xl p-10 max-w-lg w-full flex flex-col items-center"
+        >
+          <!-- Icon -->
+          <div
+            class="w-20 h-20 flex items-center justify-center rounded-full bg-gradient-to-r from-pink-500 to-violet-600 mb-6 shadow-md"
+          >
+            <i class="fas fa-rocket text-3xl text-white"></i>
+          </div>
+
+          <!-- Title -->
+          <h2 class="text-2xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+            Ready to Begin?
+          </h2>
+
+          <!-- Description -->
+          <p class="text-base sm:text-lg text-gray-600 mb-8 leading-relaxed">
+            Create your account and start your journey with
+            <span class="font-semibold text-pink-600">KSITM</span>.
+          </p>
+
+          <!-- Buttons -->
+          <div class="flex gap-4">
+            <button
+              class="bg-gray-100 text-gray-700 border border-gray-300 rounded-full px-6 py-2 hover:bg-gray-200 transition text-sm font-medium"
+              onclick="goToStep(2)"
+            >
+              <i class="fas fa-arrow-left mr-2"></i> Back
+            </button>
+            <a
+              href="./Pages/signup.html"
+              class="bg-gradient-to-r from-pink-500 to-violet-600 text-white font-bold rounded-full px-6 py-3 shadow-lg hover:scale-105 transition text-sm"
+              onclick="showLoader()"
+            >
+              Proceed to Signup <i class="fas fa-user-plus ml-2"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <style>
+      .step {
+        will-change: transform, opacity;
+        backface-visibility: hidden;
+      }
+    </style>
+  </body>
+</html>

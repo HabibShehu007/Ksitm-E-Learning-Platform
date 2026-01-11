@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>KSITM Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../src/output.css" rel="stylesheet" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <script defer src="../Js/model-content.js"></script>
+    <script defer src="../Js/dashboard.js"></script>
+  </head>
+  <body class="bg-gray-50 font-sans">
+    <!-- Navbar -->
+    <nav
+      class="bg-gradient-to-r from-violet-800 to-orange-700 shadow-md fixed top-0 w-full z-50"
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 flex justify-between items-center py-3"
+      >
+        <!-- Brand -->
+        <a
+          href="dashboard.html"
+          class="flex items-center text-white font-bold text-lg"
+        >
+          <i class="fas fa-graduation-cap mr-2"></i> KSITM
+        </a>
+
+        <!-- Mobile toggler -->
+        <button class="md:hidden text-white text-2xl" id="navToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Desktop Links -->
+        <ul
+          id="navLinks"
+          class="hidden md:flex gap-6 items-center text-white font-medium"
+        >
+          <li>
+            <a href="dashboard.html" class="hover:text-orange-300"
+              ><i class="fas fa-home mr-1"></i> Home</a
+            >
+          </li>
+          <li>
+            <a href="profile.html" class="hover:text-orange-300"
+              ><i class="fas fa-user-circle mr-1"></i> Profile</a
+            >
+          </li>
+          <li>
+            <a href="status.html" class="hover:text-orange-300"
+              ><i class="fas fa-tasks mr-1"></i> Status</a
+            >
+          </li>
+          <li class="relative">
+            <a href="my-messages.html" class="hover:text-orange-300"
+              ><i class="fas fa-bell mr-1"></i> My Messages</a
+            >
+            <span
+              class="absolute -top-2 -right-3 bg-red-600 text-xs rounded-full px-2"
+              >1</span
+            >
+          </li>
+
+          <li>
+            <button
+              id="logoutBtn"
+              class="bg-white text-violet-800 px-3 py-1 rounded-full hover:bg-gray-200"
+            >
+              <i class="fas fa-sign-out-alt mr-1"></i> Logout
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Overlay (behind the drawer) -->
+    <div
+      id="menuOverlay"
+      class="hidden fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ease-in-out md:hidden"
+    ></div>
+
+    <!-- Mobile Slide-in Menu -->
+    <div
+      id="mobileMenu"
+      class="fixed inset-y-0 left-0 w-72 bg-violet-900 text-white transform -translate-x-full transition-transform duration-300 ease-in-out z-50 md:hidden"
+    >
+      <div class="px-6 py-8 space-y-8">
+        <!-- Close button -->
+        <button
+          id="closeMenu"
+          class="text-white text-2xl mb-6 hover:text-orange-300 transition"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Links -->
+        <nav class="flex flex-col space-y-6 text-lg font-semibold">
+          <a
+            href="dashboard.html"
+            class="flex items-center gap-3 hover:text-orange-300 transition"
+          >
+            <span
+              class="flex items-center justify-center w-8 h-8 rounded-full bg-violet-700"
+              ><i class="fas fa-home"></i
+            ></span>
+            Home
+          </a>
+          <hr class="border-violet-700 opacity-50" />
+
+          <a
+            href="profile.html"
+            class="flex items-center gap-3 hover:text-orange-300 transition"
+          >
+            <span
+              class="flex items-center justify-center w-8 h-8 rounded-full bg-violet-700"
+              ><i class="fas fa-user-circle"></i
+            ></span>
+            Profile
+          </a>
+          <hr class="border-violet-700 opacity-50" />
+
+          <a
+            href="status.html"
+            class="flex items-center gap-3 hover:text-orange-300 transition"
+          >
+            <span
+              class="flex items-center justify-center w-8 h-8 rounded-full bg-violet-700"
+              ><i class="fas fa-tasks"></i
+            ></span>
+            Status
+          </a>
+          <hr class="border-violet-700 opacity-50" />
+
+          <a
+            href="my-messages.html"
+            class="flex items-center gap-3 hover:text-orange-300 relative transition"
+          >
+            <span
+              class="flex items-center justify-center w-8 h-8 rounded-full bg-violet-700"
+              ><i class="fas fa-bell"></i
+            ></span>
+            My Messages
+            <span
+              class="absolute -top-2 left-32 bg-red-600 text-xs rounded-full px-2"
+              >1</span
+            >
+          </a>
+          <hr class="border-violet-700 opacity-50" />
+        </nav>
+
+        <!-- Logout -->
+        <button
+          id="logoutBtnMobile"
+          class="mt-10 w-full py-3 rounded-full bg-white text-violet-800 font-bold hover:bg-gray-200 transition flex items-center justify-center gap-2"
+        >
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="text-center pt-20 pb-8 bg-gray-100">
+      <h1
+        class="text-xl sm:text-2xl md:text-4xl font-extrabold text-violet-800"
+      >
+        Welcome to KSITM E-Learning
+      </h1>
+      <h4
+        id="userGreeting"
+        class="mt-2 text-base sm:text-lg md:text-xl font-semibold text-gray-800"
+      >
+        Hello, <span class="text-violet-700">Guest</span>!
+      </h4>
+      <p
+        id="userEmailDisplay"
+        class="text-xs sm:text-sm md:text-base text-gray-600 mt-1"
+      >
+        Email: <span class="text-gray-800">your@email.com</span>
+      </p>
+      <button
+        id="exploreBtn"
+        class="mt-5 px-5 py-2 rounded-full bg-gradient-to-r from-orange-600 to-violet-700 text-white font-semibold hover:scale-105 transition text-sm sm:text-base"
+      >
+        <i class="fas fa-compass mr-2"></i> Explore Courses
+      </button>
+      <div class="mt-6 animate-bounce">
+        <i class="fas fa-chevron-down text-violet-700 text-xl sm:text-2xl"></i>
+      </div>
+    </section>
+
+    <!-- Course Container -->
+    <div id="courseContainer" class="hidden py-10 bg-white">
+      <!-- Department: Technology -->
+      <section id="technology" class="mb-10">
+        <h2
+          class="text-center text-2xl sm:text-3xl font-bold text-violet-800 mb-6"
+        >
+          Department of Technology
+        </h2>
+
+        <!-- Grid: 2 cards per row on mobile, 4 stacked on desktop -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 gap-y-8 px-4">
+          <!-- Web Development -->
+          <div
+            class="bg-violet-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col items-center p-6 text-white"
+            data-aos="fade-up"
+          >
+            <div
+              class="flex items-center justify-center w-16 h-16 rounded-full bg-white text-violet-700 text-3xl mb-4"
+            >
+              <i class="fas fa-code"></i>
+            </div>
+            <h5 class="text-base sm:text-lg font-bold text-center">
+              Web Development
+            </h5>
+            <p class="text-xs sm:text-sm mt-2 text-center opacity-90">
+              Build modern websites.
+            </p>
+            <button
+              class="mt-4 w-full py-2 rounded-full border border-white text-white text-sm sm:text-base hover:bg-white hover:text-violet-700 transition preview-course"
+              data-title="Web Development"
+              data-description="Learn front-end and back-end development using modern stacks: HTML, CSS, JavaScript, frameworks, and deployment."
+            >
+              Preview Course
+            </button>
+          </div>
+
+          <!-- Data Science -->
+          <div
+            class="bg-violet-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col items-center p-6 text-white"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <div
+              class="flex items-center justify-center w-16 h-16 rounded-full bg-white text-violet-700 text-3xl mb-4"
+            >
+              <i class="fas fa-database"></i>
+            </div>
+            <h5 class="text-base sm:text-lg font-bold">Data Science</h5>
+            <p class="text-xs sm:text-sm mt-2 text-center opacity-90">
+              Unlock insights with ML.
+            </p>
+            <button
+              class="mt-4 w-full py-2 rounded-full border border-white text-white text-sm sm:text-base hover:bg-white hover:text-violet-700 transition preview-course"
+              data-title="Data Science"
+              data-description="Master data wrangling, visualization, statistical analysis, machine learning, and model deployment with Python."
+            >
+              Preview Course
+            </button>
+          </div>
+
+          <!-- Cybersecurity -->
+          <div
+            class="bg-violet-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col items-center p-6 text-white"
+          >
+            <div
+              class="flex items-center justify-center w-16 h-16 rounded-full bg-white text-violet-700 text-3xl mb-4"
+            >
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h5 class="text-base sm:text-lg font-bold">Cybersecurity</h5>
+            <p class="text-xs sm:text-sm mt-2 text-center opacity-90">
+              Secure systems & data.
+            </p>
+            <button
+              class="mt-4 w-full py-2 rounded-full border border-white text-white text-sm sm:text-base hover:bg-white hover:text-violet-700 transition preview-course"
+              data-title="Cybersecurity"
+              data-description="Learn network security, threat modeling, penetration testing, incident response, and best practices."
+            >
+              Preview Course
+            </button>
+          </div>
+
+          <!-- Software Engineering -->
+          <div
+            class="bg-violet-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col items-center p-6 text-white"
+          >
+            <div
+              class="flex items-center justify-center w-16 h-16 rounded-full bg-white text-violet-700 text-3xl mb-4"
+            >
+              <i class="fas fa-laptop-code"></i>
+            </div>
+            <h5 class="text-base sm:text-lg font-bold text-center">
+              Software Engineering
+            </h5>
+            <p class="text-xs sm:text-sm mt-2 text-center opacity-90">
+              Build scalable apps.
+            </p>
+            <button
+              class="mt-4 w-full py-2 rounded-full border border-white text-white text-sm sm:text-base hover:bg-white hover:text-violet-700 transition preview-course"
+              data-title="Software Engineering"
+              data-description="Learn software design principles, version control, testing, and deployment for modern applications."
+            >
+              Preview Course
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Department: Management -->
+      <section id="management" class="mb-10 py-10 bg-gray-50">
+        <h2
+          class="text-center text-2xl sm:text-3xl font-bold text-violet-800 mb-6"
+        >
+          Department of Management
+        </h2>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 gap-y-8 px-4">
+          <!-- Project Management -->
+          <div
+            class="bg-violet-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col items-center p-6 text-white"
+          >
+            <div
+              class="flex items-center justify-center w-16 h-16 rounded-full bg-white text-violet-700 text-3xl mb-4"
+            >
+              <i class="fas fa-project-diagram"></i>
+            </div>
+            <h5 class="text-base sm:text-lg font-bold text-center">
+              Project Management
+            </h5>
+            <p class="text-xs sm:text-sm mt-2 text-center opacity-90">
+              Plan and deliver projects.
+            </p>
+            <button
+              class="mt-4 w-full py-2 rounded-full border border-white text-white text-sm sm:text-base hover:bg-white hover:text-violet-700 transition preview-course"
+              data-title="Project Management"
+              data-description="Explore PM frameworks (Agile, Scrum, Waterfall), risk management, stakeholder communication, and delivery."
+            >
+              Preview Course
+            </button>
+          </div>
+          <!-- Business Administration -->
+          <div
+            class="bg-violet-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col items-center p-6 text-white"
+          >
+            <div
+              class="flex items-center justify-center w-16 h-16 rounded-full bg-white text-violet-700 text-3xl mb-4"
+            >
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <h5 class="text-base sm:text-lg font-bold text-center">
+              Business Administration
+            </h5>
+            <p class="text-xs sm:text-sm mt-2 text-center opacity-90">
+              Manage operations & strategy.
+            </p>
+            <button
+              class="mt-4 w-full py-2 rounded-full border border-white text-white text-sm sm:text-base hover:bg-white hover:text-violet-700 transition preview-course"
+              data-title="Business Administration"
+              data-description="Learn core business functions: operations, finance, marketing, strategy, and organizational behavior."
+            >
+              Preview Course
+            </button>
+          </div>
+          <!-- Human Resources -->
+          <div
+            class="bg-violet-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col items-center p-6 text-white"
+          >
+            <div
+              class="flex items-center justify-center w-16 h-16 rounded-full bg-white text-violet-700 text-3xl mb-4"
+            >
+              <i class="fas fa-users"></i>
+            </div>
+            <h5 class="text-base sm:text-lg font-bold text-center">
+              Human Resources
+            </h5>
+            <p class="text-xs sm:text-sm mt-2 text-center opacity-90">
+              Manage people & culture.
+            </p>
+            <button
+              class="mt-4 w-full py-2 rounded-full border border-white text-white text-sm sm:text-base hover:bg-white hover:text-violet-700 transition preview-course"
+              data-title="Human Resources"
+              data-description="Recruitment, performance management, employee engagement, learning & development, and HR analytics."
+            >
+              Preview Course
+            </button>
+          </div>
+          <!-- Leadership & Strategy (new 4th card) -->
+          <div
+            class="bg-violet-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col items-center p-6 text-white"
+          >
+            <div
+              class="flex items-center justify-center w-16 h-16 rounded-full bg-white text-violet-700 text-3xl mb-4"
+            >
+              <i class="fas fa-chess-king"></i>
+            </div>
+            <h5 class="text-base sm:text-lg font-bold text-center">
+              Leadership & Strategy
+            </h5>
+            <p class="text-xs sm:text-sm mt-2 text-center opacity-90">
+              Lead with vision.
+            </p>
+            <button
+              class="mt-4 w-full py-2 rounded-full border border-white text-white text-sm sm:text-base hover:bg-white hover:text-violet-700 transition preview-course"
+              data-title="Leadership & Strategy"
+              data-description="Develop leadership skills, strategic thinking, decision-making, and organizational growth strategies."
+            >
+              Preview Course
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Department: Design -->
+      <section id="design" class="mb-10 py-10 bg-white">
+        <h2
+          class="text-center text-2xl sm:text-3xl font-bold text-violet-800 mb-6"
+        >
+          Department of Design
+        </h2>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 gap-y-8 px-4">
+          <!-- Graphic Design -->
+          <div
+            class="bg-violet-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col items-center p-6 text-white"
+          >
+            <div
+              class="flex items-center justify-center w-16 h-16 rounded-full bg-white text-violet-700 text-3xl mb-4"
+            >
+              <i class="fas fa-paint-brush"></i>
+            </div>
+            <h5 class="text-base sm:text-lg font-bold text-center">
+              Graphic Design
+            </h5>
+            <p class="text-xs sm:text-sm mt-2 text-center opacity-90">
+              Create visuals & branding.
+            </p>
+            <button
+              class="mt-4 w-full py-2 rounded-full border border-white text-white text-sm sm:text-base hover:bg-white hover:text-violet-700 transition preview-course"
+              data-title="Graphic Design"
+              data-description="Learn composition, color theory, typography, and brand design using modern tools and workflows."
+            >
+              Preview Course
+            </button>
+          </div>
+          <!-- UI/UX Design -->
+          <div
+            class="bg-violet-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col items-center p-6 text-white"
+          >
+            <div
+              class="flex items-center justify-center w-16 h-16 rounded-full bg-white text-violet-700 text-3xl mb-4"
+            >
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h5 class="text-base sm:text-lg font-bold text-center">
+              UI/UX Design
+            </h5>
+            <p class="text-xs sm:text-sm mt-2 text-center opacity-90">
+              Design seamless experiences.
+            </p>
+            <button
+              class="mt-4 w-full py-2 rounded-full border border-white text-white text-sm sm:text-base hover:bg-white hover:text-violet-700 transition preview-course"
+              data-title="UI/UX Design"
+              data-description="User research, wireframing, prototyping, usability testing, and design systems for web/mobile."
+            >
+              Preview Course
+            </button>
+          </div>
+          <!-- Digital Branding -->
+          <div
+            class="bg-violet-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col items-center p-6 text-white"
+          >
+            <div
+              class="flex items-center justify-center w-16 h-16 rounded-full bg-white text-violet-700 text-3xl mb-4"
+            >
+              <i class="fas fa-bullhorn"></i>
+            </div>
+            <h5 class="text-base sm:text-lg font-bold text-center">
+              Digital Branding
+            </h5>
+            <p class="text-xs sm:text-sm mt-2 text-center opacity-90">
+              Build strong online identity.
+            </p>
+            <button
+              class="mt-4 w-full py-2 rounded-full border border-white text-white text-sm sm:text-base hover:bg-white hover:text-violet-700 transition preview-course"
+              data-title="Digital Branding"
+              data-description="Develop brand strategy, storytelling, visual identity, and multi‑channel digital presence."
+            >
+              Preview Course
+            </button>
+          </div>
+          <!-- Creative Media (new 4th card) -->
+          <div
+            class="bg-violet-700 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1 flex flex-col items-center p-6 text-white"
+          >
+            <div
+              class="flex items-center justify-center w-16 h-16 rounded-full bg-white text-violet-700 text-3xl mb-4"
+            >
+              <i class="fas fa-video"></i>
+            </div>
+            <h5 class="text-base sm:text-lg font-bold text-center">
+              Creative Media
+            </h5>
+            <p class="text-xs sm:text-sm mt-2 text-center opacity-90">
+              Produce engaging content.
+            </p>
+            <button
+              class="mt-4 w-full py-2 rounded-full border border-white text-white text-sm sm:text-base hover:bg-white hover:text-violet-700 transition preview-course"
+              data-title="Creative Media"
+              data-description="Learn video editing, motion graphics, and multimedia storytelling for digital platforms."
+            >
+              Preview Course
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <!-- Course Preview Modal -->
+    <div
+      id="courseModal"
+      class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50 transition-opacity duration-300 ease-out"
+    >
+      <div
+        id="courseModalContent"
+        class="bg-white rounded-2xl shadow-2xl w-11/12 md:w-3/5 lg:w-2/5 max-h-[85vh] overflow-y-auto transform scale-95 opacity-0 transition-all duration-300 ease-out relative"
+      >
+        <!-- Gradient Header -->
+        <div
+          class="bg-gradient-to-r from-orange-600 to-violet-700 text-white rounded-t-2xl px-6 py-4"
+        >
+          <h3
+            id="modalTitle"
+            class="text-xl sm:text-2xl font-extrabold text-center tracking-wide"
+          ></h3>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="p-6">
+          <!-- Modal Content -->
+          <div
+            id="modalContent"
+            class="prose prose-sm sm:prose max-w-none text-gray-700 leading-relaxed space-y-4"
+          ></div>
+
+          <!-- Extra convincing details -->
+          <div class="mt-6 space-y-3 text-sm sm:text-base text-gray-800">
+            <p class="flex items-start gap-2">
+              <i class="fas fa-certificate text-violet-700 mt-1"></i>
+              <span
+                ><strong>Certificate:</strong> Earn an industry-recognized
+                certificate upon completion.</span
+              >
+            </p>
+            <p class="flex items-start gap-2">
+              <i class="fas fa-clock text-violet-700 mt-1"></i>
+              <span
+                ><strong>Duration:</strong> Flexible study plan, typically 3–6
+                months depending on pace.</span
+              >
+            </p>
+            <p class="flex items-start gap-2">
+              <i class="fas fa-star text-violet-700 mt-1"></i>
+              <span
+                ><strong>Benefits:</strong> Gain practical skills, boost your
+                career, and join a network of professionals.</span
+              >
+            </p>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="mt-8 flex flex-col items-center gap-3">
+            <button
+              class="enroll-btn flex items-center justify-center gap-2 w-full sm:w-3/4 px-5 py-2 rounded-full bg-gradient-to-r from-orange-600 to-violet-700 text-white font-semibold text-base shadow-md hover:scale-105 transition-transform"
+            >
+              <i class="fas fa-compass"></i> Enroll Now
+            </button>
+            <button
+              id="closeModal"
+              class="flex items-center justify-center gap-2 w-full sm:w-3/4 px-5 py-2 rounded-full border border-violet-700 text-violet-700 font-semibold text-base shadow-md hover:bg-violet-700 hover:text-white transition-transform"
+            >
+              <i class="fas fa-times"></i> Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | KSITM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../Css/admin-dashboard.css" rel="stylesheet">
+  <link rel="stylesheet" href="/ksitm-backend/public/fontawesome-free-7.0.0-web/fontawesome-free-7.0.0-web/css/all.min.css">
+</head>
+<body>
+
+<!-- Header -->
+<header class="bg-dark text-white py-3 text-center">
+  <h2><i class="fas fa-tools me-2"></i> KSITM Admin Dashboard</h2>
+</header>
+
+<!-- Back Arrow -->
+<section class="container mt-4">
+  <div class="mb-4">
+    <a href="admin-login.html" class="text-decoration-none text-secondary d-inline-flex align-items-center">
+      <i class="fas fa-arrow-left fa-lg me-2"></i> Logout
+    </a>
+  </div>
+</section>
+
+<!-- Dashboard Cards -->
+<section class="container mb-5">
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card shadow-sm dashboard-card">
+        <div class="card-body text-center">
+          <i class="fas fa-envelope-open-text fa-2x text-primary mb-3"></i>
+          <h5 class="card-title fw-bold">Application Inbox</h5>
+          <p class="card-text text-muted">View and respond to student applications.</p>
+          <a href="admin-applications.html" class="btn btn-primary w-100">Go to Applications</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card shadow-sm dashboard-card">
+        <div class="card-body text-center">
+          <i class="fas fa-users fa-2x text-success mb-3"></i>
+          <h5 class="card-title fw-bold">Registered Users</h5>
+          <p class="card-text text-muted">See who has signed up on the platform.</p>
+          <a href="../pages/admin-users.html" class="btn btn-success w-100">View Users</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../Js/admin-dashboard.js"></script>
+</body>
+</html>
