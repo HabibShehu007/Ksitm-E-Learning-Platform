@@ -165,6 +165,22 @@
       window.supabase = supabase;
     </script>
 
+    <script>
+      (function () {
+        const hash = window.location.hash.startsWith("#")
+          ? window.location.hash.slice(1)
+          : "";
+        const params = new URLSearchParams(hash);
+
+        // If Supabase attached tokens, clear them from the URL
+        if (params.get("access_token")) {
+          history.replaceState(null, "", window.location.pathname);
+          // Optional: show a friendly message or modal
+          // e.g., showModal('success', '✅ Email verified! Please log in to continue.');
+        }
+      })();
+    </script>
+
     <!-- Then load your login.js -->
     <script defer src="../Js/login.js"></script>
   </body>
