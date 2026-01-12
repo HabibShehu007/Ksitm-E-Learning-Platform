@@ -50,11 +50,6 @@ document.querySelector("form").addEventListener("submit", async (e) => {
         )}! You’ve logged in successfully.`
       );
     }, 2000);
-
-    // Redirect to dashboard
-    setTimeout(() => {
-      window.location.href = "dashboard.html";
-    }, 5000);
   } catch (err) {
     setTimeout(() => {
       showModal("error", "⚠️ Something went wrong. Please try again.");
@@ -77,7 +72,9 @@ function showModal(type, message) {
 
   const iconWrapper = document.getElementById("modalIconWrapper");
   const icon = document.getElementById("modalIcon");
+  const closeBtn = document.getElementById("modalCloseBtn");
 
+  // Style icons by type
   if (type === "success") {
     iconWrapper.className =
       "w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-green-500";
@@ -91,9 +88,10 @@ function showModal(type, message) {
       "w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-yellow-500";
     icon.className = "fas fa-exclamation-triangle text-4xl text-white";
   } else {
+    // Loading state
     iconWrapper.className =
-      "w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-blue-500";
-    icon.className = "fas fa-info-circle text-4xl text-white";
+      "w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-blue-500 animate-spin";
+    icon.className = "fas fa-spinner text-4xl text-white";
   }
 
   document.getElementById("modalTitleText").textContent = title;
@@ -109,13 +107,20 @@ function showModal(type, message) {
     modalContent.classList.add("scale-100", "opacity-100");
   }, 10);
 
-  const closeBtn = document.getElementById("modalCloseBtn");
-  closeBtn.onclick = () => {
-    closeModal();
-    if (type === "success") {
-      window.location.href = "dashboard.html";
-    }
-  };
+  // Button logic
+  if (type === "info") {
+    // Hide OK button for loading state
+    closeBtn.style.display = "none";
+  } else {
+    // Show OK button for success/error/warning
+    closeBtn.style.display = "block";
+    closeBtn.onclick = () => {
+      closeModal();
+      if (type === "success") {
+        window.location.href = "dashboard.html";
+      }
+    };
+  }
 }
 
 function closeModal() {
