@@ -31,6 +31,8 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       email,
       password,
       options: {
+        emailRedirectTo:
+          "https://ksitm-e-learning-platform.vercel.app/Pages/login.html",
         data: {
           username,
           name,
@@ -59,7 +61,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
   }
 });
 
-// Modal logic
+// Modal Logic
 function showModal(type, message) {
   const title =
     type === "success"
@@ -74,7 +76,11 @@ function showModal(type, message) {
 
   const iconWrapper = document.getElementById("modalIconWrapper");
   const icon = document.getElementById("modalIcon");
+  const modalTitle = document.getElementById("modalTitleText");
+  const modalMessage = document.getElementById("modalMessage");
+  const closeBtn = document.getElementById("modalCloseBtn");
 
+  // Style icons by type
   if (type === "success") {
     iconWrapper.className =
       "w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-green-500";
@@ -88,32 +94,38 @@ function showModal(type, message) {
       "w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-yellow-500";
     icon.className = "fas fa-exclamation-triangle text-4xl text-white";
   } else {
+    // Loading state
     iconWrapper.className =
-      "w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-blue-500";
-    icon.className = "fas fa-info-circle text-4xl text-white";
+      "w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-blue-500 animate-spin";
+    icon.className = "fas fa-spinner text-4xl text-white";
   }
 
-  document.getElementById("modalTitleText").textContent = title;
-  document.getElementById("modalMessage").textContent = message;
+  modalTitle.textContent = title;
+  modalMessage.textContent = message;
 
   const modalElement = document.getElementById("feedbackModal");
   const modalContent = document.getElementById("modalContent");
 
   modalElement.classList.remove("hidden");
-
   setTimeout(() => {
     modalContent.classList.remove("scale-95", "opacity-0");
     modalContent.classList.add("scale-100", "opacity-100");
   }, 10);
 
-  const closeBtn = document.getElementById("modalCloseBtn");
-  closeBtn.onclick = () => {
-    closeModal();
-    if (type === "success") {
-      // Redirect ONLY when user presses Okay
-      window.location.href = "verify.html";
-    }
-  };
+  // Button logic
+  if (type === "info") {
+    // Hide the OK button for loading state
+    closeBtn.style.display = "none";
+  } else {
+    // Show OK button for all other states
+    closeBtn.style.display = "block";
+    closeBtn.onclick = () => {
+      closeModal();
+      if (type === "success") {
+        window.location.href = "verify.html";
+      }
+    };
+  }
 }
 
 function closeModal() {
