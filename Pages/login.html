@@ -121,31 +121,37 @@
     <!-- Feedback Modal -->
     <div
       id="feedbackModal"
-      class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50 transition-opacity duration-300 ease-out"
+      class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300 ease-out"
     >
       <div
         id="modalContent"
-        class="rounded-2xl shadow-2xl w-11/12 max-w-md p-8 transform scale-95 opacity-0 transition-all duration-300 ease-out text-center"
+        class="rounded-2xl shadow-2xl w-11/12 max-w-md p-8 transform scale-95 opacity-0 transition-all duration-300 ease-out text-center bg-white"
       >
         <!-- Icon + Title -->
         <div class="flex flex-col items-center mb-6">
           <div
             id="modalIconWrapper"
-            class="w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-green-500"
+            class="w-24 h-24 flex items-center justify-center rounded-full mb-4 shadow-lg bg-green-500 animate-bounce"
           >
             <i
               id="modalIcon"
-              class="fas fa-check-circle text-4xl text-white"
+              class="fas fa-check-circle text-5xl text-white drop-shadow-md"
             ></i>
           </div>
-          <h5 id="modalTitleText" class="text-2xl font-extrabold text-gray-900">
+          <h5
+            id="modalTitleText"
+            class="text-2xl font-extrabold text-gray-900 tracking-wide"
+          >
             Success
           </h5>
         </div>
 
         <!-- Body -->
         <div class="mb-6">
-          <p id="modalMessage" class="text-gray-700 text-lg leading-relaxed">
+          <p
+            id="modalMessage"
+            class="text-gray-700 text-base leading-relaxed font-medium"
+          >
             ✅ Email verified successfully! Please log in to continue.
           </p>
         </div>
@@ -154,9 +160,9 @@
         <button
           id="modalCloseBtn"
           onclick="closeModal()"
-          class="w-full py-3 rounded-full bg-gradient-to-r from-pink-500 to-violet-600 text-white font-bold flex items-center justify-center gap-2 shadow hover:scale-105 transition"
+          class="w-full py-3 rounded-full bg-gradient-to-r from-pink-500 to-violet-600 text-white font-bold flex items-center justify-center gap-2 shadow-lg hover:scale-105 hover:shadow-xl transition-transform duration-200"
         >
-          <i class="fas fa-check text-xl"></i> OK
+          <i class="fas fa-check text-lg"></i> OK
         </button>
       </div>
     </div>

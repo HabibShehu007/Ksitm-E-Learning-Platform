@@ -140,37 +140,39 @@
       >
         <!-- Card container -->
         <div
-          class="bg-white text-gray-800 rounded-xl shadow-xl p-10 max-w-lg w-full flex flex-col items-center"
+          class="bg-white text-gray-800 rounded-xl shadow-xl p-6 sm:p-10 max-w-md w-full flex flex-col items-center"
         >
           <!-- Icon -->
           <div
-            class="w-20 h-20 flex items-center justify-center rounded-full bg-gradient-to-r from-pink-500 to-violet-600 mb-6 shadow-md"
+            class="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-full bg-gradient-to-r from-pink-500 to-violet-600 mb-6 shadow-md"
           >
-            <i class="fas fa-rocket text-3xl text-white"></i>
+            <i class="fas fa-rocket text-2xl sm:text-3xl text-white"></i>
           </div>
 
           <!-- Title -->
-          <h2 class="text-2xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+          <h2 class="text-xl sm:text-3xl font-extrabold text-gray-900 mb-3">
             Ready to Begin?
           </h2>
 
           <!-- Description -->
-          <p class="text-base sm:text-lg text-gray-600 mb-8 leading-relaxed">
+          <p
+            class="text-sm sm:text-base text-gray-600 mb-6 leading-relaxed px-2"
+          >
             Create your account and start your journey with
             <span class="font-semibold text-pink-600">KSITM</span>.
           </p>
 
           <!-- Buttons -->
-          <div class="flex gap-4">
+          <div class="flex flex-col sm:flex-row gap-3 w-full">
             <button
-              class="bg-gray-100 text-gray-700 border border-gray-300 rounded-full px-6 py-2 hover:bg-gray-200 transition text-sm font-medium"
+              class="bg-gray-100 text-gray-700 border border-gray-300 rounded-full px-5 py-2 hover:bg-gray-200 transition text-sm font-medium w-full sm:w-auto"
               onclick="goToStep(2)"
             >
               <i class="fas fa-arrow-left mr-2"></i> Back
             </button>
             <a
               href="./Pages/signup.html"
-              class="bg-gradient-to-r from-pink-500 to-violet-600 text-white font-bold rounded-full px-6 py-3 shadow-lg hover:scale-105 transition text-sm"
+              class="bg-gradient-to-r from-pink-500 to-violet-600 text-white font-bold rounded-full px-5 py-2 shadow-lg hover:scale-105 transition text-sm w-full sm:w-auto text-center"
               onclick="showLoader()"
             >
               Proceed to Signup <i class="fas fa-user-plus ml-2"></i>
@@ -178,12 +180,13 @@
           </div>
         </div>
       </section>
+
+      <style>
+        .step {
+          will-change: transform, opacity;
+          backface-visibility: hidden;
+        }
+      </style>
     </main>
-    <style>
-      .step {
-        will-change: transform, opacity;
-        backface-visibility: hidden;
-      }
-    </style>
   </body>
 </html>
