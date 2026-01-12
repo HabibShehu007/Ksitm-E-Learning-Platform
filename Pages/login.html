@@ -10,6 +10,15 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
+    <style>
+      :root {
+        color-scheme: light; /* force light mode */
+      }
+      #modalContent {
+        background-color: #ffffff !important; /* force white background */
+        color: #333 !important;
+      }
+    </style>
   </head>
   <body
     class="relative min-h-screen flex items-center justify-center font-sans text-white"
@@ -116,28 +125,28 @@
     >
       <div
         id="modalContent"
-        class="bg-white rounded-2xl shadow-2xl w-11/12 max-w-md p-8 transform scale-95 opacity-0 transition-all duration-300 ease-out text-center"
+        class="rounded-2xl shadow-2xl w-11/12 max-w-md p-8 transform scale-95 opacity-0 transition-all duration-300 ease-out text-center"
       >
         <!-- Icon + Title -->
         <div class="flex flex-col items-center mb-6">
           <div
             id="modalIconWrapper"
-            class="w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-blue-500"
+            class="w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-green-500"
           >
             <i
               id="modalIcon"
-              class="fas fa-info-circle text-4xl text-white"
+              class="fas fa-check-circle text-4xl text-white"
             ></i>
           </div>
           <h5 id="modalTitleText" class="text-2xl font-extrabold text-gray-900">
-            Message
+            Success
           </h5>
         </div>
 
         <!-- Body -->
         <div class="mb-6">
           <p id="modalMessage" class="text-gray-700 text-lg leading-relaxed">
-            ...
+            ✅ Email verified successfully! Please log in to continue.
           </p>
         </div>
 
@@ -158,10 +167,9 @@
       // Initialize Supabase client
       const supabase = createClient(
         "https://ecdioyrwwkjfakyoljws.supabase.co",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjZGlveXJ3d2tqZmFreW9sandzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNTM3MTEsImV4cCI6MjA4MzYyOTcxMX0.Ost2oBLH7NTZcSV6BuUDaZEQuT_LmzLI9ZXVou0v0_A"
+        "YOUR_PUBLIC_ANON_KEY"
       );
 
-      // Expose globally so login.js can use it
       window.supabase = supabase;
     </script>
 
@@ -172,13 +180,35 @@
           : "";
         const params = new URLSearchParams(hash);
 
-        // If Supabase attached tokens, clear them from the URL
-        if (params.get("access_token")) {
+        if (params.get("type") === "signup") {
           history.replaceState(null, "", window.location.pathname);
-          // Optional: show a friendly message or modal
-          // e.g., showModal('success', '✅ Email verified! Please log in to continue.');
+          // Show modal when user arrives from verification
+          const modal = document.getElementById("feedbackModal");
+          const modalContent = document.getElementById("modalContent");
+          modal.classList.remove("hidden");
+          setTimeout(() => {
+            modalContent.classList.remove("scale-95", "opacity-0");
+            modalContent.classList.add("scale-100", "opacity-100");
+          }, 10);
         }
       })();
+
+      function closeModal() {
+        const modal = document.getElementById("feedbackModal");
+        const modalContent = document.getElementById("modalContent");
+        modalContent.classList.remove("scale-100", "opacity-100");
+        modalContent.classList.add("scale-95", "opacity-0");
+        setTimeout(() => modal.classList.add("hidden"), 300);
+      }
+
+      function togglePassword(id) {
+        const input = document.getElementById(id);
+        if (input.type === "password") {
+          input.type = "text";
+        } else {
+          input.type = "password";
+        }
+      }
     </script>
 
     <!-- Then load your login.js -->
