@@ -4,78 +4,71 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Email Verification</title>
-    <!-- Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Font Awesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <style>
-      body {
-        font-family: "Poppins", sans-serif;
-        background: linear-gradient(135deg, #f0f4f8, #d9e4ec);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-      }
-      .verify-box {
-        background: #fff;
-        padding: 40px;
-        border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        max-width: 450px;
-      }
-      .verify-box i {
-        font-size: 60px;
-        color: #007bff;
-        margin-bottom: 20px;
-      }
-      .verify-box h1 {
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 15px;
-      }
-      .verify-box p {
-        color: #555;
-        line-height: 1.6;
-        margin-bottom: 25px;
-      }
-      .verify-box .highlight {
-        font-weight: 600;
-        color: #007bff;
-      }
-      .verify-box .footer {
-        font-size: 13px;
-        color: #888;
-        margin-top: 20px;
+      :root {
+        color-scheme: light; /* force light mode */
       }
     </style>
   </head>
-  <body>
-    <div class="verify-box">
-      <i class="fas fa-envelope-open-text"></i>
-      <h1>Verify Your Email</h1>
-      <p>
-        Thank you for signing up to
-        <span class="highlight">KSITM E‑Learning Platform</span>.<br />
-        We’ve sent a verification link to your email address.<br />
-        Please check your inbox — and don’t forget to look in your
-        <span class="highlight">spam folder</span> just in case.
+  <body
+    class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 font-[Poppins]"
+  >
+    <!-- Card -->
+    <div
+      class="bg-white rounded-2xl shadow-2xl p-6 max-w-sm w-full text-center"
+    >
+      <!-- Top Icon -->
+      <div class="flex justify-center mb-4">
+        <i
+          class="fas fa-envelope-circle-check text-blue-600 text-6xl animate-bounce"
+        ></i>
+      </div>
+
+      <!-- Title -->
+      <h1
+        class="text-2xl font-bold text-gray-800 mb-3 flex items-center justify-center gap-2"
+      >
+        <i class="fas fa-user-shield text-orange-500"></i>
+        Verify Your Email
+      </h1>
+
+      <!-- Message -->
+      <p class="text-gray-600 text-sm leading-relaxed mb-4">
+        <i class="fas fa-handshake text-violet-600 mr-1"></i>
+        Thank you for joining
+        <span class="font-semibold text-blue-600"
+          >KSITM E‑Learning Platform</span
+        >.
+        <br />
+        <i class="fas fa-paper-plane text-green-500 mr-1"></i>
+        We’ve sent a verification link to your email address.
+        <br />
+        <i class="fas fa-inbox text-pink-500 mr-1"></i>
+        Please check your inbox — and don’t forget your
+        <span class="font-semibold text-blue-600">spam folder</span>.
       </p>
-      <p>
+
+      <p class="text-gray-600 text-sm leading-relaxed mb-4">
+        <i class="fas fa-arrow-right-to-bracket text-indigo-600 mr-1"></i>
         Once you click the verification button in the email, you’ll be
-        redirected to our <span class="highlight">Login Page</span> to continue.
+        redirected to our
+        <span class="font-semibold text-blue-600">Login Page</span> to continue.
       </p>
-      <div class="footer">
-        <i class="fas fa-shield-alt"></i> Secure authentication powered by
-        Supabase
+
+      <!-- Divider -->
+      <div class="border-t border-gray-200 my-4"></div>
+
+      <!-- Footer -->
+      <div
+        class="text-gray-400 text-xs mt-2 flex items-center justify-center gap-2"
+      >
+        <i class="fas fa-shield-alt text-gray-500"></i>
+        Secure authentication powered by Supabase
       </div>
     </div>
   </body>
