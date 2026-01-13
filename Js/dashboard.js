@@ -115,7 +115,8 @@ function setupCourseModals() {
 
   if (enrollBtn) {
     enrollBtn.addEventListener("click", () => {
-      // Redirect to application.html inside Pages folder
+      const courseName = document.getElementById("modalTitle").textContent;
+      sessionStorage.setItem("selectedCourse", courseName);
       window.location.href = "../Pages/application.html";
     });
   }
