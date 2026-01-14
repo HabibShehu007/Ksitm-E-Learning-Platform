@@ -33,11 +33,6 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       options: {
         emailRedirectTo:
           "https://ksitm-e-learning-platform.vercel.app/Pages/login.html",
-        data: {
-          username,
-          name,
-          phone,
-        },
       },
     });
 
@@ -45,6 +40,24 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       return setTimeout(() => {
         showModal("error", "🚫 " + error.message);
       }, 2000);
+    }
+
+    // Insert into profiles table
+    if (data?.user) {
+      const { error: profileError } = await window.supabase
+        .from("profiles")
+        .insert({
+          id: data.user.id, // link to auth.users id
+          full_name: name,
+          email: email,
+          phone_number: phone,
+          is_admin: false,
+          blocked: false,
+        });
+
+      if (profileError) {
+        console.error("Error inserting profile:", profileError.message);
+      }
     }
 
     // Success modal (no auto redirect)

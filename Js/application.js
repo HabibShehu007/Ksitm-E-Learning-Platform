@@ -1,9 +1,26 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const userName = sessionStorage.getItem("userName") || "Guest";
-  const userEmail = sessionStorage.getItem("userEmail") || "";
-  const userPhone = sessionStorage.getItem("userPhone") || "";
+document.addEventListener("DOMContentLoaded", async () => {
+  // Get logged-in user from Supabase Auth
+  const {
+    data: { user },
+    error: userError,
+  } = await window.supabase.auth.getUser();
+
+  if (userError || !user) {
+    alert("You must be logged in to apply.");
+    return;
+  }
+
+  // Pull values from sessionStorage
+  const userName =
+    sessionStorage.getItem("userName") ||
+    user.user_metadata?.full_name ||
+    "Guest";
+  const userEmail = sessionStorage.getItem("userEmail") || user.email || "";
+  const userPhone =
+    sessionStorage.getItem("userPhone") || user.user_metadata?.phone || "";
   const selectedCourse =
     sessionStorage.getItem("selectedCourse") || "No Course Selected";
+
   // Display in hero
   document.getElementById("heroGreeting").textContent = `Hello, ${userName}!`;
   document.getElementById(
@@ -13,12 +30,10 @@ document.addEventListener("DOMContentLoaded", () => {
     "selectedCourse"
   ).textContent = `Course: ${selectedCourse}`;
 
-  // Pre-fill form (readonly + dimmed)
+  // Pre-fill form (readonly)
   document.getElementById("fullName").value = userName;
   document.getElementById("email").value = userEmail;
   document.getElementById("phone").value = userPhone;
-
-  // Lock Fields
   ["fullName", "email", "phone"].forEach((id) => {
     document.getElementById(id).readOnly = true;
   });
@@ -56,45 +71,49 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Form submission
-  document.getElementById("applicationForm").addEventListener("submit", (e) => {
-    e.preventDefault();
+  document
+    .getElementById("applicationForm")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    try {
-      // Collect all form data
-      const applicationData = {
-        name: document.getElementById("fullName").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        phone: document.getElementById("phone").value.trim(),
-        dob: document.getElementById("dob").value,
-        gender: document.getElementById("gender").value,
-        startDate: document.getElementById("startDate").value,
-        address: document.getElementById("address").value.trim(),
-        motivation: document.getElementById("motivation").value.trim(),
-        course: selectedCourse,
-        status: "Pending",
-      };
+      try {
+        // Collect form data
+        const applicationData = {
+          user_id: user.id, // 👈 critical for RLS
+          full_name: document.getElementById("fullName").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          phone: document.getElementById("phone").value.trim(),
+          dob: document.getElementById("dob").value,
+          gender: document.getElementById("gender").value,
+          start_date: document.getElementById("startDate").value,
+          address: document.getElementById("address").value.trim(),
+          motivation: document.getElementById("motivation").value.trim(),
+          course_name: selectedCourse,
+          status: "pending",
+        };
 
-      // Store in sessionStorage
-      sessionStorage.setItem(
-        "applicationData",
-        JSON.stringify(applicationData)
-      );
+        // Insert into Supabase
+        const { error } = await window.supabase
+          .from("applications")
+          .insert([applicationData]);
 
-      // Show success modal
-      successModal.querySelector(
-        "p"
-      ).textContent = `Thank you, ${applicationData.name}! Your application for ${selectedCourse} has been received.`;
-      showModal(successModal, successContent);
+        if (error) throw error;
 
-      // Redirect after delay
-      setTimeout(() => {
-        window.location.href = "../Pages/status.html";
-      }, 2500);
-    } catch (err) {
-      // Show error modal
-      errorModal.querySelector("p").textContent =
-        "Oops! Something went wrong. Please try again.";
-      showModal(errorModal, errorContent);
-    }
-  });
+        // Show success modal
+        successModal.querySelector(
+          "p"
+        ).textContent = `Thank you, ${applicationData.full_name}! Your application for ${selectedCourse} has been received.`;
+        showModal(successModal, successContent);
+
+        // Redirect after delay
+        setTimeout(() => {
+          window.location.href = "../Pages/status.html";
+        }, 2500);
+      } catch (err) {
+        console.error("Application error:", err);
+        errorModal.querySelector("p").textContent =
+          "Oops! Something went wrong. Please try again.";
+        showModal(errorModal, errorContent);
+      }
+    });
 });

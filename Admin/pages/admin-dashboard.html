@@ -1,56 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Admin Dashboard | KSITM</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../Css/admin-dashboard.css" rel="stylesheet">
-  <link rel="stylesheet" href="/ksitm-backend/public/fontawesome-free-7.0.0-web/fontawesome-free-7.0.0-web/css/all.min.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard | KSITM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<!-- Header -->
-<header class="bg-dark text-white py-3 text-center">
-  <h2><i class="fas fa-tools me-2"></i> KSITM Admin Dashboard</h2>
-</header>
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="../../src/output.css" />
 
-<!-- Back Arrow -->
-<section class="container mt-4">
-  <div class="mb-4">
-    <a href="admin-login.html" class="text-decoration-none text-secondary d-inline-flex align-items-center">
-      <i class="fas fa-arrow-left fa-lg me-2"></i> Logout
-    </a>
-  </div>
-</section>
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
 
-<!-- Dashboard Cards -->
-<section class="container mb-5">
-  <div class="row g-4">
-    <div class="col-md-6">
-      <div class="card shadow-sm dashboard-card">
-        <div class="card-body text-center">
-          <i class="fas fa-envelope-open-text fa-2x text-primary mb-3"></i>
-          <h5 class="card-title fw-bold">Application Inbox</h5>
-          <p class="card-text text-muted">View and respond to student applications.</p>
-          <a href="admin-applications.html" class="btn btn-primary w-100">Go to Applications</a>
-        </div>
+    <!-- ApexCharts CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  </head>
+  <body class="bg-gray-100 flex h-screen">
+    <!-- Sidebar -->
+    <aside
+      id="sidebar"
+      class="bg-violet-700 text-white w-64 flex-shrink-0 hidden md:flex flex-col"
+    >
+      <div class="p-6 text-center border-b border-violet-600">
+        <!-- Replace icon with logo -->
+        <img
+          src="../../images/ksitm logo.png"
+          alt="KSITM Logo"
+          class="mx-auto mb-2 w-16 h-16 object-contain"
+        />
+        <h2 class="text-lg font-bold">KSITM Admin</h2>
       </div>
-    </div>
-    <div class="col-md-6">
-      <div class="card shadow-sm dashboard-card">
-        <div class="card-body text-center">
-          <i class="fas fa-users fa-2x text-success mb-3"></i>
-          <h5 class="card-title fw-bold">Registered Users</h5>
-          <p class="card-text text-muted">See who has signed up on the platform.</p>
-          <a href="../pages/admin-users.html" class="btn btn-success w-100">View Users</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../Js/admin-dashboard.js"></script>
-</body>
+      <nav class="flex-1 p-4 space-y-4">
+        <a
+          href="admin-dashboard.html"
+          class="flex items-center gap-2 hover:bg-violet-600 p-2 rounded"
+        >
+          <i class="fas fa-chart-pie"></i> Overview
+        </a>
+        <a
+          href="admin-applications.html"
+          class="flex items-center gap-2 hover:bg-violet-600 p-2 rounded"
+        >
+          <i class="fas fa-envelope-open-text"></i> Applications
+        </a>
+        <a
+          href="admin-users.html"
+          class="flex items-center gap-2 hover:bg-violet-600 p-2 rounded"
+        >
+          <i class="fas fa-users"></i> Registered Users
+        </a>
+        <a
+          href="admin-message.html"
+          class="flex items-center gap-2 hover:bg-violet-600 p-2 rounded"
+        >
+          <i class="fas fa-comments"></i> Messaging
+        </a>
+        <a
+          href="admin-settings.html"
+          class="flex items-center gap-2 hover:bg-violet-600 p-2 rounded"
+        >
+          <i class="fas fa-cog"></i> Settings
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Mobile sidebar toggle -->
+    <button
+      id="mobileMenuBtn"
+      class="md:hidden fixed top-4 left-4 bg-violet-700 text-white p-2 rounded"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Main content -->
+    <div class="flex-1 flex flex-col">
+      <!-- Header -->
+      <header
+        class="bg-white shadow flex items-center justify-between px-6 py-4"
+      >
+        <h1 class="text-xl font-bold text-violet-700 flex items-center gap-2">
+          <i class="fas fa-tools"></i> Admin Dashboard
+        </h1>
+        <div class="flex items-center gap-4">
+          <div
+            class="w-10 h-10 flex items-center justify-center rounded-full border bg-gray-200"
+          >
+            <i class="fas fa-user text-violet-700 text-xl"></i>
+          </div>
+          <button
+            onclick="window.location.href='admin-login.html'"
+            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded flex items-center gap-2"
+          >
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </header>
+
+      <!-- Dashboard overview cards -->
+      <section class="p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div class="bg-white shadow rounded-lg p-4 text-center">
+          <i class="fas fa-users text-violet-600 text-2xl mb-2"></i>
+          <h3 class="font-bold">Total Applications</h3>
+          <p id="totalApplications" class="text-gray-600">0</p>
+        </div>
+        <div class="bg-white shadow rounded-lg p-4 text-center">
+          <i class="fas fa-hourglass-half text-yellow-500 text-2xl mb-2"></i>
+          <h3 class="font-bold">Pending</h3>
+          <p id="pendingApplications" class="text-gray-600">0</p>
+        </div>
+        <div class="bg-white shadow rounded-lg p-4 text-center">
+          <i class="fas fa-check-circle text-green-500 text-2xl mb-2"></i>
+          <h3 class="font-bold">Approved</h3>
+          <p id="approvedApplications" class="text-gray-600">0</p>
+        </div>
+        <div class="bg-white shadow rounded-lg p-4 text-center">
+          <i class="fas fa-times-circle text-red-500 text-2xl mb-2"></i>
+          <h3 class="font-bold">Rejected</h3>
+          <p id="rejectedApplications" class="text-gray-600">0</p>
+        </div>
+      </section>
+
+      <!-- Chart Section -->
+      <section class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white shadow rounded-lg p-6">
+          <h2 class="text-lg font-bold flex items-center gap-2 mb-4">
+            <i class="fas fa-chart-pie"></i> Applicant Status
+          </h2>
+          <div id="applicationsChart"></div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg p-6">
+          <h2 class="text-lg font-bold flex items-center gap-2 mb-4">
+            <i class="fas fa-chart-bar"></i> Course Success (Approved
+            Applicants)
+          </h2>
+          <div id="courseChart"></div>
+        </div>
+      </section>
+
+      <!-- Recent Applications -->
+      <section class="p-6">
+        <div class="bg-white shadow rounded-lg p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2
+              class="text-lg font-bold flex items-center gap-2 text-violet-700"
+            >
+              <i class="fas fa-clock"></i> Recent Applications
+            </h2>
+            <button
+              class="bg-violet-700 hover:bg-violet-800 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm transition"
+            >
+              <i class="fas fa-file-export"></i> Export CSV
+            </button>
+          </div>
+
+          <!-- Applications Card Grid -->
+          <div
+            id="recentApplications"
+            class="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
+            <!-- Example Card -->
+            <div
+              class="rounded-xl border bg-gradient-to-br from-violet-50 to-white shadow hover:shadow-lg transition transform hover:-translate-y-1 flex flex-col justify-between"
+            >
+              <!-- Card Header -->
+              <div
+                class="p-4 border-b flex items-center gap-2 bg-gradient-to-r from-violet-600 to-violet-500 text-white rounded-t-xl"
+              >
+                <i class="fas fa-shield-alt text-lg"></i>
+                <h5 class="font-semibold">Cybersecurity</h5>
+              </div>
+
+              <!-- Card Body -->
+              <div class="p-4 text-sm text-gray-700 space-y-2">
+                <p>
+                  <i class="fas fa-user text-violet-600 mr-1"></i>
+                  <strong>Applicant:</strong> Habib
+                </p>
+                <p>
+                  <i class="fas fa-info-circle text-violet-600 mr-1"></i>
+                  <strong>Status:</strong>
+                  <span
+                    class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded text-xs"
+                  >
+                    Pending Review
+                  </span>
+                </p>
+              </div>
+
+              <!-- Card Footer -->
+              <div class="p-4 border-t flex justify-end">
+                <button
+                  onclick="window.location.href='admin-applications.html'"
+                  class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-xs flex items-center gap-1 shadow-sm transition"
+                >
+                  <i class="fas fa-eye"></i> View
+                </button>
+              </div>
+            </div>
+            <!-- More cards injected dynamically via JS -->
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- JS for mobile sidebar toggle -->
+    <script>
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const sidebar = document.getElementById("sidebar");
+
+      mobileMenuBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("hidden");
+        sidebar.classList.toggle("flex");
+      });
+    </script>
+    <!-- Supabase client initialization -->
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+      const supabase = createClient(
+        "https://ecdioyrwwkjfakyoljws.supabase.co", // your project URL
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjZGlveXJ3d2tqZmFreW9sandzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNTM3MTEsImV4cCI6MjA4MzYyOTcxMX0.Ost2oBLH7NTZcSV6BuUDaZEQuT_LmzLI9ZXVou0v0_A" // your anon key
+      );
+
+      window.supabase = supabase;
+    </script>
+
+    <!-- Dashboard logic -->
+    <script type="module" src="../Js/admin-dashboard.js"></script>
+  </body>
 </html>

@@ -1,48 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Admin Login | KSITM Portal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../Css/login.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body class="bg-light">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Login | KSITM Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<!-- Login Section -->
-<section class="container d-flex justify-content-center align-items-center vh-100">
-  <div class="card p-4 shadow-lg rounded" style="max-width: 400px; width: 100%;">
-    <div class="text-center mb-4">
-      <i class="fas fa-user-shield fa-3x text-primary"></i>
-      <h4 class="mt-2 fw-bold text-primary">Admin Login</h4>
-      <p class="text-muted small">KSITM Control Panel Access</p>
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="../../src/output.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <!-- Login Card -->
+    <section class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+      <!-- Header -->
+      <div class="text-center mb-6">
+        <div class="flex justify-center mb-3">
+          <i class="fas fa-user-shield text-4xl text-violet-600"></i>
+        </div>
+        <h2 class="text-2xl font-extrabold text-violet-700">Admin Login</h2>
+        <p class="text-gray-500 text-sm">KSITM Control Panel Access</p>
+      </div>
+
+      <!-- Form -->
+      <form id="adminLoginForm" class="space-y-5">
+        <!-- Email -->
+        <div>
+          <label
+            for="adminEmail"
+            class="block text-sm font-semibold text-gray-700 mb-1"
+          >
+            Email
+          </label>
+          <input
+            type="email"
+            id="adminEmail"
+            placeholder="Enter admin email"
+            required
+            class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-violet-600 focus:outline-none"
+          />
+        </div>
+
+        <!-- Password with toggle -->
+        <div>
+          <label
+            for="adminPassword"
+            class="block text-sm font-semibold text-gray-700 mb-1"
+          >
+            Password
+          </label>
+          <div class="relative">
+            <input
+              type="password"
+              id="adminPassword"
+              placeholder="Enter password"
+              required
+              class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-violet-600 focus:outline-none pr-10"
+            />
+            <!-- Toggle button -->
+            <button
+              type="button"
+              id="togglePassword"
+              class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-violet-600"
+            >
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="w-full bg-gradient-to-r from-orange-600 to-violet-700 text-white font-semibold py-2 rounded-lg shadow-md hover:scale-105 transition-transform"
+        >
+          <i class="fas fa-sign-in-alt mr-2"></i> Login
+        </button>
+      </form>
+
+      <!-- Back to User Signup/Login -->
+      <div class="mt-6 text-center">
+        <a
+          href="../../Pages/signup.html"
+          class="inline-flex items-center gap-2 text-gray-600 hover:text-violet-700 text-sm font-medium transition"
+        >
+          <i class="fas fa-arrow-left"></i> Back to Signup
+        </a>
+      </div>
+    </section>
+
+    <!-- Loading Modal -->
+    <div
+      id="loadingModal"
+      class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50"
+    >
+      <div class="bg-white rounded-xl shadow-lg p-6 text-center animate-pulse">
+        <i class="fas fa-spinner fa-spin text-violet-600 text-4xl mb-3"></i>
+        <h3 class="text-lg font-bold text-violet-700">Authenticating...</h3>
+        <p class="text-gray-500 text-sm">
+          Please wait while we verify your credentials.
+        </p>
+      </div>
     </div>
 
-    <form id="adminLoginForm">
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Username</label>
-        <input type="text" class="form-control" id="adminUsername" placeholder="Enter admin username" required>
+    <!-- Success Modal -->
+    <div
+      id="successModal"
+      class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50"
+    >
+      <div class="bg-white rounded-xl shadow-lg p-6 text-center">
+        <i class="fas fa-check-circle text-green-500 text-4xl mb-3"></i>
+        <h3 class="text-lg font-bold text-green-700">Login Successful</h3>
+        <p class="text-gray-600 text-sm">
+          Welcome back, Admin! Redirecting to dashboard...
+        </p>
+        <button
+          id="closeSuccess"
+          class="mt-4 px-6 py-2 rounded-full bg-green-500 text-white font-semibold hover:bg-green-600 transition"
+        >
+          <i class="fas fa-times mr-2"></i> Close
+        </button>
       </div>
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Password</label>
-        <input type="password" class="form-control" id="adminPassword" placeholder="Enter password" required>
-      </div>
-      <button type="submit" class="btn btn-primary w-100 fw-bold">
-        <i class="fas fa-sign-in-alt me-2"></i> Login
-      </button>
-    </form>
-
-    <div class="mt-3 text-center">
-      <a href="../../Pages/dashboard.html" class="text-decoration-none text-secondary">
-        <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
-      </a>
     </div>
-  </div>
-</section>
 
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../Js/admin-login.js"></script>
-</body>
+    <!-- Error Modal -->
+    <div
+      id="errorModal"
+      class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-50 z-50"
+    >
+      <div class="bg-white rounded-xl shadow-lg p-6 text-center">
+        <i class="fas fa-exclamation-circle text-red-500 text-4xl mb-3"></i>
+        <h3 class="text-lg font-bold text-red-700">Login Failed</h3>
+        <p class="text-gray-600 text-sm">
+          Invalid credentials or unauthorized access.
+        </p>
+        <button
+          id="closeError"
+          class="mt-4 px-6 py-2 rounded-full bg-red-500 text-white font-semibold hover:bg-red-600 transition"
+        >
+          <i class="fas fa-times mr-2"></i> Close
+        </button>
+      </div>
+    </div>
+
+    <!-- Supabase client initialization -->
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+      const supabase = createClient(
+        "https://ecdioyrwwkjfakyoljws.supabase.co", // your project URL
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjZGlveXJ3d2tqZmFreW9sandzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNTM3MTEsImV4cCI6MjA4MzYyOTcxMX0.Ost2oBLH7NTZcSV6BuUDaZEQuT_LmzLI9ZXVou0v0_A" // your anon key
+      );
+
+      window.supabase = supabase;
+    </script>
+
+    <!-- Admin login logic -->
+    <script src="../Js/admin-login.js"></script>
+  </body>
 </html>

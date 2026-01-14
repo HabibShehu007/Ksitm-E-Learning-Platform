@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Messages | KSITM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="../../src/output.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <!-- Supabase JS -->
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+      const supabase = createClient(
+        "https://ecdioyrwwkjfakyoljws.supabase.co", // replace with your Supabase project URL
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjZGlveXJ3d2tqZmFreW9sandzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNTM3MTEsImV4cCI6MjA4MzYyOTcxMX0.Ost2oBLH7NTZcSV6BuUDaZEQuT_LmzLI9ZXVou0v0_A" // replace with your anon/public key
+      );
+
+      // Expose globally so admin-message.js can use it
+      window.supabase = supabase;
+    </script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header
+      class="bg-violet-700 text-white py-4 px-6 flex justify-between items-center shadow"
+    >
+      <h2 class="text-xl font-bold flex items-center gap-2">
+        <i class="fas fa-comments"></i> Admin Messaging
+      </h2>
+      <a
+        href="admin-dashboard.html"
+        class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white flex items-center gap-2"
+      >
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+      </a>
+    </header>
+
+    <!-- Messages Section -->
+    <main class="flex-1 p-6">
+      <div class="bg-white shadow rounded-lg p-6">
+        <h5
+          class="text-lg font-bold text-violet-700 flex items-center gap-2 mb-4"
+        >
+          <i class="fas fa-envelope-open-text"></i> Conversation
+        </h5>
+
+        <!-- Conversation Thread -->
+        <div id="conversationThread" class="space-y-4">
+          <!-- First message (user motivation) will be injected here -->
+        </div>
+
+        <!-- Reply Button -->
+        <div class="mt-6 flex justify-end">
+          <button
+            class="bg-violet-700 hover:bg-violet-800 text-white px-4 py-2 rounded flex items-center gap-2"
+            onclick="openReplyModal()"
+          >
+            <i class="fas fa-reply"></i> Reply
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Reply Modal -->
+    <div
+      id="replyModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center"
+    >
+      <div class="bg-white rounded-lg shadow-lg w-96 p-6 relative">
+        <h3
+          class="text-lg font-bold text-violet-700 mb-4 flex items-center gap-2"
+        >
+          <i class="fas fa-reply"></i> Reply to User
+        </h3>
+        <form id="replyForm" class="space-y-4">
+          <textarea
+            class="w-full border rounded p-2 text-sm"
+            rows="4"
+            placeholder="Type your reply..."
+          ></textarea>
+          <div class="flex justify-end gap-2">
+            <button
+              type="button"
+              onclick="closeReplyModal()"
+              class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1 rounded"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="bg-violet-700 hover:bg-violet-800 text-white px-3 py-1 rounded"
+            >
+              Send Reply
+            </button>
+          </div>
+        </form>
+        <button
+          onclick="closeReplyModal()"
+          class="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div
+      id="successModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center"
+    >
+      <div class="bg-white rounded-lg shadow-lg w-80 p-6 relative text-center">
+        <i class="fas fa-check-circle text-green-500 text-4xl mb-2"></i>
+        <h3 class="text-lg font-bold text-green-600 mb-2">Message Sent!</h3>
+        <p class="text-gray-600 text-sm mb-4">
+          Your reply has been delivered to the user.
+        </p>
+        <button
+          onclick="closeSuccessModal()"
+          class="bg-violet-700 hover:bg-violet-800 text-white px-4 py-2 rounded"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div
+      id="errorModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center"
+    >
+      <div class="bg-white rounded-lg shadow-lg w-80 p-6 relative text-center">
+        <i class="fas fa-times-circle text-red-500 text-4xl mb-2"></i>
+        <h3 class="text-lg font-bold text-red-600 mb-2">Message Failed</h3>
+        <p id="errorMessage" class="text-gray-600 text-sm mb-4">
+          Something went wrong while sending your reply.
+        </p>
+        <button
+          onclick="closeErrorModal()"
+          class="bg-violet-700 hover:bg-violet-800 text-white px-4 py-2 rounded"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+
+    <!-- JS Logic -->
+    <script type="module" src="../Js/admin-messages.js"></script>
+  </body>
+</html>
