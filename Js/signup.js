@@ -42,25 +42,34 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       }, 2000);
     }
 
-    // Insert into profiles table
+    // Insert into profiles table (only if user object exists)
     if (data?.user) {
       const { error: profileError } = await window.supabase
         .from("profiles")
-        .insert({
-          id: data.user.id, // link to auth.users id
-          full_name: name,
-          email: email,
-          phone_number: phone,
-          is_admin: false,
-          blocked: false,
-        });
+        .insert([
+          {
+            id: data.user.id, // must match auth.users.id
+            full_name: name,
+            email: email,
+            phone_number: phone,
+            is_admin: false,
+            blocked: false,
+            verified: false, // default until email confirmed
+          },
+        ]);
 
       if (profileError) {
         console.error("Error inserting profile:", profileError.message);
+        return setTimeout(() => {
+          showModal(
+            "error",
+            "🚫 Profile insert failed: " + profileError.message
+          );
+        }, 2000);
       }
     }
 
-    // Success modal (no auto redirect)
+    // Success modal (no auto redirect until email verified)
     setTimeout(() => {
       showModal(
         "success",
@@ -68,112 +77,9 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       );
     }, 2000);
   } catch (err) {
+    console.error("Unexpected signup error:", err);
     setTimeout(() => {
       showModal("error", "⚠️ Something went wrong. Please try again.");
     }, 2000);
   }
 });
-
-// Modal Logic
-function showModal(type, message) {
-  const title =
-    type === "success"
-      ? "Success"
-      : type === "error"
-      ? "Error"
-      : type === "warning"
-      ? "Warning"
-      : type === "info"
-      ? "Please Wait"
-      : "Message";
-
-  const iconWrapper = document.getElementById("modalIconWrapper");
-  const icon = document.getElementById("modalIcon");
-  const modalTitle = document.getElementById("modalTitleText");
-  const modalMessage = document.getElementById("modalMessage");
-  const closeBtn = document.getElementById("modalCloseBtn");
-
-  // Style icons by type
-  if (type === "success") {
-    iconWrapper.className =
-      "w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-green-500";
-    icon.className = "fas fa-check-circle text-4xl text-white";
-  } else if (type === "error") {
-    iconWrapper.className =
-      "w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-red-500";
-    icon.className = "fas fa-times-circle text-4xl text-white";
-  } else if (type === "warning") {
-    iconWrapper.className =
-      "w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-yellow-500";
-    icon.className = "fas fa-exclamation-triangle text-4xl text-white";
-  } else {
-    // Loading state
-    iconWrapper.className =
-      "w-20 h-20 flex items-center justify-center rounded-full mb-4 shadow-md bg-blue-500 animate-spin";
-    icon.className = "fas fa-spinner text-4xl text-white";
-  }
-
-  modalTitle.textContent = title;
-  modalMessage.textContent = message;
-
-  const modalElement = document.getElementById("feedbackModal");
-  const modalContent = document.getElementById("modalContent");
-
-  modalElement.classList.remove("hidden");
-  setTimeout(() => {
-    modalContent.classList.remove("scale-95", "opacity-0");
-    modalContent.classList.add("scale-100", "opacity-100");
-  }, 10);
-
-  // Button logic
-  if (type === "info") {
-    // Hide the OK button for loading state
-    closeBtn.style.display = "none";
-  } else {
-    // Show OK button for all other states
-    closeBtn.style.display = "block";
-    closeBtn.onclick = () => {
-      closeModal();
-      if (type === "success") {
-        window.location.href = "verify.html";
-      }
-    };
-  }
-}
-
-function closeModal() {
-  const modalElement = document.getElementById("feedbackModal");
-  const modalContent = document.getElementById("modalContent");
-
-  modalContent.classList.remove("scale-100", "opacity-100");
-  modalContent.classList.add("scale-95", "opacity-0");
-
-  setTimeout(() => modalElement.classList.add("hidden"), 300);
-}
-
-// Password toggles
-document
-  .getElementById("togglePasswordBtn")
-  ?.addEventListener("click", function () {
-    const input = document.getElementById("password");
-    if (input.type === "password") {
-      input.type = "text";
-      this.innerHTML = '<i class="fas fa-eye-slash"></i> Hide';
-    } else {
-      input.type = "password";
-      this.innerHTML = '<i class="fas fa-eye"></i> Show';
-    }
-  });
-
-document
-  .getElementById("toggleConfirmPasswordBtn")
-  ?.addEventListener("click", function () {
-    const input = document.getElementById("confirmPassword");
-    if (input.type === "password") {
-      input.type = "text";
-      this.innerHTML = '<i class="fas fa-eye-slash"></i> Hide';
-    } else {
-      input.type = "password";
-      this.innerHTML = '<i class="fas fa-eye"></i> Show';
-    }
-  });
