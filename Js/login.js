@@ -24,13 +24,21 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     });
 
     if (error) {
+      console.error("Login error:", error.message);
       return setTimeout(() => {
-        showModal("error", "❌ Invalid email or password.");
-      }, 2000);
+        showModal("error", "❌ " + error.message);
+      }, 1000);
     }
 
-    // Store session info (from Supabase user metadata)
-    const user = data.user;
+    // Extract user from session
+    const user = data.session?.user;
+    if (!user) {
+      return setTimeout(() => {
+        showModal("error", "⚠️ No user session returned.");
+      }, 1000);
+    }
+
+    // Store session info
     sessionStorage.setItem("userName", user.user_metadata?.name || user.email);
     sessionStorage.setItem("userEmail", user.email);
     sessionStorage.setItem("userPhone", user.user_metadata?.phone || "");
@@ -49,11 +57,12 @@ document.querySelector("form").addEventListener("submit", async (e) => {
           "userName"
         )}! You’ve logged in successfully.`
       );
-    }, 2000);
+    }, 1000);
   } catch (err) {
+    console.error("Unexpected error:", err);
     setTimeout(() => {
       showModal("error", "⚠️ Something went wrong. Please try again.");
-    }, 2000);
+    }, 1000);
   }
 });
 
@@ -109,15 +118,14 @@ function showModal(type, message) {
 
   // Button logic
   if (type === "info") {
-    // Hide OK button for loading state
     closeBtn.style.display = "none";
   } else {
-    // Show OK button for success/error/warning
     closeBtn.style.display = "block";
     closeBtn.onclick = () => {
       closeModal();
       if (type === "success") {
-        window.location.href = "dashboard.html";
+        // Redirect to correct dashboard page
+        window.location.href = "../Pages/dashboard.html";
       }
     };
   }
