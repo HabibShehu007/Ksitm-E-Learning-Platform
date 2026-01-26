@@ -292,6 +292,23 @@ document.addEventListener("DOMContentLoaded", () => {
   loadApplications();
 });
 
+function showStatusMessageModal(messageText, isSuccess) {
+  const modal = document.createElement("div");
+  modal.className =
+    "fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50";
+  modal.innerHTML = `
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm text-center">
+      <p class="text-sm md:text-base ${isSuccess ? "text-green-700" : "text-red-700"} font-semibold mb-4">
+        ${messageText}
+      </p>
+      <button class="px-4 py-2 bg-violet-600 text-white rounded hover:bg-violet-700" onclick="this.closest('.fixed').remove()">
+        Close
+      </button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
 // Exposed functions
 window.loadApplications = loadApplications;
 window.approveApplication = approveApplication;
