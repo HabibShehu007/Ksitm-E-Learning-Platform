@@ -58,7 +58,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Copy button logic
       const copyBtn = card.querySelector("#copySystemMessage");
       copyBtn.onclick = () => {
-        navigator.clipboard.writeText(firstSystemMsg.message);
+        // Extract only the registration number line
+        const match = firstSystemMsg.message.match(
+          /Registration Number:\s*(.+)/,
+        );
+        const regNumber = match ? match[1].trim() : firstSystemMsg.message;
+
+        navigator.clipboard.writeText(regNumber);
         copyBtn.textContent = "Copied!";
         setTimeout(() => (copyBtn.textContent = "Copy"), 2000);
       };

@@ -298,15 +298,15 @@ function showStatusMessageModal(messageText, isSuccess) {
     "fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50";
   modal.innerHTML = `
     <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm text-center">
-      <p class="text-sm md:text-base ${isSuccess ? "text-green-700" : "text-red-700"} font-semibold mb-4">
-        ${messageText}
+      <p class="text-2xl font-bold ${isSuccess ? "text-green-700" : "text-red-700"}">
+        ${isSuccess ? "APPROVED" : "REJECTED"}
       </p>
-      <button class="px-4 py-2 bg-violet-600 text-white rounded hover:bg-violet-700" onclick="this.closest('.fixed').remove()">
-        Close
-      </button>
     </div>
   `;
   document.body.appendChild(modal);
+
+  // Auto-close after 2 seconds
+  setTimeout(() => modal.remove(), 2000);
 }
 
 // Exposed functions
