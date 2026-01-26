@@ -1,14 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <title>Messages | KSITM Portal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Local Tailwind build -->
+    <!-- Tailwind CSS -->
     <link rel="stylesheet" href="../src/output.css" />
     <link rel="icon" type="image/png" href="../images/ksitm logo.png" />
-    <!-- Local Font Awesome -->
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -16,9 +16,7 @@
   </head>
   <body class="bg-gray-50 text-gray-800">
     <!-- Header -->
-    <header
-      class="bg-gradient-to-r from-orange-600 to-violet-700 py-6 text-center text-white shadow-md"
-    >
+    <header class="bg-violet-700 py-6 text-center text-white shadow-md">
       <h2 class="text-2xl md:text-3xl font-bold">
         <i class="fas fa-envelope mr-2"></i> My Messages
       </h2>
@@ -55,27 +53,43 @@
       </div>
     </section>
 
-    <!-- Message Display -->
+    <!-- Conversation Section -->
     <section class="max-w-4xl mx-auto px-4 mb-10">
       <div class="bg-white rounded-xl shadow-md p-6">
         <h5
           class="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-700"
         >
-          <i class="fas fa-user-shield text-orange-600"></i> Admin Messages
+          <i class="fas fa-comments text-violet-600"></i> Conversation
         </h5>
-        <ul id="messageList" class="space-y-3 text-sm text-gray-700">
-          <!-- Messages injected here -->
-        </ul>
-      </div>
+        <ul id="messageList" class="space-y-4 text-sm text-gray-700">
+          <!-- First system message card -->
+          <li id="firstMessageCard" class="hidden">
+            <div
+              class="bg-violet-50 border border-violet-200 rounded-lg p-4 shadow-sm"
+            >
+              <div class="flex items-center gap-2 mb-2">
+                <i class="fas fa-star text-violet-600"></i>
+                <span class="font-semibold text-violet-700"
+                  >Admission Approved</span
+                >
+              </div>
+              <p
+                id="firstMessageText"
+                class="text-gray-700 text-sm whitespace-pre-line"
+              ></p>
+              <div class="mt-3 flex gap-2">
+                <button
+                  id="copyFirstMessage"
+                  class="bg-violet-600 hover:bg-violet-700 text-white px-3 py-1 rounded text-xs flex items-center gap-1"
+                >
+                  <i class="fas fa-copy"></i> Copy
+                </button>
+              </div>
+            </div>
+          </li>
 
-      <!-- Reply Button -->
-      <div class="text-right mt-4">
-        <button
-          id="openReplyModal"
-          class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-violet-700 border border-violet-700 rounded-full hover:bg-violet-700 hover:text-white transition"
-        >
-          <i class="fas fa-reply"></i> Reply to Admin
-        </button>
+          <!-- Normal messages will be dynamically loaded here -->
+        </ul>
       </div>
     </section>
 
@@ -90,9 +104,10 @@
       >
         <div class="flex justify-between items-center mb-4">
           <h5
+            id="replyModalTitle"
             class="text-lg font-semibold flex items-center gap-2 text-gray-700"
           >
-            <i class="fas fa-reply text-violet-700"></i> Reply to Admin
+            <i class="fas fa-reply text-violet-700"></i> Reply
           </h5>
           <button
             type="button"
@@ -104,6 +119,7 @@
         </div>
         <div class="space-y-4">
           <textarea
+            id="replyText"
             class="w-full border rounded-lg p-3 text-sm focus:ring focus:ring-violet-300"
             rows="5"
             placeholder="Type your reply..."
@@ -114,6 +130,7 @@
           </label>
           <input
             type="file"
+            id="replyFile"
             class="w-full border rounded-lg p-2 text-sm"
             accept=".pdf,.doc,.docx,.jpg,.png"
           />
@@ -121,7 +138,7 @@
         <div class="mt-6">
           <button
             type="submit"
-            class="w-full bg-gradient-to-r from-orange-600 to-violet-700 text-white font-semibold py-2 rounded-lg shadow hover:opacity-90 transition"
+            class="w-full bg-violet-700 text-white font-semibold py-2 rounded-lg shadow hover:opacity-90 transition"
           >
             <i class="fas fa-paper-plane mr-2"></i> Send Reply
           </button>
@@ -129,7 +146,18 @@
       </form>
     </div>
 
+    <!-- Supabase initialization -->
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+      const supabase = createClient(
+        "https://cwyiyplxadmcevejshtl.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3eWl5cGx4YWRtY2V2ZWpzaHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg4MjI3MDcsImV4cCI6MjA4NDM5ODcwN30.bbMmrLZphjkUOl_m8HlfqwKZ08lkCZ7Vj39edpm3_LY",
+      );
+      window.supabase = supabase;
+    </script>
+
     <!-- Scripts -->
-    <script src="../Js/my-messages.js"></script>
+    <script type="module" src="../Js/my-messages.js"></script>
+    <script type="module" src="../Js/overlay.js"></script>
   </body>
 </html>

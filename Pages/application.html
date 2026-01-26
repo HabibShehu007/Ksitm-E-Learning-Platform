@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -71,7 +71,7 @@
                 id="fullName"
                 required
                 readonly
-                class="w-full border rounded-md px-3 py-2 bg-gray-100 text-gray-500 cursor-not-allowed text-sm"
+                class="w-full border rounded-md px-3 py-2 bg-gray-200 text-black cursor-not-allowed"
               />
             </div>
             <div>
@@ -81,7 +81,7 @@
                 id="email"
                 required
                 readonly
-                class="w-full border rounded-md px-3 py-2 bg-gray-100 text-gray-500 cursor-not-allowed text-sm"
+                class="w-full border rounded-md px-3 py-2 bg-gray-100 text-black cursor-not-allowed"
               />
             </div>
             <div>
@@ -91,7 +91,7 @@
                 id="phone"
                 required
                 readonly
-                class="w-full border rounded-md px-3 py-2 bg-gray-100 text-gray-500 cursor-not-allowed text-sm"
+                class="w-full border rounded-md px-3 py-2 bg-gray-200 cursor-not-allowed text-black"
               />
             </div>
             <div>
@@ -102,7 +102,8 @@
                 type="date"
                 id="dob"
                 required
-                class="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-violet-700 text-sm"
+                readonly
+                class="w-full border rounded-md bg-gray-200 px-3 py-2 focus:ring-2 focus:ring-violet-700 text-sm text-black cursor-not-allowed"
               />
             </div>
             <div>
@@ -138,7 +139,8 @@
               type="text"
               id="address"
               required
-              class="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-violet-700 text-sm"
+              readonly
+              class="w-full border bg-gray-200 rounded-md px-3 py-2 focus:ring-2 focus:ring-violet-700 text-black cursor-not-allowed"
             />
           </div>
 
@@ -231,8 +233,8 @@
 
       // Initialize Supabase client
       const supabase = createClient(
-        "https://ecdioyrwwkjfakyoljws.supabase.co",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjZGlveXJ3d2tqZmFreW9sandzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNTM3MTEsImV4cCI6MjA4MzYyOTcxMX0.Ost2oBLH7NTZcSV6BuUDaZEQuT_LmzLI9ZXVou0v0_A"
+        "https://cwyiyplxadmcevejshtl.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3eWl5cGx4YWRtY2V2ZWpzaHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg4MjI3MDcsImV4cCI6MjA4NDM5ODcwN30.bbMmrLZphjkUOl_m8HlfqwKZ08lkCZ7Vj39edpm3_LY"
       );
 
       window.supabase = supabase;

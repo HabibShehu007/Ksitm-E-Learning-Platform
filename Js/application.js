@@ -21,20 +21,32 @@ document.addEventListener("DOMContentLoaded", async () => {
   const selectedCourse =
     sessionStorage.getItem("selectedCourse") || "No Course Selected";
 
+  // ✅ Fetch DOB + Address from user_profiles
+  const { data: profileData, error: profileError } = await window.supabase
+    .from("user_profiles")
+    .select("dob, address")
+    .eq("id", user.id)
+    .single();
+
+  if (profileError) {
+    console.error("Profile fetch error:", profileError);
+  }
+
   // Display in hero
   document.getElementById("heroGreeting").textContent = `Hello, ${userName}!`;
-  document.getElementById(
-    "heroDescription"
-  ).textContent = `You're applying for ${selectedCourse}. Let’s get you started.`;
-  document.getElementById(
-    "selectedCourse"
-  ).textContent = `Course: ${selectedCourse}`;
+  document.getElementById("heroDescription").textContent =
+    `You're applying for ${selectedCourse}. Let’s get you started.`;
+  document.getElementById("selectedCourse").textContent =
+    `Course: ${selectedCourse}`;
 
   // Pre-fill form (readonly)
   document.getElementById("fullName").value = userName;
   document.getElementById("email").value = userEmail;
   document.getElementById("phone").value = userPhone;
-  ["fullName", "email", "phone"].forEach((id) => {
+  document.getElementById("dob").value = profileData?.dob || "";
+  document.getElementById("address").value = profileData?.address || "";
+
+  ["fullName", "email", "phone", "dob", "address"].forEach((id) => {
     document.getElementById(id).readOnly = true;
   });
 
@@ -83,11 +95,11 @@ document.addEventListener("DOMContentLoaded", async () => {
           full_name: document.getElementById("fullName").value.trim(),
           email: document.getElementById("email").value.trim(),
           phone: document.getElementById("phone").value.trim(),
-          dob: document.getElementById("dob").value,
-          gender: document.getElementById("gender").value,
+          dob: document.getElementById("dob").value, // ✅ from user_profiles
+          address: document.getElementById("address").value.trim(), // ✅ from user_profiles
+          gender: document.getElementById("gender").value, // 👈 user selects
+          motivation: document.getElementById("motivation").value.trim(), // 👈 user writes
           start_date: document.getElementById("startDate").value,
-          address: document.getElementById("address").value.trim(),
-          motivation: document.getElementById("motivation").value.trim(),
           course_name: selectedCourse,
           status: "pending",
         };
@@ -100,9 +112,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (error) throw error;
 
         // Show success modal
-        successModal.querySelector(
-          "p"
-        ).textContent = `Thank you, ${applicationData.full_name}! Your application for ${selectedCourse} has been received.`;
+        successModal.querySelector("p").textContent =
+          `Thank you, ${applicationData.full_name}! Your application for ${selectedCourse} has been received.`;
         showModal(successModal, successContent);
 
         // Redirect after delay

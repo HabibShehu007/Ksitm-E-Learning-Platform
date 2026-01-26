@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -14,16 +14,15 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
 
-    <!-- Supabase JS -->
+    <!-- Supabase client initialization -->
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
       const supabase = createClient(
-        "https://ecdioyrwwkjfakyoljws.supabase.co", // replace with your Supabase project URL
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjZGlveXJ3d2tqZmFreW9sandzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNTM3MTEsImV4cCI6MjA4MzYyOTcxMX0.Ost2oBLH7NTZcSV6BuUDaZEQuT_LmzLI9ZXVou0v0_A" // replace with your anon/public key
+        "https://cwyiyplxadmcevejshtl.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3eWl5cGx4YWRtY2V2ZWpzaHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg4MjI3MDcsImV4cCI6MjA4NDM5ODcwN30.bbMmrLZphjkUOl_m8HlfqwKZ08lkCZ7Vj39edpm3_LY",
       );
 
-      // Expose globally so admin-message.js can use it
       window.supabase = supabase;
     </script>
   </head>
@@ -49,22 +48,35 @@
         <h5
           class="text-lg font-bold text-violet-700 flex items-center gap-2 mb-4"
         >
-          <i class="fas fa-envelope-open-text"></i> Conversation
+          <i class="fas fa-envelope-open-text"></i> Conversations
         </h5>
 
         <!-- Conversation Thread -->
-        <div id="conversationThread" class="space-y-4">
-          <!-- First message (user motivation) will be injected here -->
-        </div>
+        <div id="conversationThread" class="space-y-6">
+          <!-- Example structure injected by JS:
+          <div class="border rounded-lg p-6 bg-violet-50 shadow">
+            <h6 class="font-semibold text-violet-700 mb-2 flex items-center gap-2">
+              <i class="fas fa-user-shield"></i> Admin
+            </h6>
+            <p class="text-gray-800 mb-4">Admin message text...</p>
 
-        <!-- Reply Button -->
-        <div class="mt-6 flex justify-end">
-          <button
-            class="bg-violet-700 hover:bg-violet-800 text-white px-4 py-2 rounded flex items-center gap-2"
-            onclick="openReplyModal()"
-          >
-            <i class="fas fa-reply"></i> Reply
-          </button>
+            <div class="space-y-4">
+              <div class="border-l-4 border-orange-400 pl-4 bg-orange-50 rounded-lg">
+                <h6 class="font-semibold text-orange-600 mb-2">Replies from Habib</h6>
+                <ul class="space-y-2">
+                  <li class="bg-white rounded p-3 shadow-sm">Student reply...</li>
+                  <li class="bg-white rounded p-3 shadow-sm">Another reply...</li>
+                </ul>
+                <button
+                  class="mt-2 text-xs text-violet-700 hover:underline"
+                  onclick="openReplyModal('user_id_here','Habib')"
+                >
+                  <i class="fas fa-reply"></i> Reply to Habib
+                </button>
+              </div>
+            </div>
+          </div>
+          -->
         </div>
       </div>
     </main>
@@ -76,12 +88,14 @@
     >
       <div class="bg-white rounded-lg shadow-lg w-96 p-6 relative">
         <h3
+          id="replyModalTitle"
           class="text-lg font-bold text-violet-700 mb-4 flex items-center gap-2"
         >
           <i class="fas fa-reply"></i> Reply to User
         </h3>
         <form id="replyForm" class="space-y-4">
           <textarea
+            id="replyText"
             class="w-full border rounded p-2 text-sm"
             rows="4"
             placeholder="Type your reply..."

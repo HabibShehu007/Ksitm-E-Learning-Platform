@@ -1,11 +1,19 @@
 document.addEventListener("DOMContentLoaded", async () => {
   console.log("Admin dashboard loaded.");
 
+  if (!window.supabase) {
+    console.error("Supabase not initialized");
+    return;
+  }
+
   // Fetch application stats
   const { data, error } = await window.supabase
     .from("applications")
-    .select("status, full_name, course_name, created_at")
+    .select("id, status, full_name, course_name, created_at")
     .order("created_at", { ascending: false });
+
+  console.log("Applications data:", data);
+  console.log("Error:", error);
 
   if (error) {
     console.error("Error fetching applications:", error.message);
@@ -57,10 +65,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             app.status === "approved"
               ? "bg-green-100 text-green-700"
               : app.status === "rejected"
-              ? "bg-red-100 text-red-700"
-              : "bg-yellow-100 text-yellow-700"
+                ? "bg-red-100 text-red-700"
+                : "bg-yellow-100 text-yellow-700"
           }">${app.status}</span>
         </p>
+        <p class="text-xs text-gray-500">Submitted: ${new Date(app.created_at).toLocaleString()}</p>
       </div>
       <div class="p-4 border-t flex justify-end">
         <button onclick="window.location.href='admin-applications.html'"
@@ -82,7 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
   const statusChart = new ApexCharts(
     document.querySelector("#applicationsChart"),
-    statusOptions
+    statusOptions,
   );
   statusChart.render();
 
@@ -113,7 +122,28 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
   const courseChart = new ApexCharts(
     document.querySelector("#courseChart"),
-    courseOptions
+    courseOptions,
   );
   courseChart.render();
+
+  // --- Export CSV ---
+  document.getElementById("exportCsvBtn").addEventListener("click", () => {
+    const csvRows = [
+      ["Full Name", "Course", "Status", "Created At"],
+      ...data.map((app) => [
+        app.full_name,
+        app.course_name,
+        app.status,
+        new Date(app.created_at).toLocaleString(),
+      ]),
+    ];
+    const csvContent = csvRows.map((row) => row.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "applications.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
 });

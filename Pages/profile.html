@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -16,9 +16,7 @@
   </head>
   <body class="bg-gray-50 text-gray-800">
     <!-- Header -->
-    <header
-      class="bg-gradient-to-r from-orange-600 to-violet-700 py-6 text-center text-white shadow-md"
-    >
+    <header class="bg-violet-700 py-6 text-center text-white shadow-md">
       <h2 class="text-2xl md:text-3xl font-bold">
         <i class="fas fa-user-circle mr-2"></i> My Profile
       </h2>
@@ -40,7 +38,7 @@
         <!-- Avatar + Basic Info -->
         <div class="text-center">
           <div
-            class="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full bg-gradient-to-r from-orange-600 to-violet-700 flex items-center justify-center shadow-lg"
+            class="w-24 h-24 md:w-32 md:h-32 mx-auto rounded-full bg-violet-700 flex items-center justify-center shadow-lg"
           >
             <i class="fas fa-user text-white text-3xl md:text-4xl"></i>
           </div>
@@ -65,7 +63,7 @@
               <li class="flex items-center gap-2">
                 <i class="fas fa-envelope text-violet-700"></i>
                 <span class="font-semibold">Email:</span>
-                <span id="emailDisplay">habib@example.com</span>
+                <span id="emailDisplay"></span>
               </li>
               <li class="flex items-center gap-2">
                 <i class="fas fa-phone text-violet-700"></i>
@@ -92,8 +90,18 @@
         </div>
       </div>
     </section>
+    <!-- Supabase client -->
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+      const supabase = createClient(
+        "https://cwyiyplxadmcevejshtl.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3eWl5cGx4YWRtY2V2ZWpzaHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg4MjI3MDcsImV4cCI6MjA4NDM5ODcwN30.bbMmrLZphjkUOl_m8HlfqwKZ08lkCZ7Vj39edpm3_LY",
+      );
+      window.supabase = supabase;
+    </script>
 
     <!-- Scripts -->
     <script src="../Js/profile.js"></script>
+    <script src="../Js/overlay.js"></script>
   </body>
 </html>

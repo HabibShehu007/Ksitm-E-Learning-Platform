@@ -31,19 +31,34 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     }
 
     // Extract user from session
-    const user = data.session?.user;
+    const user = data?.user || data.session?.user;
     if (!user) {
       return setTimeout(() => {
         showModal("error", "⚠️ No user session returned.");
       }, 1000);
     }
 
+    // ✅ Fetch profile info from user_profiles
+    const { data: profile, error: profileError } = await window.supabase
+      .from("user_profiles")
+      .select("username, name, phone")
+      .eq("id", user.id)
+      .single();
+
+    if (profileError) {
+      console.error("Profile fetch error:", profileError);
+    }
+
     // Store session info
-    sessionStorage.setItem("userName", user.user_metadata?.name || user.email);
+    sessionStorage.setItem("userId", user.id); // <-- store the UUID from Supabase auth
+    sessionStorage.setItem("userName", profile?.name || user.email);
     sessionStorage.setItem("userEmail", user.email);
-    sessionStorage.setItem("userPhone", user.user_metadata?.phone || "");
+    sessionStorage.setItem("userPhone", profile?.phone || "");
+    sessionStorage.setItem("userUsername", profile?.username || "");
 
     console.log("Session storage set:", {
+      id: sessionStorage.getItem("userId"),
+      username: sessionStorage.getItem("userUsername"),
       name: sessionStorage.getItem("userName"),
       email: sessionStorage.getItem("userEmail"),
       phone: sessionStorage.getItem("userPhone"),
@@ -72,12 +87,12 @@ function showModal(type, message) {
     type === "success"
       ? "Success"
       : type === "error"
-      ? "Error"
-      : type === "warning"
-      ? "Warning"
-      : type === "info"
-      ? "Please Wait"
-      : "Message";
+        ? "Error"
+        : type === "warning"
+          ? "Warning"
+          : type === "info"
+            ? "Please Wait"
+            : "Message";
 
   const iconWrapper = document.getElementById("modalIconWrapper");
   const icon = document.getElementById("modalIcon");
@@ -124,7 +139,7 @@ function showModal(type, message) {
     closeBtn.onclick = () => {
       closeModal();
       if (type === "success") {
-        // Redirect to correct dashboard page
+        // Redirect to dashboard
         window.location.href = "../Pages/dashboard.html";
       }
     };

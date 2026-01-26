@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -44,23 +44,17 @@
         <!-- Table -->
         <div class="overflow-x-auto">
           <table class="w-full text-sm text-left border">
-            <thead class="bg-gray-100">
+            <thead class="bg-violet-700 text-white">
               <tr>
+                <th class="p-2">#</th>
+                <th class="p-2"><i class="fas fa-id-card mr-1"></i> Name</th>
+                <th class="p-2"><i class="fas fa-user mr-1"></i> Username</th>
+                <th class="p-2"><i class="fas fa-envelope mr-1"></i> Email</th>
+                <th class="p-2"><i class="fas fa-phone mr-1"></i> Phone</th>
                 <th class="p-2">
-                  <i class="fas fa-id-card text-violet-600"></i> Name
+                  <i class="fas fa-graduation-cap mr-1"></i> Enrollment-Status
                 </th>
-                <th class="p-2">
-                  <i class="fas fa-envelope text-violet-600"></i> Email
-                </th>
-                <th class="p-2">
-                  <i class="fas fa-phone text-violet-600"></i> Phone
-                </th>
-                <th class="p-2">
-                  <i class="fas fa-shield-alt text-violet-600"></i> Verified
-                </th>
-                <th class="p-2">
-                  <i class="fas fa-cogs text-violet-600"></i> Actions
-                </th>
+                <th class="p-2"><i class="fas fa-cogs mr-1"></i> Actions</th>
               </tr>
             </thead>
             <tbody id="userTableBody">
@@ -76,8 +70,8 @@
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
       const supabase = createClient(
-        "https://ecdioyrwwkjfakyoljws.supabase.co", // your project URL
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjZGlveXJ3d2tqZmFreW9sandzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNTM3MTEsImV4cCI6MjA4MzYyOTcxMX0.Ost2oBLH7NTZcSV6BuUDaZEQuT_LmzLI9ZXVou0v0_A" // your anon key
+        "https://cwyiyplxadmcevejshtl.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3eWl5cGx4YWRtY2V2ZWpzaHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg4MjI3MDcsImV4cCI6MjA4NDM5ODcwN30.bbMmrLZphjkUOl_m8HlfqwKZ08lkCZ7Vj39edpm3_LY",
       );
 
       window.supabase = supabase;

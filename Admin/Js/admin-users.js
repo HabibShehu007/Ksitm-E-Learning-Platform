@@ -2,11 +2,10 @@
 async function loadUsers() {
   try {
     const { data, error } = await window.supabase
-      .from("profiles")
+      .from("user_profiles")
       .select(
-        "id, full_name, email, phone_number, blocked, verified, is_admin, created_at"
-      )
-      .eq("is_admin", false); // only non-admin users
+        "id, username, name, email, phone, blocked, enrollment_status, created_at",
+      );
 
     if (error) {
       console.error("Error fetching users:", error.message);
@@ -16,11 +15,11 @@ async function loadUsers() {
     const tbody = document.getElementById("userTableBody");
     tbody.innerHTML = "";
 
-    data.forEach((user) => {
+    data.forEach((user, index) => {
       const row = document.createElement("tr");
-      row.classList.add("border-t");
+      row.classList.add("border-t", "font-semibold");
 
-      // Actions: block/unblock/delete depending on user state
+      // Actions
       let actions = `
         <button class="bg-red-500 text-white px-2 py-1 rounded text-xs" onclick="deleteUser('${user.id}')">
           <i class="fas fa-trash"></i>
@@ -41,26 +40,23 @@ async function loadUsers() {
         `;
       }
 
-      // Verification badge
-      const verificationBadge = user.verified
-        ? `<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs">
-             <i class="fas fa-check-circle"></i> Verified
-           </span>`
-        : `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs">
-             <i class="fas fa-times-circle"></i> Not Verified
-           </span>`;
+      // Enrollment badge
+      const enrollmentBadge =
+        user.enrollment_status === "enrolled"
+          ? `<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs flex items-center gap-1">
+               <i class="fas fa-check-circle"></i> Enrolled
+             </span>`
+          : `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-xs flex items-center gap-1">
+               <i class="fas fa-times-circle"></i> Not Enrolled
+             </span>`;
 
       row.innerHTML = `
-        <td class="p-2"><i class="fas fa-id-card text-violet-600 mr-1"></i> ${
-          user.full_name || "N/A"
-        }</td>
-        <td class="p-2"><i class="fas fa-envelope text-violet-600 mr-1"></i> ${
-          user.email || "N/A"
-        }</td>
-        <td class="p-2"><i class="fas fa-phone text-violet-600 mr-1"></i> ${
-          user.phone_number || "N/A"
-        }</td>
-        <td class="p-2">${verificationBadge}</td>
+        <td class="p-2">${index + 1}</td>
+        <td class="p-2">${user.name || "N/A"}</td>
+        <td class="p-2">${user.username || "N/A"}</td>
+        <td class="p-2">${user.email || "N/A"}</td>
+        <td class="p-2">${user.phone || "N/A"}</td>
+        <td class="p-2">${enrollmentBadge}</td>
         <td class="p-2 flex gap-2">${actions}</td>
       `;
       tbody.appendChild(row);
@@ -74,7 +70,7 @@ async function loadUsers() {
 async function blockUser(userId) {
   try {
     const { error } = await window.supabase
-      .from("profiles")
+      .from("user_profiles")
       .update({ blocked: true })
       .eq("id", userId);
 
@@ -92,7 +88,7 @@ async function blockUser(userId) {
 async function unblockUser(userId) {
   try {
     const { error } = await window.supabase
-      .from("profiles")
+      .from("user_profiles")
       .update({ blocked: false })
       .eq("id", userId);
 
@@ -112,7 +108,7 @@ async function deleteUser(userId) {
 
   try {
     const { error } = await window.supabase
-      .from("profiles")
+      .from("user_profiles")
       .delete()
       .eq("id", userId);
 
@@ -129,20 +125,19 @@ async function deleteUser(userId) {
 // Export users to CSV
 async function exportUsers() {
   const { data, error } = await window.supabase
-    .from("profiles")
-    .select("full_name, email, phone_number, blocked, verified")
-    .eq("is_admin", false);
+    .from("user_profiles")
+    .select("name, username, email, phone, blocked, enrollment_status");
 
   if (error) {
     console.error("Error exporting users:", error.message);
     return;
   }
 
-  let csv = "Name,Email,Phone,Blocked,Verified\n";
+  let csv = "Name,Username,Email,Phone,Blocked,Enrollment Status\n";
   data.forEach((u) => {
-    csv += `${u.full_name || ""},${u.email || ""},${u.phone_number || ""},${
-      u.blocked ? "Yes" : "No"
-    },${u.verified ? "Yes" : "No"}\n`;
+    csv += `${u.name || ""},${u.username || ""},${u.email || ""},${
+      u.phone || ""
+    },${u.blocked ? "Yes" : "No"},${u.enrollment_status || "not_enrolled"}\n`;
   });
 
   const blob = new Blob([csv], { type: "text/csv" });

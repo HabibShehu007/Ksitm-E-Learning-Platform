@@ -29,6 +29,38 @@ function setupLogout() {
   });
 }
 
+// Setup message badge to show count of messages
+function setupMessageBadge() {
+  const badgeDesktop = document.getElementById("messageBadge");
+  const badgeMobile = document.getElementById("messageBadgeMobile");
+
+  [badgeDesktop, badgeMobile].forEach((badge) => {
+    if (badge) badge.classList.add("hidden");
+  });
+
+  const userId = sessionStorage.getItem("userId");
+  if (!userId) return;
+
+  window.supabase
+    .from("messages")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .then(({ count, error }) => {
+      if (error) {
+        console.error("Error fetching message count:", error.message);
+        return;
+      }
+      if (count > 0) {
+        [badgeDesktop, badgeMobile].forEach((badge) => {
+          if (badge) {
+            badge.textContent = count;
+            badge.classList.remove("hidden");
+          }
+        });
+      }
+    });
+}
+
 // Reveal course container on Explore click
 function setupCourseReveal() {
   const exploreBtn = document.getElementById("exploreBtn");

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -18,7 +18,7 @@
       class="bg-violet-700 text-white py-4 px-6 flex justify-between items-center shadow"
     >
       <h2 class="text-xl font-bold flex items-center gap-2">
-        <i class="fas fa-envelope-open-text"></i> User Course Application
+        <i class="fas fa-envelope-open-text"></i> User Course Applications
       </h2>
       <a
         href="admin-dashboard.html"
@@ -27,6 +27,7 @@
         <i class="fas fa-arrow-left"></i> Back to Dashboard
       </a>
     </header>
+
     <!-- Applications Section -->
     <main class="flex-1 p-6">
       <div class="bg-white shadow rounded-lg p-6">
@@ -35,6 +36,35 @@
         >
           <i class="fas fa-folder-open"></i> User Applications
         </h5>
+
+        <!-- Filter Bar -->
+        <div class="flex flex-wrap gap-4 mb-4">
+          <select id="statusFilter" class="border rounded px-3 py-2 text-sm">
+            <option value="">All Statuses</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+          <input
+            id="courseFilter"
+            type="text"
+            placeholder="Filter by course..."
+            class="border rounded px-3 py-2 text-sm flex-1"
+          />
+          <input
+            id="nameFilter"
+            type="text"
+            placeholder="Search by name/email..."
+            class="border rounded px-3 py-2 text-sm flex-1"
+          />
+          <button
+            onclick="loadApplications()"
+            class="bg-violet-600 text-white px-4 py-2 rounded text-sm"
+          >
+            Apply Filters
+          </button>
+        </div>
+
         <!-- Applications Table -->
         <div class="overflow-x-auto">
           <table class="w-full text-sm text-left border">
@@ -58,72 +88,94 @@
               </tr>
             </thead>
             <tbody id="applicationTableBody">
-              <!-- Example Row -->
-              <tr class="border-t">
-                <td class="p-2"></td>
-                <td class="p-2"></td>
-                <td class="p-2"></td>
-                <td class="p-2">
-                  <span
-                    class="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs"
-                  >
-                    Pending Review
-                  </span>
-                </td>
-                <td class="p-2 flex gap-2">
-                  <button
-                    class="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-xs flex items-center gap-1"
-                  >
-                    <i class="fas fa-check"></i> Approve
-                  </button>
-                  <button
-                    class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs flex items-center gap-1"
-                  >
-                    <i class="fas fa-times"></i> Reject
-                  </button>
-                  <button
-                    class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs flex items-center gap-1"
-                    onclick="openViewModal('Habib')"
-                  >
-                    <i class="fas fa-eye"></i> View
-                  </button>
-                </td>
-              </tr>
-              <!-- More rows will be injected via JS -->
+              <!-- Rows injected dynamically via JS -->
             </tbody>
           </table>
         </div>
       </div>
     </main>
+
     <!-- View Modal -->
     <div
       id="viewModal"
-      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50"
     >
-      <div class="bg-white rounded-lg shadow-lg w-96 p-6 relative">
+      <div
+        class="bg-white rounded-xl shadow-2xl w-[30rem] p-6 relative animate-fadeIn border-t-4 border-violet-600"
+      >
+        <!-- Header -->
         <h3
+          class="text-xl font-extrabold text-violet-700 mb-6 flex items-center gap-2"
+        >
+          <i class="fas fa-id-card text-violet-600"></i> Applicant Details
+        </h3>
+
+        <!-- Content -->
+        <div
+          id="modalContent"
+          class="space-y-3 text-sm text-gray-700 divide-y divide-gray-200"
+        >
+          <!-- User details injected via JS -->
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-6 flex justify-end gap-3">
+          <button
+            onclick="closeViewModal()"
+            class="px-4 py-2 rounded bg-gray-500 text-white hover:bg-violet-400 flex items-center gap-2"
+          >
+            <i class="fas fa-times"></i> Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Message Modal -->
+    <div
+      id="statusMessageModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50"
+    >
+      <div class="bg-white rounded-xl shadow-lg w-[28rem] p-6 relative">
+        <h3
+          id="statusModalTitle"
           class="text-lg font-bold text-violet-700 mb-4 flex items-center gap-2"
         >
-          <i class="fas fa-user-circle"></i> Applicant Details
+          <i class="fas fa-comment-dots"></i> Admission Update
         </h3>
-        <div id="modalContent" class="space-y-2 text-sm">
-          <!-- User details will be injected here via JS -->
+        <div id="statusMessageContent" class="space-y-4 text-sm text-gray-700">
+          <!-- Credentials or rejection message injected via JS -->
+        </div>
+        <div class="flex justify-end gap-2 mt-4">
+          <button
+            type="button"
+            onclick="closeStatusMessageModal()"
+            class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-3 py-1 rounded"
+          >
+            Close
+          </button>
+          <button
+            id="copyCredentialsBtn"
+            class="hidden bg-violet-700 hover:bg-violet-800 text-white px-3 py-1 rounded flex items-center gap-2"
+          >
+            <i class="fas fa-copy"></i> Copy
+          </button>
         </div>
         <button
-          onclick="closeViewModal()"
+          onclick="closeStatusMessageModal()"
           class="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
         >
           <i class="fas fa-times"></i>
         </button>
       </div>
     </div>
+
     <!-- Supabase client initialization -->
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
       const supabase = createClient(
-        "https://ecdioyrwwkjfakyoljws.supabase.co", // your project URL
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjZGlveXJ3d2tqZmFreW9sandzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNTM3MTEsImV4cCI6MjA4MzYyOTcxMX0.Ost2oBLH7NTZcSV6BuUDaZEQuT_LmzLI9ZXVou0v0_A" // your anon key
+        "https://cwyiyplxadmcevejshtl.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3eWl5cGx4YWRtY2V2ZWpzaHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg4MjI3MDcsImV4cCI6MjA4NDM5ODcwN30.bbMmrLZphjkUOl_m8HlfqwKZ08lkCZ7Vj39edpm3_LY",
       );
 
       window.supabase = supabase;

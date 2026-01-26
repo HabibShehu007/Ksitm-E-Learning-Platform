@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -24,7 +24,6 @@
       class="bg-violet-700 text-white w-64 flex-shrink-0 hidden md:flex flex-col"
     >
       <div class="p-6 text-center border-b border-violet-600">
-        <!-- Replace icon with logo -->
         <img
           src="../../images/ksitm logo.png"
           alt="KSITM Logo"
@@ -91,7 +90,7 @@
             <i class="fas fa-user text-violet-700 text-xl"></i>
           </div>
           <button
-            onclick="window.location.href='admin-login.html'"
+            onclick="window.location.href = 'admin-login.html'"
             class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded flex items-center gap-2"
           >
             <i class="fas fa-sign-out-alt"></i> Logout
@@ -104,22 +103,22 @@
         <div class="bg-white shadow rounded-lg p-4 text-center">
           <i class="fas fa-users text-violet-600 text-2xl mb-2"></i>
           <h3 class="font-bold">Total Applications</h3>
-          <p id="totalApplications" class="text-gray-600">0</p>
+          <p id="totalApplications" class="text-gray-600">Loading...</p>
         </div>
         <div class="bg-white shadow rounded-lg p-4 text-center">
           <i class="fas fa-hourglass-half text-yellow-500 text-2xl mb-2"></i>
           <h3 class="font-bold">Pending</h3>
-          <p id="pendingApplications" class="text-gray-600">0</p>
+          <p id="pendingApplications" class="text-gray-600">Loading...</p>
         </div>
         <div class="bg-white shadow rounded-lg p-4 text-center">
           <i class="fas fa-check-circle text-green-500 text-2xl mb-2"></i>
           <h3 class="font-bold">Approved</h3>
-          <p id="approvedApplications" class="text-gray-600">0</p>
+          <p id="approvedApplications" class="text-gray-600">Loading...</p>
         </div>
         <div class="bg-white shadow rounded-lg p-4 text-center">
           <i class="fas fa-times-circle text-red-500 text-2xl mb-2"></i>
           <h3 class="font-bold">Rejected</h3>
-          <p id="rejectedApplications" class="text-gray-600">0</p>
+          <p id="rejectedApplications" class="text-gray-600">Loading...</p>
         </div>
       </section>
 
@@ -151,6 +150,7 @@
               <i class="fas fa-clock"></i> Recent Applications
             </h2>
             <button
+              id="exportCsvBtn"
               class="bg-violet-700 hover:bg-violet-800 text-white px-4 py-2 rounded-lg flex items-center gap-2 shadow-sm transition"
             >
               <i class="fas fa-file-export"></i> Export CSV
@@ -162,46 +162,7 @@
             id="recentApplications"
             class="grid grid-cols-1 md:grid-cols-3 gap-6"
           >
-            <!-- Example Card -->
-            <div
-              class="rounded-xl border bg-gradient-to-br from-violet-50 to-white shadow hover:shadow-lg transition transform hover:-translate-y-1 flex flex-col justify-between"
-            >
-              <!-- Card Header -->
-              <div
-                class="p-4 border-b flex items-center gap-2 bg-gradient-to-r from-violet-600 to-violet-500 text-white rounded-t-xl"
-              >
-                <i class="fas fa-shield-alt text-lg"></i>
-                <h5 class="font-semibold">Cybersecurity</h5>
-              </div>
-
-              <!-- Card Body -->
-              <div class="p-4 text-sm text-gray-700 space-y-2">
-                <p>
-                  <i class="fas fa-user text-violet-600 mr-1"></i>
-                  <strong>Applicant:</strong> Habib
-                </p>
-                <p>
-                  <i class="fas fa-info-circle text-violet-600 mr-1"></i>
-                  <strong>Status:</strong>
-                  <span
-                    class="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded text-xs"
-                  >
-                    Pending Review
-                  </span>
-                </p>
-              </div>
-
-              <!-- Card Footer -->
-              <div class="p-4 border-t flex justify-end">
-                <button
-                  onclick="window.location.href='admin-applications.html'"
-                  class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-xs flex items-center gap-1 shadow-sm transition"
-                >
-                  <i class="fas fa-eye"></i> View
-                </button>
-              </div>
-            </div>
-            <!-- More cards injected dynamically via JS -->
+            <!-- Cards injected dynamically via JS -->
           </div>
         </div>
       </section>
@@ -211,19 +172,19 @@
     <script>
       const mobileMenuBtn = document.getElementById("mobileMenuBtn");
       const sidebar = document.getElementById("sidebar");
-
       mobileMenuBtn.addEventListener("click", () => {
         sidebar.classList.toggle("hidden");
         sidebar.classList.toggle("flex");
       });
     </script>
+
     <!-- Supabase client initialization -->
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
       const supabase = createClient(
-        "https://ecdioyrwwkjfakyoljws.supabase.co", // your project URL
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVjZGlveXJ3d2tqZmFreW9sandzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNTM3MTEsImV4cCI6MjA4MzYyOTcxMX0.Ost2oBLH7NTZcSV6BuUDaZEQuT_LmzLI9ZXVou0v0_A" // your anon key
+        "https://cwyiyplxadmcevejshtl.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3eWl5cGx4YWRtY2V2ZWpzaHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg4MjI3MDcsImV4cCI6MjA4NDM5ODcwN30.bbMmrLZphjkUOl_m8HlfqwKZ08lkCZ7Vj39edpm3_LY",
       );
 
       window.supabase = supabase;

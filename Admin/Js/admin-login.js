@@ -18,7 +18,6 @@ document
   .addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Match HTML: use adminEmail
     const email = document.getElementById("adminEmail").value.trim();
     const password = document.getElementById("adminPassword").value.trim();
 
@@ -63,42 +62,36 @@ document
       // Show loading modal
       showModal(loadingModal);
 
-      // 1. Authenticate with Supabase
-      const { data, error } = await window.supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) throw error;
-
-      const user = data.user;
-      if (!user) throw new Error("No user returned from Supabase.");
-
-      // 2. Check if user is admin in profiles table
-      const { data: profile, error: profileError } = await window.supabase
-        .from("profiles")
-        .select("is_admin")
-        .eq("id", user.id)
+      // ✅ Check admin credentials in admins table
+      const { data: admin, error } = await window.supabase
+        .from("admins")
+        .select("*")
+        .eq("email", email)
+        .eq("password", password) // plain text check for demo
         .single();
-
-      if (profileError) throw profileError;
 
       // Hide loading modal
       closeModal(loadingModal);
 
-      if (profile && profile.is_admin === true) {
-        // ✅ Admin verified → show success modal
-        showModal(successModal, successContent);
-
-        // Redirect after short delay
-        setTimeout(() => {
-          window.location.href = "admin-dashboard.html";
-        }, 2000);
-      } else {
-        // ❌ Not an admin → show error modal
+      if (error || !admin) {
+        // ❌ Invalid credentials
+        errorModal.querySelector("p").textContent =
+          "Login failed: Invalid admin credentials.";
         showModal(errorModal, errorContent);
-        await window.supabase.auth.signOut();
+        return;
       }
+
+      // ✅ Admin verified → store session
+      sessionStorage.setItem("adminEmail", admin.email);
+      sessionStorage.setItem("adminId", admin.id);
+
+      // Show success modal
+      showModal(successModal, successContent);
+
+      // Redirect after short delay
+      setTimeout(() => {
+        window.location.href = "admin-dashboard.html";
+      }, 2000);
     } catch (err) {
       console.error("Admin login error:", err.message);
 
