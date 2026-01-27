@@ -1,42 +1,30 @@
-let currentStep = 0;
+const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+const mobileMenu = document.getElementById("mobileMenu");
+let menuOpen = false;
 
-function setStep(stepIndex, state) {
-  const el = document.getElementById("step" + stepIndex);
-  if (!el) return;
-  el.classList.remove(
-    "translate-x-0",
-    "translate-x-full",
-    "-translate-x-full",
-    "opacity-100",
-    "opacity-0",
-    "pointer-events-auto",
-    "pointer-events-none"
-  );
-  if (state === "active") {
-    el.classList.add("translate-x-0", "opacity-100", "pointer-events-auto");
-  } else if (state === "right") {
-    el.classList.add("translate-x-full", "opacity-0", "pointer-events-none");
-  } else if (state === "left") {
-    el.classList.add("-translate-x-full", "opacity-0", "pointer-events-none");
+mobileMenuBtn.addEventListener("click", () => {
+  menuOpen = !menuOpen;
+  mobileMenu.classList.toggle("hidden");
+
+  // Toggle icon between hamburger and close (X)
+  if (menuOpen) {
+    mobileMenuBtn.innerHTML = '<i class="fas fa-times"></i>';
+  } else {
+    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
   }
-}
+});
 
-function render() {
-  const steps = document.querySelectorAll(".step");
-  steps.forEach((s, i) => {
-    if (i < currentStep) {
-      setStep(i, "left");
-    } else if (i > currentStep) {
-      setStep(i, "right");
-    } else {
-      setStep(i, "active");
+// Scroll animation for cards
+const cards = document.querySelectorAll(".card");
+
+const revealOnScroll = () => {
+  const triggerBottom = window.innerHeight * 0.85;
+  cards.forEach((card) => {
+    const cardTop = card.getBoundingClientRect().top;
+    if (cardTop < triggerBottom) {
+      card.classList.add("visible");
     }
   });
-}
+};
 
-function goToStep(step) {
-  currentStep = step;
-  render();
-}
-
-document.addEventListener("DOMContentLoaded", render);
+window.addEventListener("scroll", revealOnScroll);
