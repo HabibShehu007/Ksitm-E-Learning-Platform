@@ -1,11 +1,10 @@
 // Load users from Supabase and inject into table
 async function loadUsers() {
   try {
-    const { data, error } = await window.supabase
-      .from("user_profiles")
-      .select(
-        "id, username, name, email, phone, blocked, enrollment_status, created_at",
-      );
+    const { data, error } = await window.supabase.from("user_profiles").select(`
+        id, username, name, email, phone, blocked, created_at,
+        applications(status)
+      `);
 
     if (error) {
       console.error("Error fetching users:", error.message);
@@ -40,9 +39,10 @@ async function loadUsers() {
         `;
       }
 
-      // Enrollment badge
+      // Enrollment badge synced with applications.status
+      const appStatus = user.applications?.[0]?.status;
       const enrollmentBadge =
-        user.enrollment_status === "enrolled"
+        appStatus === "approved"
           ? `<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-xs flex items-center gap-1">
                <i class="fas fa-check-circle"></i> Enrolled
              </span>`
@@ -67,7 +67,7 @@ async function loadUsers() {
 }
 
 // Block user
-async function blockUser(userId) {
+window.blockUser = async function (userId) {
   try {
     const { error } = await window.supabase
       .from("user_profiles")
@@ -82,10 +82,10 @@ async function blockUser(userId) {
   } catch (err) {
     console.error("Unexpected error:", err);
   }
-}
+};
 
 // Unblock user
-async function unblockUser(userId) {
+window.unblockUser = async function (userId) {
   try {
     const { error } = await window.supabase
       .from("user_profiles")
@@ -100,10 +100,10 @@ async function unblockUser(userId) {
   } catch (err) {
     console.error("Unexpected error:", err);
   }
-}
+};
 
 // Delete user
-async function deleteUser(userId) {
+window.deleteUser = async function (userId) {
   if (!confirm("Are you sure you want to delete this user?")) return;
 
   try {
@@ -120,7 +120,7 @@ async function deleteUser(userId) {
   } catch (err) {
     console.error("Unexpected error:", err);
   }
-}
+};
 
 // Export users to CSV
 async function exportUsers() {

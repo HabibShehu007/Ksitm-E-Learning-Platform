@@ -33,42 +33,41 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // Detect first system message
-    const firstSystemMsg = messages.find((m) => m.sender === "system");
-    if (firstSystemMsg) {
-      const card = document.createElement("li");
-      card.className =
-        "bg-violet-50 border border-violet-200 rounded-lg p-4 shadow-sm";
+    // Render all system messages (not just the first)
+    messages
+      .filter((m) => m.sender === "system")
+      .forEach((sysMsg) => {
+        const card = document.createElement("li");
+        card.className =
+          "bg-violet-50 border border-violet-200 rounded-lg p-4 shadow-sm";
 
-      card.innerHTML = `
+        card.innerHTML = `
       <div class="flex items-center gap-2 mb-2">
         <i class="fas fa-star text-violet-600"></i>
-        <span class="font-semibold text-violet-700">Admission Approved</span>
+        <span class="font-semibold text-violet-700">System Notice</span>
       </div>
-      <p class="text-gray-700 text-sm whitespace-pre-line">${firstSystemMsg.message}</p>
+      <p class="text-gray-700 text-sm whitespace-pre-line">${sysMsg.message}</p>
       <div class="mt-3 flex gap-2">
-        <button class="bg-violet-600 hover:bg-violet-700 text-white px-3 py-1 rounded text-xs flex items-center gap-1" id="copySystemMessage">
+        <button class="bg-violet-600 hover:bg-violet-700 text-white px-3 py-1 rounded text-xs flex items-center gap-1 copySystemMessage">
           <i class="fas fa-copy"></i> Copy
         </button>
       </div>
     `;
 
-      list.prepend(card);
+        list.prepend(card);
 
-      // Copy button logic
-      const copyBtn = card.querySelector("#copySystemMessage");
-      copyBtn.onclick = () => {
-        // Extract only the registration number line
-        const match = firstSystemMsg.message.match(
-          /Registration Number:\s*(.+)/,
-        );
-        const regNumber = match ? match[1].trim() : firstSystemMsg.message;
+        // Copy button logic for this system message
+        const copyBtn = card.querySelector(".copySystemMessage");
+        copyBtn.onclick = () => {
+          // Extract only the registration number line if present
+          const match = sysMsg.message.match(/Registration Number:\s*(.+)/);
+          const regNumber = match ? match[1].trim() : sysMsg.message;
 
-        navigator.clipboard.writeText(regNumber);
-        copyBtn.textContent = "Copied!";
-        setTimeout(() => (copyBtn.textContent = "Copy"), 2000);
-      };
-    }
+          navigator.clipboard.writeText(regNumber);
+          copyBtn.textContent = "Copied!";
+          setTimeout(() => (copyBtn.textContent = "Copy"), 2000);
+        };
+      });
 
     // Build map for threading
     const msgMap = {};
