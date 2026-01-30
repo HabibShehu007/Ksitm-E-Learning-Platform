@@ -5,6 +5,7 @@
     <title>KSITM Onboarding</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="./src/output.css" rel="stylesheet" />
+    <link href="./src/animation.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="./images/ksitm logo.png" />
 
     <link
@@ -39,39 +40,44 @@
         <nav class="hidden md:flex gap-6 font-bold">
           <a
             href="#hero"
-            class="px-4 py-2 rounded-full text-white hover:bg-white hover:text-violet-700 transition"
+            class="flex items-center gap-2 px-4 py-2 rounded-full text-white hover:bg-white hover:text-violet-700 transition"
           >
-            Home
+            <i class="fas fa-home"></i> Home
           </a>
+
           <a
             href="#about"
-            class="px-4 py-2 rounded-full text-white hover:bg-white hover:text-violet-700 transition"
+            class="flex items-center gap-2 px-4 py-2 rounded-full text-white hover:bg-white hover:text-violet-700 transition"
           >
-            About
+            <i class="fas fa-info-circle"></i> About
           </a>
-          <a
-            href="#features"
-            class="px-4 py-2 rounded-full text-white hover:bg-white hover:text-violet-700 transition"
-          >
-            Features
-          </a>
+
           <a
             href="#how"
-            class="px-4 py-2 rounded-full text-white hover:bg-white hover:text-violet-700 transition"
+            class="flex items-center gap-2 px-4 py-2 rounded-full text-white hover:bg-white hover:text-violet-700 transition"
           >
-            How It Works
+            <i class="fas fa-cogs"></i> How It Works
           </a>
+
           <a
             href="#testimonials"
-            class="px-4 py-2 rounded-full text-white hover:bg-white hover:text-violet-700 transition"
+            class="flex items-center gap-2 px-4 py-2 rounded-full text-white hover:bg-white hover:text-violet-700 transition"
           >
-            Testimonials
+            <i class="fas fa-comments"></i> Testimonials
           </a>
+
+          <a
+            href="#departments"
+            class="flex items-center gap-2 px-4 py-2 rounded-full text-white hover:bg-white hover:text-violet-700 transition"
+          >
+            <i class="fas fa-university"></i> Departments
+          </a>
+
           <a
             href="#cta"
-            class="px-4 py-2 rounded-full text-white hover:bg-white hover:text-violet-700 transition"
+            class="flex items-center gap-2 px-4 py-2 rounded-full text-white hover:bg-white hover:text-violet-700 transition"
           >
-            Get Started
+            <i class="fas fa-arrow-circle-right"></i> Get Started
           </a>
         </nav>
 
@@ -118,33 +124,6 @@
             </div>
           </div>
         </header>
-
-        <!-- Styles -->
-        <style>
-          @keyframes slide-left {
-            from {
-              opacity: 0;
-              transform: translateX(50px);
-            }
-            to {
-              opacity: 1;
-              transform: translateX(0);
-            }
-          }
-          .animate-slide-left {
-            animation: slide-left 0.4s ease-out;
-          }
-          .card {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease-out;
-          }
-
-          .card.visible {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        </style>
       </div>
     </header>
 
@@ -157,10 +136,11 @@
         <!-- Text Content -->
         <div class="max-w-xl text-center md:text-left">
           <h1
-            class="text-4xl sm:text-6xl font-extrabold leading-tight mb-6 text-violet-700"
+            class="text-3xl md:text-6xl font-extrabold leading-tight mb-6 text-violet-700"
           >
             KSITM E-Learning Platform
           </h1>
+
           <p class="text-lg sm:text-xl mb-8 text-gray-700">
             Empowering Innovation Through
             <span class="font-bold text-purple-700">Technology</span> &
@@ -270,6 +250,244 @@
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- Section 3: How It Works -->
+      <section
+        id="how"
+        class="bg-gray-50 min-h-screen flex items-center py-12 px-6"
+      >
+        <div
+          class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center"
+        >
+          <!-- Image -->
+          <div class="animate-slide-left">
+            <img
+              src="./images/package.jpg"
+              alt="KSITM Platform"
+              class="w-full rounded-xl shadow-lg"
+            />
+          </div>
+
+          <!-- Text -->
+          <div class="animate-slide-right text-center md:text-left">
+            <h2
+              class="text-3xl lg:text-5xl font-extrabold text-violet-700 mb-6"
+            >
+              How KSITM Works
+            </h2>
+            <p class="text-gray-700 text-base lg:text-lg mb-6">
+              <span class="font-bold text-violet-700">KSITM</span> is designed
+              to make learning <span class="font-semibold">simple</span>,
+              <span class="font-semibold">interactive</span>, and
+              <span class="font-semibold">effective</span>.
+            </p>
+            <ul class="space-y-4 text-gray-700 font-medium">
+              <li class="flex items-center gap-3">
+                <i class="fas fa-book-open text-violet-700 text-xl"></i>
+                <span
+                  ><span class="font-bold">Access courses</span> anytime,
+                  anywhere</span
+                >
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-video text-violet-700 text-xl"></i>
+                <span
+                  ><span class="font-bold">Interactive lessons</span> with
+                  videos & quizzes</span
+                >
+              </li>
+              <li class="flex items-center gap-3">
+                <i class="fas fa-globe text-violet-700 text-xl"></i>
+                <span
+                  ><span class="font-bold">Global connections</span> with peers
+                  & mentors</span
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <!-- Section 4: Testimonials -->
+      <section id="testimonials" class="bg-white min-h-screen py-12 px-6">
+        <div class="max-w-6xl mx-auto">
+          <!-- Title -->
+          <div class="text-center mb-10">
+            <h2
+              class="text-3xl lg:text-5xl font-extrabold text-violet-700 mb-3"
+            >
+              What Our Students Say
+            </h2>
+            <p class="text-gray-600 text-base lg:text-lg font-medium">
+              Hear from learners who trusted KSITM for their journey.
+            </p>
+          </div>
+
+          <!-- Cards Grid -->
+          <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Card 1 -->
+            <div
+              class="testimonial-card bg-violet-700 text-white rounded-lg shadow-md p-4 flex flex-col items-center text-center hover:-translate-y-1 transition"
+            >
+              <i class="fas fa-user-circle text-white text-3xl mb-2"></i>
+              <p class="italic text-sm mb-2">
+                “KSITM gave me the confidence to pursue my career in tech.”
+              </p>
+              <h5 class="font-bold text-sm">Amina Yusuf</h5>
+              <span class="text-xs">Studied Software Engineering</span>
+            </div>
+
+            <!-- Card 2 -->
+            <div
+              class="testimonial-card bg-violet-700 text-white rounded-lg shadow-md p-4 flex flex-col items-center text-center hover:-translate-y-1 transition"
+            >
+              <i class="fas fa-user-circle text-white text-3xl mb-2"></i>
+              <p class="italic text-sm mb-2">
+                “The interactive lessons made learning fun and effective.”
+              </p>
+              <h5 class="font-bold text-sm">John Okoro</h5>
+              <span class="text-xs">Studied Business Analysis</span>
+            </div>
+
+            <!-- Card 3 -->
+            <div
+              class="testimonial-card bg-violet-700 text-white rounded-lg shadow-md p-4 flex flex-col items-center text-center hover:-translate-y-1 transition"
+            >
+              <i class="fas fa-user-circle text-white text-3xl mb-2"></i>
+              <p class="italic text-sm mb-2">
+                “I loved connecting with mentors worldwide through KSITM.”
+              </p>
+              <h5 class="font-bold text-sm">Fatima Bello</h5>
+              <span class="text-xs">Studied Project Management</span>
+            </div>
+
+            <!-- Card 4 -->
+            <div
+              class="testimonial-card bg-violet-700 text-white rounded-lg shadow-md p-4 flex flex-col items-center text-center hover:-translate-y-1 transition"
+            >
+              <i class="fas fa-user-circle text-white text-3xl mb-2"></i>
+              <p class="italic text-sm mb-2">
+                “KSITM prepared me for the workforce with confidence.”
+              </p>
+              <h5 class="font-bold text-sm">Aliyu Musa</h5>
+              <span class="text-xs">Studied Data Analysis</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Section 5: Departments -->
+      <section id="departments" class="bg-gray-50 min-h-screen py-12 px-6">
+        <div class="max-w-6xl mx-auto">
+          <!-- Title -->
+          <div class="text-center mb-12">
+            <h2
+              class="text-3xl lg:text-5xl font-extrabold text-violet-700 mb-4"
+            >
+              Our Departments
+            </h2>
+            <p class="text-gray-600 text-base lg:text-lg font-medium">
+              Explore the core areas of knowledge KSITM is offering to empower
+              innovation.
+            </p>
+          </div>
+
+          <!-- Carousel Wrapper -->
+          <div class="overflow-hidden">
+            <div class="flex animate-slide-x gap-6">
+              <!-- Original Set -->
+              <div
+                class="min-w-[80%] sm:min-w-[40%] lg:min-w-[25%] bg-violet-700 text-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center"
+              >
+                <i class="fas fa-laptop-code text-white text-4xl mb-4"></i>
+                <h3 class="font-bold text-xl mb-2">Software Engineering</h3>
+                <p class="text-sm">
+                  Building strong foundations in programming, system design, and
+                  modern software development practices.
+                </p>
+              </div>
+
+              <div
+                class="min-w-[80%] sm:min-w-[40%] lg:min-w-[25%] bg-violet-700 text-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center"
+              >
+                <i class="fas fa-chart-line text-white text-4xl mb-4"></i>
+                <h3 class="font-bold text-xl mb-2">Business Analysis</h3>
+                <p class="text-sm">
+                  Equipping learners with analytical skills to evaluate business
+                  needs and drive strategic growth.
+                </p>
+              </div>
+
+              <div
+                class="min-w-[80%] sm:min-w-[40%] lg:min-w-[25%] bg-violet-700 text-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center"
+              >
+                <i class="fas fa-project-diagram text-white text-4xl mb-4"></i>
+                <h3 class="font-bold text-xl mb-2">Project Management</h3>
+                <p class="text-sm">
+                  Training future leaders to plan, execute, and manage projects
+                  effectively for real-world impact.
+                </p>
+              </div>
+
+              <!-- Duplicate Set for seamless loop -->
+              <div
+                class="min-w-[80%] sm:min-w-[40%] lg:min-w-[25%] bg-violet-700 text-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center"
+              >
+                <i class="fas fa-laptop-code text-white text-4xl mb-4"></i>
+                <h3 class="font-bold text-xl mb-2">Software Engineering</h3>
+                <p class="text-sm">
+                  Building strong foundations in programming, system design, and
+                  modern software development practices.
+                </p>
+              </div>
+
+              <div
+                class="min-w-[80%] sm:min-w-[40%] lg:min-w-[25%] bg-violet-700 text-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center"
+              >
+                <i class="fas fa-chart-line text-white text-4xl mb-4"></i>
+                <h3 class="font-bold text-xl mb-2">Business Analysis</h3>
+                <p class="text-sm">
+                  Equipping learners with analytical skills to evaluate business
+                  needs and drive strategic growth.
+                </p>
+              </div>
+
+              <div
+                class="min-w-[80%] sm:min-w-[40%] lg:min-w-[25%] bg-violet-700 text-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center"
+              >
+                <i class="fas fa-project-diagram text-white text-4xl mb-4"></i>
+                <h3 class="font-bold text-xl mb-2">Project Management</h3>
+                <p class="text-sm">
+                  Training future leaders to plan, execute, and manage projects
+                  effectively for real-world impact.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Section 6: Call to Action -->
+      <section
+        id="cta"
+        class="bg-violet-700 text-white min-h-screen flex items-center justify-center px-6"
+      >
+        <div class="cta-content text-center animate-bounce-up">
+          <h2 class="text-3xl lg:text-5xl font-extrabold mb-6">
+            Ready to Start Your Learning Journey?
+          </h2>
+          <p class="text-lg mb-8 max-w-2xl mx-auto">
+            Join thousands of learners at
+            <span class="font-bold">KSITM</span> and unlock your future in
+            <span class="font-semibold">Technology</span>,
+            <span class="font-semibold">Business</span>, and
+            <span class="font-semibold">Management</span>.
+          </p>
+          <a
+            href="./Pages/signup.html"
+            class="inline-block bg-white text-violet-700 font-bold rounded-full px-8 py-3 shadow-lg hover:scale-105 transition"
+          >
+            Get Started <i class="fas fa-arrow-right ml-2"></i>
+          </a>
         </div>
       </section>
     </main>
