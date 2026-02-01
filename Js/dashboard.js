@@ -14,6 +14,65 @@ function loadUserSession() {
   }
 }
 
+// ✅ Check application status and lock/unlock dashboard
+async function checkApplicationStatus() {
+  const userId = sessionStorage.getItem("userId");
+  if (!userId) return;
+
+  try {
+    const { data: application, error } = await window.supabase
+      .from("applications")
+      .select("status, course_name")
+      .eq("user_id", userId)
+      .single();
+
+    if (error) {
+      console.error("Error fetching application status:", error.message);
+      return;
+    }
+
+    const courseContainer = document.getElementById("courseContainer");
+    const exploreBtn = document.getElementById("exploreBtn");
+    const arrowDownBtn = document.getElementById("arrowDownBtn"); // 🔑 arrow button
+    const pendingNotice = document.getElementById("pendingNotice");
+    const rejectedNotice = document.getElementById("rejectedNotice");
+
+    if (application && application.status === "pending") {
+      // Pending → show pending notice
+      if (courseContainer) courseContainer.style.display = "none";
+      if (exploreBtn) exploreBtn.style.display = "none";
+      if (arrowDownBtn) arrowDownBtn.style.display = "none";
+      if (pendingNotice) pendingNotice.classList.remove("hidden");
+      if (rejectedNotice) rejectedNotice.classList.add("hidden");
+
+      const courseButtons = document.querySelectorAll(".preview-course");
+      courseButtons.forEach((btn) => (btn.style.display = "none"));
+    } else if (application && application.status === "rejected") {
+      // Rejected → show rejected notice
+      if (courseContainer) courseContainer.style.display = "none";
+      if (exploreBtn) exploreBtn.style.display = "none";
+      if (arrowDownBtn) arrowDownBtn.style.display = "none";
+      if (pendingNotice) pendingNotice.classList.add("hidden");
+      if (rejectedNotice) rejectedNotice.classList.remove("hidden");
+
+      const courseButtons = document.querySelectorAll(".preview-course");
+      courseButtons.forEach((btn) => (btn.style.display = "none"));
+    } else {
+      // Approved or no application → unlock dashboard
+      if (courseContainer) courseContainer.style.display = "block";
+      if (exploreBtn) exploreBtn.style.display = "inline-block";
+      if (arrowDownBtn) arrowDownBtn.style.display = "inline-block";
+      if (pendingNotice) pendingNotice.classList.add("hidden");
+      if (rejectedNotice) rejectedNotice.classList.add("hidden");
+
+      const courseButtons = document.querySelectorAll(".preview-course");
+      courseButtons.forEach((btn) => (btn.style.display = "inline-block"));
+    }
+  } catch (err) {
+    console.error("Unexpected error checking status:", err);
+  }
+}
+
 // Logout logic (desktop + mobile)
 function setupLogout() {
   const logoutBtn = document.getElementById("logoutBtn");
@@ -29,7 +88,7 @@ function setupLogout() {
   });
 }
 
-// Setup message badge to show count of messages
+// Setup message badge to show count of messages (leave working)
 function setupMessageBadge() {
   const badgeDesktop = document.getElementById("messageBadge");
   const badgeMobile = document.getElementById("messageBadgeMobile");
@@ -61,19 +120,6 @@ function setupMessageBadge() {
     });
 }
 
-// Reveal course container on Explore click
-function setupCourseReveal() {
-  const exploreBtn = document.getElementById("exploreBtn");
-  const courseContainer = document.getElementById("courseContainer");
-
-  if (exploreBtn && courseContainer) {
-    exploreBtn.addEventListener("click", () => {
-      courseContainer.classList.remove("hidden");
-      courseContainer.scrollIntoView({ behavior: "smooth" });
-    });
-  }
-}
-
 // Mobile nav toggle
 function setupMobileNav() {
   const navToggle = document.getElementById("navToggle");
@@ -99,7 +145,6 @@ function setupMobileNav() {
     });
   }
 
-  // Close menu if overlay is clicked
   if (overlay) {
     overlay.addEventListener("click", () => {
       closeMenu.click();
@@ -107,6 +152,7 @@ function setupMobileNav() {
   }
 }
 
+// Course modals (hidden if pending)
 function setupCourseModals() {
   const buttons = document.querySelectorAll(".preview-course");
   const modal = document.getElementById("courseModal");
@@ -114,7 +160,7 @@ function setupCourseModals() {
   const modalTitle = document.getElementById("modalTitle");
   const modalContent = document.getElementById("modalContent");
   const closeModal = document.getElementById("closeModal");
-  const enrollBtn = document.querySelector("#courseModal button.enroll-btn"); // target Enroll button
+  const enrollBtn = document.querySelector("#courseModal button.enroll-btn");
 
   buttons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -126,7 +172,6 @@ function setupCourseModals() {
       modal.classList.remove("hidden");
       modal.classList.add("flex");
 
-      // Animate in
       setTimeout(() => {
         content.classList.remove("scale-95", "opacity-0");
         content.classList.add("scale-100", "opacity-100");
@@ -158,8 +203,8 @@ function setupCourseModals() {
 document.addEventListener("DOMContentLoaded", () => {
   loadUserSession();
   setupLogout();
-  setupCourseReveal();
   setupMobileNav();
   setupCourseModals();
   setupMessageBadge();
+  checkApplicationStatus(); // 🔑 lock/unlock dashboard
 });

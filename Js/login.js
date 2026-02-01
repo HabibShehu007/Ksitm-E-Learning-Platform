@@ -5,7 +5,6 @@ document.querySelector("form").addEventListener("submit", async (e) => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
 
-  // validations
   if (!email || !password) {
     return showModal("error", "⚠️ Please enter both email and password.");
   }
@@ -13,11 +12,10 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     return showModal("warning", "📧 Invalid email format.");
   }
 
-  // Show loading state
   showModal("info", "⏳ Logging you in...");
 
   try {
-    // Supabase login with email + password
+    // Supabase login
     const { data, error } = await window.supabase.auth.signInWithPassword({
       email,
       password,
@@ -30,7 +28,6 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       }, 1000);
     }
 
-    // Extract user from session
     const user = data?.user || data.session?.user;
     if (!user) {
       return setTimeout(() => {
@@ -38,10 +35,10 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       }, 1000);
     }
 
-    // ✅ Fetch profile info from user_profiles
+    // ✅ Fetch profile info
     const { data: profile, error: profileError } = await window.supabase
       .from("user_profiles")
-      .select("username, name, phone")
+      .select("name, username, phone")
       .eq("id", user.id)
       .single();
 
@@ -49,29 +46,47 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       console.error("Profile fetch error:", profileError);
     }
 
-    // Store session info
-    sessionStorage.setItem("userId", user.id); // <-- store the UUID from Supabase auth
-    sessionStorage.setItem("userName", profile?.name || user.email);
+    // ✅ Store full name in sessionStorage
+    sessionStorage.setItem("userId", user.id);
     sessionStorage.setItem("userEmail", user.email);
-    sessionStorage.setItem("userPhone", profile?.phone || "");
+    sessionStorage.setItem("userName", profile?.name || "Guest");
     sessionStorage.setItem("userUsername", profile?.username || "");
+    sessionStorage.setItem("userPhone", profile?.phone || "");
 
-    console.log("Session storage set:", {
-      id: sessionStorage.getItem("userId"),
-      username: sessionStorage.getItem("userUsername"),
-      name: sessionStorage.getItem("userName"),
-      email: sessionStorage.getItem("userEmail"),
-      phone: sessionStorage.getItem("userPhone"),
-    });
+    // ✅ Fetch application info
+    const { data: application, error: appError } = await window.supabase
+      .from("applications")
+      .select("status, course_name")
+      .eq("user_id", user.id)
+      .single();
 
-    // Success modal
+    if (appError) {
+      console.error("Application fetch error:", appError.message);
+    }
+
+    // Routing logic
     setTimeout(() => {
-      showModal(
-        "success",
-        `✅ Welcome back, ${sessionStorage.getItem(
-          "userName"
-        )}! You’ve logged in successfully.`
-      );
+      const displayName = profile?.name || user.email;
+
+      if (application && application.status === "approved") {
+        showModal(
+          "success",
+          `✅ Welcome back, ${displayName}! An approved course in ${application.course_name} has been found in your account. You’ll be redirected to the learning portal login.`,
+        );
+
+        setTimeout(() => {
+          window.location.href = "../learn-portal/pages/portal-login.html";
+        }, 2500);
+      } else {
+        showModal(
+          "success",
+          `✅ Welcome back, ${displayName}! You’ve logged in successfully.`,
+        );
+
+        setTimeout(() => {
+          window.location.href = "../Pages/dashboard.html";
+        }, 2500);
+      }
     }, 1000);
   } catch (err) {
     console.error("Unexpected error:", err);
@@ -139,7 +154,6 @@ function showModal(type, message) {
     closeBtn.onclick = () => {
       closeModal();
       if (type === "success") {
-        // Redirect to dashboard
         window.location.href = "../Pages/dashboard.html";
       }
     };

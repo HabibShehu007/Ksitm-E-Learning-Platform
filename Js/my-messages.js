@@ -41,12 +41,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         card.className =
           "bg-violet-50 border border-violet-200 rounded-lg p-4 shadow-sm";
 
+        // Detect reg number line and wrap it with Tailwind styling
+        let formattedMessage = sysMsg.message;
+        const match = sysMsg.message.match(/Registration Number:\s*(.+)/);
+        if (match) {
+          const regNumber = match[1].trim();
+          formattedMessage = sysMsg.message.replace(
+            match[0],
+            `Registration Number: <span class="font-bold text-white bg-gray-500 px-2 py-1 rounded">${regNumber}</span>`,
+          );
+        }
+
         card.innerHTML = `
       <div class="flex items-center gap-2 mb-2">
         <i class="fas fa-star text-violet-600"></i>
         <span class="font-semibold text-violet-700">System Notice</span>
       </div>
-      <p class="text-gray-700 text-sm whitespace-pre-line">${sysMsg.message}</p>
+      <p class="text-gray-700 text-sm whitespace-pre-line">${formattedMessage}</p>
       <div class="mt-3 flex gap-2">
         <button class="bg-violet-600 hover:bg-violet-700 text-white px-3 py-1 rounded text-xs flex items-center gap-1 copySystemMessage">
           <i class="fas fa-copy"></i> Copy
@@ -59,10 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Copy button logic for this system message
         const copyBtn = card.querySelector(".copySystemMessage");
         copyBtn.onclick = () => {
-          // Extract only the registration number line if present
-          const match = sysMsg.message.match(/Registration Number:\s*(.+)/);
           const regNumber = match ? match[1].trim() : sysMsg.message;
-
           navigator.clipboard.writeText(regNumber);
           copyBtn.textContent = "Copied!";
           setTimeout(() => (copyBtn.textContent = "Copy"), 2000);
