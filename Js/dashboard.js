@@ -191,10 +191,35 @@ function setupCourseModals() {
   }
 
   if (enrollBtn) {
-    enrollBtn.addEventListener("click", () => {
-      const courseName = document.getElementById("modalTitle").textContent;
-      sessionStorage.setItem("selectedCourse", courseName);
-      window.location.href = "../Pages/application.html";
+    enrollBtn.addEventListener("click", async () => {
+      const userId = sessionStorage.getItem("userId");
+      if (!userId) return;
+
+      try {
+        const { data: application, error } = await window.supabase
+          .from("applications")
+          .select("status")
+          .eq("user_id", userId)
+          .single();
+
+        if (error) {
+          console.error("Error checking application:", error.message);
+          return;
+        }
+
+        if (application && application.status === "approved") {
+          // ✅ User already has an active course → show overlay
+          const overlay = document.getElementById("unfinishedOverlay");
+          if (overlay) overlay.classList.remove("hidden");
+        } else {
+          // ✅ Normal enrollment flow
+          const courseName = document.getElementById("modalTitle").textContent;
+          sessionStorage.setItem("selectedCourse", courseName);
+          window.location.href = "../Pages/application.html";
+        }
+      } catch (err) {
+        console.error("Unexpected error on enroll:", err);
+      }
     });
   }
 }

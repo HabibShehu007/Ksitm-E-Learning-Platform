@@ -153,7 +153,22 @@ export async function approveApplication(appId, userId, courseName, fullName) {
       .update({ status: "approved" })
       .eq("id", appId);
 
-    const messageText = `🎉 Congratulations ${fullName}! Your admission has been approved.\n\nCourse: ${courseName}\nRegistration Number: ${regNumber}\n\nPlease copy and keep these credentials safe.`;
+    // ✅ Extended message with login link
+    const messageText = `
+🎉 Congratulations ${fullName}! Your admission has been approved.
+
+Course: ${courseName}
+Registration Number: ${regNumber}
+
+Please copy and keep these credentials safe.
+
+👉 Click below to access the Learning Portal:
+<a href="../../learn-portal/pages/portal-login.html" 
+   style="display:inline-block; margin-top:10px; padding:10px 16px; background:#4F46E5; color:#fff; border-radius:6px; text-decoration:none;">
+   <i class="fas fa-graduation-cap" style="margin-right:8px;"></i> Go to Learning Portal
+</a>
+
+`;
 
     await window.supabase.from("messages").insert({
       user_id: userId,

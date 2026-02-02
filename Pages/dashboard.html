@@ -216,14 +216,13 @@
           class="fas fa-hourglass-half text-yellow-600 text-4xl mb-4 animate-pulse"
         ></i>
         <h2 class="text-xl sm:text-2xl font-bold text-yellow-700 mb-2">
-          Application Under Review
+          Application Pending
         </h2>
         <p class="text-yellow-700 text-sm sm:text-base mb-4 leading-relaxed">
-          Hello <span id="userName"></span>, your application has been submitted
-          and is currently under review by the admin team. You cannot access
-          course materials or perform sensitive actions until your application
-          is approved. Please check your <strong>Status</strong> and
-          <strong>Messages</strong> pages regularly for updates.
+          Hello <span id="userName"></span>, your application is awaiting
+          review. Access to courses will be available once it is approved.
+          Please check your <strong>Status</strong> and
+          <strong>Messages</strong> for updates.
         </p>
         <div
           class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center"
@@ -232,18 +231,17 @@
             href="./status.html"
             class="px-4 py-2 bg-yellow-600 text-white rounded-lg shadow hover:bg-yellow-700 transition text-sm sm:text-base text-center"
           >
-            <i class="fas fa-eye mr-2"></i> View Status
+            <i class="fas fa-eye mr-2"></i> Status
           </a>
           <a
             href="./my-messages.html"
             class="px-4 py-2 bg-yellow-600 text-white rounded-lg shadow hover:bg-yellow-700 transition text-sm sm:text-base text-center"
           >
-            <i class="fas fa-envelope mr-2"></i> My Messages
+            <i class="fas fa-envelope mr-2"></i> Messages
           </a>
         </div>
       </div>
     </section>
-
     <!-- Rejected Application Notice -->
     <section id="rejectedNotice" class="hidden px-4 sm:px-6 lg:px-8 mt-6">
       <div
@@ -256,12 +254,10 @@
           Application Rejected
         </h2>
         <p class="text-red-700 text-sm sm:text-base mb-4 leading-relaxed">
-          Hello <span id="userName"></span>, unfortunately your application has
-          been reviewed and <strong>rejected</strong> by the admin team. You
-          cannot access course materials or perform sensitive actions at this
-          time. Please check your <strong>Status</strong> and
-          <strong>Messages</strong> pages for more details and instructions on
-          how to reapply.
+          Hello <span id="userName"></span>, your application has been rejected.
+          You cannot access courses at this time. Please check
+          <strong>Status</strong> and <strong>Messages</strong> for details on
+          reapplying.
         </p>
         <div
           class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto justify-center"
@@ -270,13 +266,13 @@
             href="./status.html"
             class="px-4 py-2 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition text-sm sm:text-base text-center"
           >
-            <i class="fas fa-eye mr-2"></i> View Status
+            <i class="fas fa-eye mr-2"></i> Status
           </a>
           <a
             href="./my-messages.html"
             class="px-4 py-2 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 transition text-sm sm:text-base text-center"
           >
-            <i class="fas fa-envelope mr-2"></i> My Messages
+            <i class="fas fa-envelope mr-2"></i> Messages
           </a>
         </div>
       </div>
@@ -649,11 +645,14 @@
 
           <!-- Action Buttons -->
           <div class="mt-8 flex flex-col items-center gap-3">
+            <!-- Enroll button (will trigger overlay if unfinished course exists) -->
             <button
               class="enroll-btn flex items-center justify-center gap-2 w-full sm:w-3/4 px-5 py-2 rounded-full bg-violet-700 text-white font-semibold text-base shadow-md hover:scale-105 transition-transform"
             >
               <i class="fas fa-compass"></i> Enroll Now
             </button>
+
+            <!-- Close button -->
             <button
               id="closeModal"
               class="flex items-center justify-center gap-2 w-full sm:w-3/4 px-5 py-2 rounded-full border border-violet-700 text-violet-700 font-semibold text-base shadow-md hover:bg-violet-700 hover:text-white transition-transform"
@@ -664,6 +663,34 @@
         </div>
       </div>
     </div>
+
+    <!-- Unfinished Course Overlay -->
+    <div
+      id="unfinishedOverlay"
+      class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300 ease-out"
+    >
+      <div
+        class="bg-white rounded-2xl shadow-2xl w-11/12 max-w-sm p-6 text-center animate-fadeIn"
+      >
+        <i
+          class="fas fa-exclamation-circle text-red-500 text-5xl mb-4 animate-bounce"
+        ></i>
+        <h3 class="text-xl font-bold text-red-700 mb-2">
+          Finish Your Current Course
+        </h3>
+        <p class="text-sm text-gray-600 mb-6 leading-relaxed">
+          Hello <span id="userName"></span>, you already have an active course
+          in progress. Please complete it before enrolling in another.
+        </p>
+        <a
+          href="./my-messages.html"
+          class="w-full block px-4 py-2 bg-violet-700 text-white rounded-lg font-semibold hover:bg-violet-800 transition"
+        >
+          <i class="fas fa-envelope mr-2"></i> Take Me to Messages
+        </a>
+      </div>
+    </div>
+
     <!-- Success Overlay -->
     <div
       id="successOverlay"
@@ -677,19 +704,15 @@
           Admission Approved
         </h3>
         <p class="text-sm text-gray-600 mb-6 leading-relaxed">
-          Your application has been successfully reviewed and accepted.<br />
-          Please check your
-          <a href="my-messages.html" class="text-violet-700 font-semibold"
-            >Messages page</a
-          >
-          for details.
+          Your application has been successfully reviewed and accepted.
         </p>
-        <button
-          onclick="closeSuccessOverlay()"
-          class="w-full px-4 py-2 bg-violet-700 text-white rounded-lg font-semibold hover:bg-violet-800 transition"
+        <!-- Main button now links directly to Messages -->
+        <a
+          href="my-messages.html"
+          class="w-full block px-4 py-2 bg-violet-700 text-white rounded-lg font-semibold hover:bg-violet-800 transition"
         >
-          Close
-        </button>
+          <i class="fas fa-envelope mr-2"></i> Take Me to Messages
+        </a>
       </div>
     </div>
 
@@ -704,19 +727,15 @@
         <i class="fas fa-times-circle text-red-500 text-5xl mb-4"></i>
         <h3 class="text-xl font-bold text-red-700 mb-2">Admission Rejected</h3>
         <p class="text-sm text-gray-600 mb-6 leading-relaxed">
-          Unfortunately, your application was not accepted.<br />
-          Please check your
-          <a href="my-messages.html" class="text-violet-700 font-semibold"
-            >Messages page</a
-          >
-          for feedback from the admin.
+          Unfortunately, your application was not accepted.
         </p>
-        <button
-          onclick="closeErrorOverlay()"
-          class="w-full px-4 py-2 bg-gray-700 text-white rounded-lg font-semibold hover:bg-gray-800 transition"
+        <!-- Main button now links directly to Messages -->
+        <a
+          href="my-messages.html"
+          class="w-full block px-4 py-2 bg-gray-700 text-white rounded-lg font-semibold hover:bg-gray-800 transition"
         >
-          Close
-        </button>
+          <i class="fas fa-envelope mr-2"></i> Take Me to Messages
+        </a>
       </div>
     </div>
   </body>
