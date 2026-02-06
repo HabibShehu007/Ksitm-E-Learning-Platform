@@ -1845,6 +1845,16 @@
       flex-direction: row;
     }
   }
+  .sm\:items-center {
+    @media (width >= 40rem) {
+      align-items: center;
+    }
+  }
+  .sm\:justify-between {
+    @media (width >= 40rem) {
+      justify-content: space-between;
+    }
+  }
   .sm\:gap-6 {
     @media (width >= 40rem) {
       gap: calc(var(--spacing) * 6);

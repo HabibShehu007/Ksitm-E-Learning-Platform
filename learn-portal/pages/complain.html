@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>KSITM Portal - Complaints</title>
+    <!-- Supabase client -->
+    <script src="../supabaseClient.js"></script>
+    <!-- Page-specific JS -->
+    <script defer src="../js/complain.js"></script>
     <!-- Tailwind CSS -->
     <link href="../../src/output.css" rel="stylesheet" />
     <!-- Font Awesome -->
@@ -15,7 +19,7 @@
     <!-- Header -->
     <header class="fixed top-0 left-0 w-full bg-violet-800 shadow-md z-50">
       <div
-        class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between"
+        class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between"
       >
         <!-- Logo -->
         <div class="flex items-center gap-2">
@@ -24,7 +28,9 @@
             alt="KSITM Logo"
             class="w-10 h-10"
           />
-          <span class="font-bold text-white text-lg">KSITM Portal</span>
+          <span class="font-bold text-white text-lg sm:text-xl"
+            >KSITM Portal</span
+          >
         </div>
 
         <!-- Desktop Nav -->
@@ -61,26 +67,26 @@
       <!-- Mobile Drawer Menu -->
       <div
         id="mobileMenu"
-        class="fixed top-0 right-0 h-full w-64 bg-violet-900 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden z-50 shadow-lg flex flex-col p-6 gap-4"
+        class="fixed top-0 right-0 h-full w-4/5 sm:w-80 bg-violet-900 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden z-50 shadow-lg flex flex-col p-6 gap-4"
       >
         <button id="closeMenuBtn" class="text-white text-2xl mb-6 self-end">
           <i class="fas fa-times"></i>
         </button>
         <a
           href="./portal-login.html"
-          class="flex items-center gap-2 px-4 py-2 rounded-lg text-white font-bold bg-violet-600 hover:bg-violet-500 transition"
+          class="flex items-center gap-2 px-4 py-3 rounded-lg text-white font-bold bg-violet-600 hover:bg-violet-500 transition"
         >
           <i class="fas fa-sign-in-alt"></i> Portal Login
         </a>
         <a
           href="./credentials.html"
-          class="flex items-center gap-2 px-4 py-2 rounded-lg text-white font-bold bg-violet-600 hover:bg-violet-500 transition"
+          class="flex items-center gap-2 px-4 py-3 rounded-lg text-white font-bold bg-violet-600 hover:bg-violet-500 transition"
         >
           <i class="fas fa-id-card"></i> Credentials
         </a>
         <a
           href="./complain.html"
-          class="flex items-center gap-2 px-4 py-2 rounded-lg text-white font-bold bg-violet-600 hover:bg-violet-500 transition"
+          class="flex items-center gap-2 px-4 py-3 rounded-lg text-white font-bold bg-violet-600 hover:bg-violet-500 transition"
         >
           <i class="fas fa-comment-dots"></i> Complaints
         </a>
@@ -88,12 +94,18 @@
     </header>
 
     <!-- Main Content -->
-    <main class="flex-grow flex items-center justify-center pt-28 px-4">
-      <section class="bg-white shadow-2xl rounded-xl p-8 w-full max-w-2xl">
+    <main class="flex-grow flex items-center justify-center pt-28 px-4 sm:px-6">
+      <section
+        class="bg-white shadow-2xl rounded-xl p-6 sm:p-8 w-full max-w-xl lg:max-w-2xl"
+      >
         <!-- Page Title -->
         <div class="flex items-center justify-center mb-6">
-          <i class="fas fa-comment-dots text-violet-600 text-3xl mr-2"></i>
-          <h2 class="text-2xl font-bold text-violet-700">Submit a Complaint</h2>
+          <i
+            class="fas fa-comment-dots text-violet-600 text-3xl sm:text-4xl mr-2"
+          ></i>
+          <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-violet-700">
+            Submit a Complaint
+          </h2>
         </div>
 
         <!-- Predictive Suggestions -->
@@ -102,42 +114,40 @@
             class="bg-violet-50 border border-violet-200 rounded-lg p-4 flex items-center gap-2 cursor-pointer hover:bg-violet-100 transition"
           >
             <i class="fas fa-trash text-violet-600"></i>
-            <span class="font-medium text-violet-700 text-sm">
-              Delete my application
-            </span>
+            <span class="font-medium text-violet-700 text-sm"
+              >Delete my application</span
+            >
           </div>
-
           <div
             class="bg-violet-50 border border-violet-200 rounded-lg p-4 flex items-center gap-2 cursor-pointer hover:bg-violet-100 transition"
           >
             <i class="fas fa-lock text-violet-600"></i>
-            <span class="font-medium text-violet-700 text-sm">
-              I cannot log in my course portal
-            </span>
+            <span class="font-medium text-violet-700 text-sm"
+              >I cannot log in my course portal</span
+            >
           </div>
-
           <div
             class="bg-violet-50 border border-violet-200 rounded-lg p-4 flex items-center gap-2 cursor-pointer hover:bg-violet-100 transition"
           >
             <i class="fas fa-user-times text-violet-600"></i>
-            <span class="font-medium text-violet-700 text-sm">
-              My registration number is not working
-            </span>
+            <span class="font-medium text-violet-700 text-sm"
+              >My registration number is not working</span
+            >
           </div>
-
           <div
             class="bg-violet-50 border border-violet-200 rounded-lg p-4 flex items-center gap-2 cursor-pointer hover:bg-violet-100 transition"
           >
             <i class="fas fa-envelope-open-text text-violet-600"></i>
-            <span class="font-medium text-violet-700 text-sm">
-              I did not receive confirmation email
-            </span>
+            <span class="font-medium text-violet-700 text-sm"
+              >I did not receive confirmation email</span
+            >
           </div>
         </div>
 
-        <!-- Placeholder Complaint Form -->
-        <form class="space-y-4">
+        <!-- Complaint Form -->
+        <form id="complaintForm" class="space-y-4">
           <textarea
+            id="complaintText"
             placeholder="Describe your complaint..."
             class="w-full border px-3 py-3 rounded-lg focus:ring-2 focus:ring-violet-400 focus:border-violet-500 shadow-sm"
             rows="4"
@@ -152,6 +162,5 @@
         </form>
       </section>
     </main>
-    <script src="../js/complain.js"></script>
   </body>
 </html>
