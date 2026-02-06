@@ -2,6 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Critical for mobile responsiveness -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>KSITM Portal - Complaints</title>
     <!-- Supabase client -->
     <script src="../supabaseClient.js"></script>
@@ -96,7 +98,7 @@
     <!-- Main Content -->
     <main class="flex-grow flex items-center justify-center pt-28 px-4 sm:px-6">
       <section
-        class="bg-white shadow-2xl rounded-xl p-6 sm:p-8 w-full max-w-xl lg:max-w-2xl"
+        class="bg-white shadow-2xl rounded-xl p-6 sm:p-8 w-full max-w-md sm:max-w-lg lg:max-w-2xl"
       >
         <!-- Page Title -->
         <div class="flex items-center justify-center mb-6">
@@ -154,7 +156,7 @@
           ></textarea>
           <button
             type="submit"
-            class="w-full bg-gradient-to-r from-violet-600 to-purple-700 hover:from-violet-700 hover:to-purple-800 text-white py-3 rounded-lg flex items-center justify-center gap-2 transition duration-200 shadow-md"
+            class="w-full bg-gradient-to-r from-violet-600 to-purple-700 hover:from-violet-700 hover:to-purple-800 text-white py-3 sm:py-4 rounded-lg flex items-center justify-center gap-2 text-base sm:text-lg transition duration-200 shadow-md"
           >
             <i class="fas fa-paper-plane"></i>
             Submit Complaint
