@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <title>Learning Portal Login</title>
-    <script src="../supabaseClient.js"></script>
     <script defer src="../js/portal-login.js"></script>
     <!-- Tailwind CSS -->
     <link href="../../src/output.css" rel="stylesheet" />
@@ -65,7 +64,7 @@
       <!-- Mobile Drawer Menu -->
       <div
         id="mobileMenu"
-        class="fixed top-0 right-0 h-full w-72 sm:w-80 bg-violet-900 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden z-50 shadow-lg flex flex-col p-6 gap-4"
+        class="fixed top-0 right-0 h-full w-4/5 sm:w-80 bg-violet-900 transform translate-x-full transition-transform duration-300 ease-in-out md:hidden z-50 shadow-lg flex flex-col p-6 gap-4"
       >
         <button id="closeMenuBtn" class="text-white text-2xl mb-6 self-end">
           <i class="fas fa-times"></i>
@@ -139,14 +138,14 @@
       </section>
     </main>
 
-    <!-- Modals (unchanged, but widened for mobile) -->
+    <!-- Modals -->
     <div
       id="actionModal"
       class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4"
     >
       <div
         id="modalContent"
-        class="bg-white rounded-lg shadow-xl p-6 sm:p-8 transform scale-95 opacity-0 transition-all duration-300 w-full max-w-md sm:max-w-lg lg:max-w-xl text-center"
+        class="bg-white rounded-lg shadow-xl p-6 sm:p-8 transform scale-95 opacity-0 transition-all duration-300 w-full max-w-lg sm:max-w-xl lg:max-w-2xl text-center"
       >
         <div
           id="modalIconWrapper"
@@ -173,7 +172,7 @@
       class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4"
     >
       <div
-        class="bg-white rounded-lg shadow-xl p-6 sm:p-8 transform scale-95 opacity-0 transition-all duration-300 w-full max-w-md sm:max-w-lg text-center"
+        class="bg-white rounded-lg shadow-xl p-6 sm:p-8 transform scale-95 opacity-0 transition-all duration-300 w-full max-w-lg sm:max-w-xl text-center"
         id="logoutModalContent"
       >
         <div
@@ -199,7 +198,6 @@
         </div>
       </div>
     </div>
-
     <!-- Supabase client -->
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
