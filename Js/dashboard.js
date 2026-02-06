@@ -14,6 +14,19 @@ function loadUserSession() {
   }
 }
 
+// Helper: show or hide portal links
+function togglePortalLinks(show) {
+  const portalNavLinkDesktop = document.getElementById("portalNavLinkDesktop");
+  const portalNavLinkMobile = document.getElementById("portalNavLinkMobile");
+
+  if (portalNavLinkDesktop) {
+    portalNavLinkDesktop.classList[show ? "remove" : "add"]("hidden");
+  }
+  if (portalNavLinkMobile) {
+    portalNavLinkMobile.classList[show ? "remove" : "add"]("hidden");
+  }
+}
+
 // ✅ Check application status and lock/unlock dashboard
 async function checkApplicationStatus() {
   const userId = sessionStorage.getItem("userId");
@@ -24,7 +37,7 @@ async function checkApplicationStatus() {
       .from("applications")
       .select("status, course_name")
       .eq("user_id", userId)
-      .single();
+      .maybeSingle(); // ✅ safe: returns null if no application
 
     if (error) {
       console.error("Error fetching application status:", error.message);
@@ -33,40 +46,67 @@ async function checkApplicationStatus() {
 
     const courseContainer = document.getElementById("courseContainer");
     const exploreBtn = document.getElementById("exploreBtn");
-    const arrowDownBtn = document.getElementById("arrowDownBtn"); // 🔑 arrow button
     const pendingNotice = document.getElementById("pendingNotice");
     const rejectedNotice = document.getElementById("rejectedNotice");
+
+    // Reset notices
+    if (pendingNotice) pendingNotice.classList.add("hidden");
+    if (rejectedNotice) rejectedNotice.classList.add("hidden");
 
     if (application && application.status === "pending") {
       // Pending → show pending notice
       if (courseContainer) courseContainer.style.display = "none";
       if (exploreBtn) exploreBtn.style.display = "none";
-      if (arrowDownBtn) arrowDownBtn.style.display = "none";
       if (pendingNotice) pendingNotice.classList.remove("hidden");
-      if (rejectedNotice) rejectedNotice.classList.add("hidden");
 
-      const courseButtons = document.querySelectorAll(".preview-course");
-      courseButtons.forEach((btn) => (btn.style.display = "none"));
+      document
+        .querySelectorAll(".preview-course")
+        .forEach((btn) => (btn.style.display = "none"));
+
+      togglePortalLinks(false);
     } else if (application && application.status === "rejected") {
       // Rejected → show rejected notice
       if (courseContainer) courseContainer.style.display = "none";
       if (exploreBtn) exploreBtn.style.display = "none";
-      if (arrowDownBtn) arrowDownBtn.style.display = "none";
-      if (pendingNotice) pendingNotice.classList.add("hidden");
       if (rejectedNotice) rejectedNotice.classList.remove("hidden");
 
-      const courseButtons = document.querySelectorAll(".preview-course");
-      courseButtons.forEach((btn) => (btn.style.display = "none"));
-    } else {
-      // Approved or no application → unlock dashboard
-      if (courseContainer) courseContainer.style.display = "block";
-      if (exploreBtn) exploreBtn.style.display = "inline-block";
-      if (arrowDownBtn) arrowDownBtn.style.display = "inline-block";
-      if (pendingNotice) pendingNotice.classList.add("hidden");
-      if (rejectedNotice) rejectedNotice.classList.add("hidden");
+      document
+        .querySelectorAll(".preview-course")
+        .forEach((btn) => (btn.style.display = "none"));
 
-      const courseButtons = document.querySelectorAll(".preview-course");
-      courseButtons.forEach((btn) => (btn.style.display = "inline-block"));
+      togglePortalLinks(false);
+    } else if (application && application.status === "approved") {
+      // Approved → unlock dashboard + show portal link
+      if (exploreBtn) exploreBtn.style.display = "inline-block";
+      if (courseContainer) courseContainer.style.display = "none"; // hidden until explore clicked
+
+      document
+        .querySelectorAll(".preview-course")
+        .forEach((btn) => (btn.style.display = "inline-block"));
+
+      if (exploreBtn) {
+        exploreBtn.onclick = () => {
+          if (courseContainer) courseContainer.style.display = "block";
+        };
+      }
+
+      togglePortalLinks(true);
+    } else {
+      // No application yet → unlock dashboard (explore courses)
+      if (exploreBtn) exploreBtn.style.display = "inline-block";
+      if (courseContainer) courseContainer.style.display = "none";
+
+      document
+        .querySelectorAll(".preview-course")
+        .forEach((btn) => (btn.style.display = "inline-block"));
+
+      if (exploreBtn) {
+        exploreBtn.onclick = () => {
+          if (courseContainer) courseContainer.style.display = "block";
+        };
+      }
+
+      togglePortalLinks(false);
     }
   } catch (err) {
     console.error("Unexpected error checking status:", err);
@@ -88,7 +128,7 @@ function setupLogout() {
   });
 }
 
-// Setup message badge to show count of messages (leave working)
+// Setup message badge to show count of messages
 function setupMessageBadge() {
   const badgeDesktop = document.getElementById("messageBadge");
   const badgeMobile = document.getElementById("messageBadgeMobile");
@@ -152,7 +192,7 @@ function setupMobileNav() {
   }
 }
 
-// Course modals (hidden if pending)
+// Course modals
 function setupCourseModals() {
   const buttons = document.querySelectorAll(".preview-course");
   const modal = document.getElementById("courseModal");
@@ -200,7 +240,7 @@ function setupCourseModals() {
           .from("applications")
           .select("status")
           .eq("user_id", userId)
-          .single();
+          .maybeSingle(); // ✅ safe for no application
 
         if (error) {
           console.error("Error checking application:", error.message);

@@ -91,22 +91,24 @@
     <!-- Main Content -->
     <main class="flex-grow flex items-center justify-center pt-24 px-4">
       <section
-        class="bg-white shadow-2xl rounded-xl p-8 w-full max-w-lg relative"
+        class="bg-white shadow-2xl rounded-xl p-4 sm:p-6 md:p-8 w-full max-w-md relative"
       >
-        <!-- Active Course Indicator (top center of form) -->
+        <!-- Active Course Indicator -->
         <div class="flex justify-center mb-4">
           <span
             id="activeCourse"
-            class="text-green-600 font-semibold text-xs sm:text-sm bg-green-100 px-3 py-1 rounded-full shadow-sm flex items-center gap-1"
+            class="text-green-600 font-semibold text-sm sm:text-base bg-green-100 px-3 py-1 rounded-full shadow-sm flex items-center gap-1"
           >
-            <!-- Will be filled dynamically -->
+            <!-- Filled dynamically -->
           </span>
         </div>
 
         <!-- Header -->
         <div class="flex items-center justify-center mb-6">
-          <i class="fas fa-graduation-cap text-violet-600 text-3xl mr-2"></i>
-          <h2 class="text-2xl font-bold text-violet-700">
+          <i
+            class="fas fa-graduation-cap text-violet-600 text-2xl sm:text-3xl mr-2"
+          ></i>
+          <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-violet-700">
             Learning Portal Login
           </h2>
         </div>
@@ -119,13 +121,13 @@
               type="text"
               id="regNumberInput"
               placeholder="Enter your Registration Number"
-              class="w-full border pl-10 px-3 py-3 rounded-lg focus:ring-2 focus:ring-violet-400 focus:border-violet-500 shadow-sm"
+              class="w-full border pl-10 px-3 py-3 sm:py-4 rounded-lg text-base sm:text-lg focus:ring-2 focus:ring-violet-400 focus:border-violet-500 shadow-sm"
             />
           </div>
 
           <button
             type="submit"
-            class="w-full bg-gradient-to-r from-violet-600 to-purple-700 hover:from-violet-700 hover:to-purple-800 text-white py-3 rounded-lg flex items-center justify-center gap-2 transition duration-200 shadow-md"
+            class="w-full bg-gradient-to-r from-violet-600 to-purple-700 hover:from-violet-700 hover:to-purple-800 text-white py-3 sm:py-4 rounded-lg flex items-center justify-center gap-2 text-base sm:text-lg transition duration-200 shadow-md"
           >
             <i class="fas fa-sign-in-alt"></i>
             Access Portal

@@ -1,3 +1,5 @@
+// ================= Login Logic =================
+
 // Handle login form
 document.querySelector("form").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -40,53 +42,46 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       .from("user_profiles")
       .select("name, username, phone")
       .eq("id", user.id)
-      .single();
+      .maybeSingle();
 
     if (profileError) {
       console.error("Profile fetch error:", profileError);
     }
 
-    // ✅ Store full name in sessionStorage
+    // ✅ Store profile in sessionStorage
     sessionStorage.setItem("userId", user.id);
     sessionStorage.setItem("userEmail", user.email);
     sessionStorage.setItem("userName", profile?.name || "Guest");
     sessionStorage.setItem("userUsername", profile?.username || "");
     sessionStorage.setItem("userPhone", profile?.phone || "");
 
-    // ✅ Fetch application info
+    // ✅ Fetch application info (optional, just for greeting)
     const { data: application, error: appError } = await window.supabase
       .from("applications")
       .select("status, course_name")
       .eq("user_id", user.id)
-      .single();
+      .maybeSingle();
 
     if (appError) {
       console.error("Application fetch error:", appError.message);
     }
 
-    // Routing logic
+    // ✅ Always route to dashboard
     setTimeout(() => {
       const displayName = profile?.name || user.email;
+      const courseMsg =
+        application && application.status === "approved"
+          ? ` You have an active course in ${application.course_name}.`
+          : "";
 
-      if (application && application.status === "approved") {
-        showModal(
-          "success",
-          `✅ Welcome back, ${displayName}! An approved course in ${application.course_name} has been found in your account. You’ll be redirected to the learning portal login.`,
-        );
+      showModal(
+        "success",
+        `✅ Welcome back, ${displayName}! You’ve logged in successfully.${courseMsg}`,
+      );
 
-        setTimeout(() => {
-          window.location.href = "../learn-portal/pages/portal-login.html";
-        }, 2500);
-      } else {
-        showModal(
-          "success",
-          `✅ Welcome back, ${displayName}! You’ve logged in successfully.`,
-        );
-
-        setTimeout(() => {
-          window.location.href = "../Pages/dashboard.html";
-        }, 2500);
-      }
+      setTimeout(() => {
+        window.location.href = "../Pages/dashboard.html";
+      }, 2500);
     }, 1000);
   } catch (err) {
     console.error("Unexpected error:", err);
@@ -96,7 +91,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
   }
 });
 
-// Modal logic
+// ================= Modal Logic =================
 function showModal(type, message) {
   const title =
     type === "success"
@@ -153,9 +148,6 @@ function showModal(type, message) {
     closeBtn.style.display = "block";
     closeBtn.onclick = () => {
       closeModal();
-      if (type === "success") {
-        window.location.href = "../Pages/dashboard.html";
-      }
     };
   }
 }
@@ -170,7 +162,7 @@ function closeModal() {
   setTimeout(() => modalElement.classList.add("hidden"), 300);
 }
 
-// Password toggle
+// ================= Password Toggle =================
 function togglePassword(fieldId) {
   const input = document.getElementById(fieldId);
   const btn = input.parentElement.querySelector("button");
