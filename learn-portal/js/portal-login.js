@@ -50,29 +50,47 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       try {
-        const { data: user, error: userError } = await window.supabase
-          .from("users")
-          .select("id, reg_number, status")
-          .eq("reg_number", regNumber)
+        // Step 1: Validate registration number
+        const { data: regRecord, error: regError } = await window.supabase
+          .from("registrations")
+          .select("id, user_id, course_id, registration_number")
+          .eq("registration_number", regNumber)
           .single();
 
-        if (userError || !user) {
+        if (regError || !regRecord) {
           showModal("error", "❌ Invalid Registration Number.");
           return;
         }
 
-        if (user.status !== "accepted") {
+        // Step 2: Fetch application details
+        const { data: application, error: appError } = await window.supabase
+          .from("applications")
+          .select("full_name, course_name, status")
+          .eq("user_id", regRecord.user_id)
+          .single();
+
+        if (appError || !application) {
+          showModal("error", "⚠️ No application record found.");
+          return;
+        }
+
+        if (application.status !== "approved") {
           showModal("warning", "⏳ You are not admitted yet.");
           return;
         }
 
+        // Step 3: Congratulatory modal
         showModal(
           "success",
-          "✅ Access granted! Redirecting to your portal...",
+          `👋 Welcome back ${application.full_name}! Continue your learning in ${application.course_name}.`,
         );
-        setTimeout(() => {
-          window.location.href = "./portal.html?reg=" + regNumber;
-        }, 2000);
+
+        // Step 4: Redirect after modal close
+        if (modalCloseBtn) {
+          modalCloseBtn.addEventListener("click", () => {
+            window.location.href = `../Learn_Dashbaord/pages/portal.html?reg=${regRecord.registration_number}&course=${application.course_name}`;
+          });
+        }
       } catch (err) {
         console.error("Unexpected error:", err);
         showModal("error", "⚠️ Something went wrong. Please try again.");
@@ -176,13 +194,5 @@ document.addEventListener("DOMContentLoaded", async () => {
       modalContent.classList.remove("scale-95", "opacity-0");
       modalContent.classList.add("scale-100", "opacity-100");
     }, 10);
-  }
-
-  if (modalCloseBtn) {
-    modalCloseBtn.addEventListener("click", () => {
-      modalContent.classList.remove("scale-100", "opacity-100");
-      modalContent.classList.add("scale-95", "opacity-0");
-      setTimeout(() => modalElement.classList.add("hidden"), 300);
-    });
   }
 });

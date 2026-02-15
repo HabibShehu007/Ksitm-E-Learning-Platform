@@ -49,13 +49,13 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     }
 
     // ✅ Store profile in sessionStorage
-    sessionStorage.setItem("userId", user.id);
+    sessionStorage.setItem("userId", user.id); // UUID from Supabase Auth
     sessionStorage.setItem("userEmail", user.email);
     sessionStorage.setItem("userName", profile?.name || "Guest");
     sessionStorage.setItem("userUsername", profile?.username || "");
     sessionStorage.setItem("userPhone", profile?.phone || "");
 
-    // ✅ Fetch application info (optional, just for greeting)
+    // ✅ Fetch application info
     const { data: application, error: appError } = await window.supabase
       .from("applications")
       .select("status, course_name")
@@ -64,6 +64,31 @@ document.querySelector("form").addEventListener("submit", async (e) => {
 
     if (appError) {
       console.error("Application fetch error:", appError.message);
+    }
+
+    // ✅ Fetch registration info
+    const { data: registration, error: regError } = await window.supabase
+      .from("registrations")
+      .select("course_id, progress")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    if (regError) {
+      console.error("Registration fetch error:", regError.message);
+    }
+
+    // ✅ Store values smartly
+    if (application?.course_name) {
+      sessionStorage.setItem("courseName", application.course_name);
+    }
+    if (application?.status) {
+      sessionStorage.setItem("courseStatus", application.status);
+    }
+    if (registration?.course_id) {
+      sessionStorage.setItem("courseId", registration.course_id); // UUID
+    }
+    if (registration?.progress !== undefined) {
+      sessionStorage.setItem("courseProgress", registration.progress);
     }
 
     // ✅ Always route to dashboard

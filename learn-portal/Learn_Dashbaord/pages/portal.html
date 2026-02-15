@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KSITM Learn Dashboard</title>
+    <link href="../../../src/output.css" rel="stylesheet" />
+
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
+    <script defer src="../js/portal.js"></script>
+    <script src="../js/progress.js"></script>
+  </head>
+  <body class="bg-gray-100 font-sans min-h-screen flex flex-col">
+    <!-- Header -->
+    <header
+      class="bg-violet-800 text-white shadow-md flex items-center justify-between px-6 py-4 relative"
+    >
+      <!-- Left: Course Name -->
+      <h1 id="courseTitle" class="text-lg sm:text-xl font-bold">
+        <!-- Filled dynamically with user course -->
+      </h1>
+
+      <!-- Right: Greeting + Avatar + Hamburger -->
+      <div class="flex items-center gap-4">
+        <!-- Greeting -->
+        <span
+          id="userGreeting"
+          class="text-xs sm:text-sm font-medium text-white truncate max-w-[120px] sm:max-w-none"
+        >
+          <!-- Filled dynamically with user name -->
+        </span>
+
+        <!-- Avatar -->
+        <i class="fas fa-user-circle text-3xl text-white"></i>
+
+        <!-- Hamburger -->
+        <button id="sidebarToggle" class="text-2xl focus:outline-none">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sidebar (hidden by default, slides in/out from right) -->
+    <nav
+      id="sidebar"
+      class="fixed top-0 right-0 h-full w-64 bg-violet-900 text-white transform translate-x-full transition-transform duration-300 ease-in-out z-50 shadow-lg flex flex-col"
+    >
+      <!-- Sidebar Header -->
+      <div class="p-6 border-b border-violet-700">
+        <h2 id="sidebarCourse" class="text-xl font-bold">User Menu</h2>
+      </div>
+
+      <!-- Sidebar Links -->
+      <div class="flex flex-col font-semibold">
+        <a
+          href="./profile.html"
+          class="flex items-center gap-4 px-6 py-5 hover:bg-violet-800 transition"
+        >
+          <i
+            class="fas fa-user-circle text-2xl text-violet-300 drop-shadow-md"
+          ></i>
+          <span class="text-lg">Profile</span>
+        </a>
+        <hr class="border-violet-700" />
+
+        <a
+          href="./progress.html"
+          class="flex items-center gap-4 px-6 py-5 hover:bg-violet-800 transition"
+        >
+          <i
+            class="fas fa-chart-line text-2xl text-violet-300 drop-shadow-md"
+          ></i>
+          <span class="text-lg">Progress</span>
+        </a>
+        <hr class="border-violet-700" />
+
+        <a
+          href="/Pages/login.html"
+          class="flex items-center gap-4 px-6 py-5 hover:bg-violet-800 transition"
+        >
+          <i
+            class="fas fa-sign-out-alt text-2xl text-violet-300 drop-shadow-md"
+          ></i>
+          <span class="text-lg">Logout</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Overlay (hidden by default, appears when sidebar is open) -->
+    <div
+      id="sidebarOverlay"
+      class="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm hidden transition-opacity duration-300 ease-in-out z-40"
+    ></div>
+
+    <main class="px-4 sm:px-6 py-8 sm:py-17 space-y-6">
+      <!-- Dynamic Course Cards -->
+      <section
+        id="class-progress"
+        class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6"
+      ></section>
+    </main>
+
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+      // Initialize Supabase client
+      const supabase = createClient(
+        "https://cwyiyplxadmcevejshtl.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3eWl5cGx4YWRtY2V2ZWpzaHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg4MjI3MDcsImV4cCI6MjA4NDM5ODcwN30.bbMmrLZphjkUOl_m8HlfqwKZ08lkCZ7Vj39edpm3_LY",
+      );
+
+      window.supabase = supabase;
+    </script>
+    >
+  </body>
+</html>
