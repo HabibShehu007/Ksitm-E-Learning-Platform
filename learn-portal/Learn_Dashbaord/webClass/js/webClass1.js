@@ -1,10 +1,12 @@
+import { submitQuiz } from "./submitQuiz.js";
+
 document.addEventListener("DOMContentLoaded", () => {
-  const modules = [
-    {
-      id: 1,
-      type: "theory",
-      title: "Module 1: Introduction to HTML",
-      content: `
+  // Define simple test modules
+  const module1 = {
+    id: 1,
+    type: "theory",
+    title: "Module 1",
+    content: `
     <div class="space-y-8">
 
    <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-4 rounded-lg shadow-sm">
@@ -247,127 +249,129 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   `,
-    },
-    {
-      id: 2,
-      type: "video",
-      title: "Module 2: Know HTML Basics in 20 Minutes",
-      videoUrl: "https://www.youtube.com/embed/1V4lah1NsuM", // <-- updated link
-      conclusion: `
-    <section class="bg-violet-800 text-white p-6 rounded-lg shadow-lg mt-8 text-center">
-      <div class="mb-6 flex justify-center">
-        <i class="fas fa-lightbulb text-5xl text-yellow-400 animate-pulse"></i>
-      </div>
-      <h3 class="text-2xl font-extrabold mb-3">Next Up: Final Quiz!</h3>
-      <p class="text-lg font-medium leading-relaxed">
-        You’ve now seen HTML in action. In the <strong>next module</strong>, you’ll test your knowledge with a short quiz to reinforce everything you’ve learned.  
-        Get ready to challenge yourself and prove your mastery of the basics!
-      </p>
-    </section>
-  `,
-    },
-    {
-      id: 3,
-      type: "exam",
-      title: "Final Module: HTML Basics Quiz",
-      questions: [
-        {
-          question: "What does HTML stand for?",
-          options: [
-            "HyperText Markup Language",
-            "HighText Machine Language",
-            "HyperTool Multi Language",
-            "HomeText Markup Language",
-          ],
-          answer: 0,
-        },
-        {
-          question: "Which tag is used for the largest heading?",
-          options: [
-            "&lt;h6&gt;",
-            "&lt;h1&gt;",
-            "&lt;head&gt;",
-            "&lt;heading&gt;",
-          ],
-          answer: 1,
-        },
-        {
-          question: "Which tag is used to define a paragraph?",
-          options: [
-            "&lt;para&gt;",
-            "&lt;p&gt;",
-            "&lt;pg&gt;",
-            "&lt;paragraph&gt;",
-          ],
-          answer: 1,
-        },
-        {
-          question:
-            "Which attribute is used to provide alternative text for an image?",
-          options: ["src", "alt", "title", "href"],
-          answer: 1,
-        },
-        {
-          question: "Which tag is used to create a hyperlink?",
-          options: [
-            "&lt;link&gt;",
-            "&lt;a&gt;",
-            "&lt;href&gt;",
-            "&lt;hyper&gt;",
-          ],
-          answer: 1,
-        },
-        {
-          question: "Which tag is used to create an unordered list?",
-          options: ["&lt;ol&gt;", "&lt;ul&gt;", "&lt;list&gt;", "&lt;li&gt;"],
-          answer: 1,
-        },
-        {
-          question: "Which tag is used to insert a line break?",
-          options: [
-            "&lt;break&gt;",
-            "&lt;lb&gt;",
-            "&lt;br&gt;",
-            "&lt;newline&gt;",
-          ],
-          answer: 2,
-        },
-        {
-          question: "Which tag is used to define a table row?",
-          options: ["&lt;td&gt;", "&lt;tr&gt;", "&lt;th&gt;", "&lt;row&gt;"],
-          answer: 1,
-        },
-        {
-          question: "Which tag is used to define a form?",
-          options: [
-            "&lt;form&gt;",
-            "&lt;input&gt;",
-            "&lt;button&gt;",
-            "&lt;submit&gt;",
-          ],
-          answer: 0,
-        },
-        {
-          question: "Which tag is used to define the document title?",
-          options: [
-            "&lt;title&gt;",
-            "&lt;head&gt;",
-            "&lt;h1&gt;",
-            "&lt;meta&gt;",
-          ],
-          answer: 0,
-        },
-      ],
-    },
-  ];
+  };
+  const module2 = {
+    id: 2,
+    type: "video",
+    title: "Module 2: Know HTML Basics in 20 Minutes",
+    videoUrl: "https://www.youtube.com/embed/1V4lah1NsuM",
+    conclusion: `
+      <section class="bg-violet-800 text-white p-6 rounded-lg shadow-lg mt-8 text-center">
+        <div class="mb-6 flex justify-center">
+          <i class="fas fa-lightbulb text-5xl text-yellow-400 animate-pulse"></i>
+        </div>
+        <h3 class="text-2xl font-extrabold mb-3">Next Up: Final Quiz!</h3>
+        <p class="text-lg font-medium leading-relaxed">
+          You’ve now seen HTML in action. In the <strong>next module</strong>, you’ll test your knowledge with a short quiz to reinforce everything you’ve learned.  
+          Get ready to challenge yourself and prove your mastery of the basics!
+        </p>
+      </section>
+    `,
+  };
+  const module3 = {
+    id: "55e67cf5-da0c-4dc2-8d20-484c080ebec1",
+    type: "exam",
+    title: "Final Module: HTML Basics Quiz",
+    questions: [
+      {
+        question: "What does HTML stand for?",
+        options: [
+          "HyperText Markup Language",
+          "HighText Machine Language",
+          "HyperTool Multi Language",
+          "HomeText Markup Language",
+        ],
+        answer: 0,
+      },
+      {
+        question: "Which tag is used for the largest heading?",
+        options: [
+          "&lt;h6&gt;",
+          "&lt;h1&gt;",
+          "&lt;head&gt;",
+          "&lt;heading&gt;",
+        ],
+        answer: 1,
+      },
+      {
+        question: "Which tag is used to define a paragraph?",
+        options: [
+          "&lt;para&gt;",
+          "&lt;p&gt;",
+          "&lt;pg&gt;",
+          "&lt;paragraph&gt;",
+        ],
+        answer: 1,
+      },
+      {
+        question:
+          "Which attribute is used to provide alternative text for an image?",
+        options: ["src", "alt", "title", "href"],
+        answer: 1,
+      },
+      {
+        question: "Which tag is used to create a hyperlink?",
+        options: ["&lt;link&gt;", "&lt;a&gt;", "&lt;href&gt;", "&lt;hyper&gt;"],
+        answer: 1,
+      },
+      {
+        question: "Which tag is used to create an unordered list?",
+        options: ["&lt;ol&gt;", "&lt;ul&gt;", "&lt;list&gt;", "&lt;li&gt;"],
+        answer: 1,
+      },
+      {
+        question: "Which tag is used to insert a line break?",
+        options: [
+          "&lt;break&gt;",
+          "&lt;lb&gt;",
+          "&lt;br&gt;",
+          "&lt;newline&gt;",
+        ],
+        answer: 2,
+      },
+      {
+        question: "Which tag is used to define a table row?",
+        options: ["&lt;td&gt;", "&lt;tr&gt;", "&lt;th&gt;", "&lt;row&gt;"],
+        answer: 1,
+      },
+      {
+        question: "Which tag is used to define a form?",
+        options: [
+          "&lt;form&gt;",
+          "&lt;input&gt;",
+          "&lt;button&gt;",
+          "&lt;submit&gt;",
+        ],
+        answer: 0,
+      },
+      {
+        question: "Which tag is used to define the document title?",
+        options: [
+          "&lt;title&gt;",
+          "&lt;head&gt;",
+          "&lt;h1&gt;",
+          "&lt;meta&gt;",
+        ],
+        answer: 0,
+      },
+    ],
+  };
+
+  const courseModules = [module1, module2, module3];
+  window.courseModules = courseModules; // expose for debugging
 
   const container = document.getElementById("modules");
+  console.log("Container found:", !!container);
+  console.log("Modules length:", courseModules.length);
 
-  modules.forEach((module) => {
+  courseModules.forEach(async (module) => {
+    console.log("Rendering:", module.title);
+
+    // Card wrapper
     const card = document.createElement("div");
     card.className = "rounded-lg shadow overflow-hidden";
 
-    // Header (always violet)
+    // Header (violet bar with title + chevron)
     const header = document.createElement("div");
     header.className =
       "bg-violet-800 text-white p-4 cursor-pointer flex justify-between items-center";
@@ -382,78 +386,124 @@ document.addEventListener("DOMContentLoaded", () => {
     body.style.overflow = "hidden";
     body.style.transition = "max-height 0.5s ease";
 
+    // -----------------------
+    // Module-specific content
+    // -----------------------
     if (module.type === "theory") {
       body.innerHTML = `
       <div class="bg-gray-100 text-gray-900 font-medium p-4 leading-relaxed">
         ${module.content}
       </div>
     `;
-    } else if (module.type === "video") {
-      body.innerHTML = `
-    <div class="p-4 bg-gray-100">
-      <div class="relative w-full h-64 rounded-lg bg-black flex items-center justify-center">
-        <!-- Custom Play Button -->
-        <button id="playBtn-${module.id}" class="text-white text-5xl focus:outline-none">
-          <i class="fas fa-play-circle"></i>
-        </button>
+    }
 
-        <!-- Hidden YouTube iframe -->
-        <iframe 
-          id="videoFrame-${module.id}"
-          class="absolute inset-0 w-full h-full rounded-lg hidden"
-          src="${module.videoUrl}?autoplay=1&modestbranding=1&rel=0&controls=1"
-          frameborder="0"
-          allowfullscreen>
-        </iframe>
+    if (module.type === "video") {
+      body.innerHTML = `
+      <div class="p-4 bg-gray-100">
+        <div class="relative w-full h-64 rounded-lg bg-black flex items-center justify-center">
+          <button id="playBtn-${module.id}" class="text-white text-5xl focus:outline-none">
+            <i class="fas fa-play-circle"></i>
+          </button>
+          <iframe 
+            id="videoFrame-${module.id}"
+            class="absolute inset-0 w-full h-full rounded-lg hidden"
+            src="${module.videoUrl}?autoplay=1&modestbranding=1&rel=0&controls=1"
+            frameborder="0"
+            allowfullscreen>
+          </iframe>
+        </div>
       </div>
-    </div>
-    ${module.conclusion ? module.conclusion : ""}
-  `;
+      ${module.conclusion || ""}
+    `;
 
       // Play button logic
       const playBtn = body.querySelector(`#playBtn-${module.id}`);
       const videoFrame = body.querySelector(`#videoFrame-${module.id}`);
-
       playBtn.addEventListener("click", () => {
-        playBtn.style.display = "none"; // hide play button
-        videoFrame.classList.remove("hidden"); // show video
+        playBtn.style.display = "none";
+        videoFrame.classList.remove("hidden");
       });
-    } else if (module.type === "exam") {
-      body.innerHTML = `
-    <div class="bg-gray-100 text-gray-900 font-medium p-6 leading-relaxed flex flex-col min-h-[500px]">
-      <!-- Progress indicator -->
-      <div id="progress-${module.id}" class="flex justify-center mb-6 space-x-2"></div>
+    }
 
-      <!-- Question + Navigation wrapper -->
-      <div class="flex flex-col flex-grow">
-        <!-- Question container -->
-        <div id="quiz-container-${module.id}" class="flex-grow p-6 bg-white rounded-lg shadow-md min-h-[250px]"></div>
+    if (module.type === "exam") {
+      const registrationId = sessionStorage.getItem("registrationId");
+      const classId = module.id;
 
-        <!-- Navigation buttons -->
-        <div class="flex justify-between mt-6">
-          <button id="back-btn-${module.id}" class="bg-gray-300 text-gray-700 px-4 py-2 rounded hidden">Back</button>
-          <button id="next-btn-${module.id}" class="bg-violet-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-violet-700 transition" disabled>Next</button>
-        </div>
-      </div>
-    </div>
-  `;
-
-      const quizContainer = body.querySelector(`#quiz-container-${module.id}`);
-      const progressContainer = body.querySelector(`#progress-${module.id}`);
-      const nextBtn = body.querySelector(`#next-btn-${module.id}`);
-      const backBtn = body.querySelector(`#back-btn-${module.id}`);
-
-      // Global modal references (defined in HTML)
+      // Modal references
       const quizModal = document.getElementById("quizModal");
       const modalMessage = document.getElementById("modalMessage");
       const modalIcon = document.getElementById("modalIcon");
       const modalTitle = document.getElementById("modalTitle");
       const modalOk = document.getElementById("modalOk");
 
+      // 🔎 Check if quiz already passed
+      const { data, error } = await window.supabase
+        .from("class_progress")
+        .select("progress")
+        .eq("registration_id", registrationId)
+        .eq("class_id", classId)
+        .single();
+
+      if (error) {
+        console.error("Error checking progress:", error);
+        return;
+      }
+
+      if (data && data.progress >= 70) {
+        // ✅ Already passed — show info modal
+        modalIcon.className = "fas fa-info-circle text-blue-500 text-5xl mb-4";
+        modalTitle.textContent = "Quiz Already Completed";
+        modalMessage.textContent =
+          "You’ve already passed this quiz. No need to retake it.";
+        quizModal.classList.remove("hidden");
+
+        modalOk.onclick = () => {
+          quizModal.classList.add("hidden");
+          window.location.href = "portal.html"; // ✅ redirect back
+        };
+
+        return; // 🚫 stop here, don’t render quiz
+      }
+
+      // ✅ Otherwise, render quiz normally
+      body.innerHTML = `
+    <div class="bg-gray-100 text-gray-900 font-medium p-6 leading-relaxed flex flex-col">
+      <!-- Progress indicator -->
+      <div id="progress-${module.id}" class="flex justify-center mb-4 space-x-2"></div>
+
+      <!-- Question + Navigation wrapper -->
+      <div class="flex flex-col">
+        <!-- Question container -->
+        <div id="quiz-container-${module.id}" 
+             class="p-4 bg-white rounded-lg shadow-md mb-4 min-h-[270px]">
+        </div>
+
+        <!-- Navigation buttons -->
+        <div class="flex justify-between gap-3">
+          <button id="back-btn-${module.id}" 
+                  class="bg-gray-300 text-gray-700 px-4 py-2 rounded hidden">
+            Back
+          </button>
+          <button id="next-btn-${module.id}" 
+                  class="bg-violet-600 text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-violet-700 transition" disabled>
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+      // References
+      const quizContainer = body.querySelector(`#quiz-container-${module.id}`);
+      const progressContainer = body.querySelector(`#progress-${module.id}`);
+      const nextBtn = body.querySelector(`#next-btn-${module.id}`);
+      const backBtn = body.querySelector(`#back-btn-${module.id}`);
+
+      // State
       let currentQuestion = 0;
       let answers = Array(module.questions.length).fill(null);
 
-      // Build progress circles (but don’t render questions yet)
+      // Build progress circles
       module.questions.forEach((_, i) => {
         const circle = document.createElement("div");
         circle.className =
@@ -463,6 +513,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       const progressCircles = progressContainer.querySelectorAll("div");
 
+      // Render question
       function renderQuestion() {
         const q = module.questions[currentQuestion];
         quizContainer.innerHTML = `
@@ -471,15 +522,15 @@ document.addEventListener("DOMContentLoaded", () => {
         ${q.options
           .map(
             (opt, i) => `
-              <label class="block cursor-pointer">
-                <input type="radio" name="question-${currentQuestion}" value="${i}" class="hidden peer" ${answers[currentQuestion] === i ? "checked" : ""}>
-                <div class="p-3 border rounded-lg transition 
-                            peer-checked:bg-violet-100 peer-checked:text-violet-700 peer-checked:border-violet-600 
-                            hover:bg-violet-50">
-                  ${opt}
-                </div>
-              </label>
-            `,
+          <label class="block cursor-pointer">
+            <input type="radio" name="question-${currentQuestion}" value="${i}" class="hidden peer" ${answers[currentQuestion] === i ? "checked" : ""}>
+            <div class="p-3 border rounded-lg transition 
+                        peer-checked:bg-violet-100 peer-checked:text-violet-700 peer-checked:border-violet-600 
+                        hover:bg-violet-50">
+              ${opt}
+            </div>
+          </label>
+        `,
           )
           .join("")}
       </div>
@@ -495,11 +546,13 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
 
+        // Update buttons
         backBtn.classList.toggle("hidden", currentQuestion === 0);
         nextBtn.innerText =
           currentQuestion === module.questions.length - 1 ? "Submit" : "Next";
         nextBtn.disabled = answers[currentQuestion] === null;
 
+        // Listen for answer selection
         quizContainer.querySelectorAll("input[type=radio]").forEach((radio) => {
           radio.addEventListener("change", () => {
             answers[currentQuestion] = parseInt(radio.value);
@@ -508,73 +561,34 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // 🔒 NEW: Intercept header click to check lock
-      header.addEventListener("click", async () => {
-        const userId = sessionStorage.getItem("userId");
-        const courseId = sessionStorage.getItem("courseId");
-
-        const { data, error } = await window.supabase
-          .from("registrations")
-          .select("progress")
-          .eq("user_id", userId)
-          .eq("course_id", courseId)
-          .single();
-
-        if (error) {
-          console.error("Error checking quiz status:", error);
-        }
-
-        if (data && data.progress > 0) {
-          // Show locked modal
-          modalIcon.className = "fas fa-lock text-red-500 text-5xl mb-4";
-          modalTitle.textContent = "Quiz Locked";
-          modalMessage.textContent =
-            "You’ve already submitted this quiz. It cannot be opened again.";
-          quizModal.classList.remove("hidden");
-
-          modalOk.onclick = () => {
-            quizModal.classList.add("hidden");
-            body.style.maxHeight = "0px"; // collapse body again
-          };
-        } else {
-          // Expand and render quiz normally
-          body.style.maxHeight = body.scrollHeight + "px";
-          header.querySelector("i").classList.remove("fa-chevron-down");
-          header.querySelector("i").classList.add("fa-chevron-up");
-          renderQuestion();
-        }
-      });
-
-      // Navigation
+      // Next button
       nextBtn.addEventListener("click", async () => {
         if (answers[currentQuestion] !== null) {
           if (currentQuestion < module.questions.length - 1) {
             currentQuestion++;
             renderQuestion();
           } else {
+            // ✅ Calculate score
             const score =
               answers.filter((ans, i) => ans === module.questions[i].answer)
                 .length * 10;
 
-            const userId = sessionStorage.getItem("userId");
-            const courseId = sessionStorage.getItem("courseId");
+            console.log("Code 6 → module.id:", module.id);
 
             if (score >= 70) {
-              const { error } = await window.supabase
-                .from("registrations")
-                .update({ progress: score })
-                .eq("user_id", userId)
-                .eq("course_id", courseId);
-
-              if (error) {
-                console.error("Error updating progress:", error);
-              }
+              // 🔥 Call submitQuiz.js
+              await submitQuiz(registrationId, classId, score);
 
               modalIcon.className =
                 "fas fa-trophy text-yellow-500 text-5xl mb-4 animate-bounce";
               modalTitle.textContent = "Quiz Completed!";
-              modalMessage.textContent = `Your Score: ${score}%. 🎉 Great job! You passed and your progress has been updated. You can proceed to the next class.`;
+              modalMessage.textContent = `Your Score: ${score}%. 🎉 Great job! You passed and your progress has been updated.`;
               quizModal.classList.remove("hidden");
+
+              modalOk.onclick = () => {
+                quizModal.classList.add("hidden");
+                window.location.href = "portal.html"; // ✅ redirect after passing
+              };
             } else {
               modalIcon.className =
                 "fas fa-exclamation-circle text-red-500 text-5xl mb-4 animate-pulse";
@@ -593,15 +607,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
+      // Back button
       backBtn.addEventListener("click", () => {
         if (currentQuestion > 0) {
           currentQuestion--;
           renderQuestion();
         }
       });
+
+      // Start quiz
+      renderQuestion();
     }
 
-    // Toggle expand/collapse with dynamic height
+    // -----------------------
+    // Expand/Collapse toggle
+    // -----------------------
     header.addEventListener("click", () => {
       const icon = header.querySelector("i");
 
@@ -622,16 +642,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Toggle current module
       if (body.style.maxHeight === "0px" || body.style.maxHeight === "") {
-        body.style.maxHeight = body.scrollHeight + "px"; // expand fully
+        body.style.maxHeight = body.scrollHeight + "px";
         icon.classList.remove("fa-chevron-down");
         icon.classList.add("fa-chevron-up");
       } else {
-        body.style.maxHeight = "0px"; // collapse
+        body.style.maxHeight = "0px";
         icon.classList.remove("fa-chevron-up");
         icon.classList.add("fa-chevron-down");
       }
     });
 
+    // Append header + body to card, then card to container
     card.appendChild(header);
     card.appendChild(body);
     container.appendChild(card);

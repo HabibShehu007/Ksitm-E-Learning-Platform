@@ -1,69 +1,65 @@
 // Fetch progress data for the logged-in user from Supabase
-async function getUserProgress(userId) {
-  const { data, error } = await window.supabase
-    .from("registrations")
-    .select("course_id, progress")
-    .eq("user_id", userId);
-
-  if (error) {
-    console.error("Error fetching progress:", error);
+async function getUserProgress(registrationId) {
+  if (!registrationId) {
+    console.error("No registrationId found in sessionStorage");
     return [];
   }
 
-  return data || [];
+  // Step 1: Get class progress joined with classes
+  const { data, error } = await window.supabase
+    .from("class_progress")
+    .select(
+      `
+      progress,
+      class_id,
+      classes ( name, order_number )
+    `,
+    )
+    .eq("registration_id", registrationId);
+
+  if (error) {
+    console.error("Error fetching class progress:", error);
+    return [];
+  }
+
+  // ✅ Step 2: Sort in JS by order_number
+  return (data || []).sort(
+    (a, b) => a.classes.order_number - b.classes.order_number,
+  );
 }
 
 // Dashboard cards (portal.html)
+function getClassIcon(orderNumber) {
+  switch (orderNumber) {
+    case 1: // HTML Basics
+    case 2: // HTML Advanced
+      return "fab fa-html5";
+
+    case 3: // CSS Basics
+    case 4: // CSS Advanced
+      return "fab fa-css3-alt";
+
+    case 5: // JavaScript Basics
+    case 6: // JavaScript Advanced
+      return "fab fa-js";
+
+    case 7: // Backend
+      return "fab fa-node-js";
+
+    case 8: // Final Project & Deployment
+      return "fas fa-cloud-upload-alt";
+
+    default:
+      return "fas fa-book"; // fallback
+  }
+}
+
 function renderClassCards(progressData) {
   const container = document.getElementById("class-progress");
   if (!container) return;
   container.innerHTML = "";
 
-  const courses = [
-    {
-      title: "HTML Basics",
-      icon: "fas fa-code",
-      link: "./webClass/webClass1.html",
-    },
-    {
-      title: "HTML Advanced",
-      icon: "fas fa-file-code",
-      link: "./webClass2.html",
-    },
-    {
-      title: "CSS Basics",
-      icon: "fas fa-paint-brush",
-      link: "./webClass3.html",
-    },
-    {
-      title: "CSS Advanced",
-      icon: "fas fa-layer-group",
-      link: "./webClass4.html",
-    },
-    {
-      title: "JavaScript Basics",
-      icon: "fas fa-laptop-code",
-      link: "./webClass5.html",
-    },
-    {
-      title: "JavaScript Advanced",
-      icon: "fas fa-code-branch",
-      link: "./webClass6.html",
-    },
-    {
-      title: "Backend Basics",
-      icon: "fas fa-server",
-      link: "./webClass7.html",
-    },
-    {
-      title: "Final Project & Deployment",
-      icon: "fas fa-graduation-cap",
-      link: "./webClass8.html",
-    },
-  ];
-
-  courses.forEach((course, index) => {
-    const row = progressData[index] || {};
+  progressData.forEach((row) => {
     const score = row.progress || 0;
     const hasAttempted = score > 0;
 
@@ -76,14 +72,16 @@ function renderClassCards(progressData) {
       : `<span class="absolute top-2 right-2 bg-red-600 text-white text-xs sm:text-sm px-2 py-1 rounded"><i class="fas fa-times-circle"></i></span>`;
 
     const button = hasAttempted
-      ? `<a href="${course.link}" class="bg-green-600 text-white px-3 py-1 sm:px-4 sm:py-2 rounded font-semibold hover:bg-green-700 text-xs sm:text-sm">Review</a>`
-      : `<a href="${course.link}" class="bg-white text-violet-700 px-3 py-1 sm:px-4 sm:py-2 rounded font-semibold hover:bg-violet-200 text-xs sm:text-sm">Start</a>`;
+      ? `<a href="../webClass/webClass${row.classes.order_number}.html" class="bg-green-600 text-white px-3 py-1 sm:px-4 sm:py-2 rounded font-semibold hover:bg-green-700 text-xs sm:text-sm">Review</a>`
+      : `<a href="../webClass/webClass${row.classes.order_number}.html" class="bg-white text-violet-700 px-3 py-1 sm:px-4 sm:py-2 rounded font-semibold hover:bg-violet-200 text-xs sm:text-sm">Start</a>`;
+
+    const iconClass = getClassIcon(row.classes.order_number);
 
     card.innerHTML = `
       ${banner}
-      <i class="${course.icon} text-3xl sm:text-4xl mb-3"></i>
-      <h4 class="font-bold text-base sm:text-lg mb-1">Class ${index + 1}</h4>
-      <p class="text-xs sm:text-sm mb-3">${course.title}</p>
+      <i class="${iconClass} text-3xl sm:text-4xl mb-3"></i>
+      <h4 class="font-bold text-base sm:text-lg mb-1">Class ${row.classes.order_number}</h4>
+      <p class="text-xs sm:text-sm mb-3">${row.classes.name}</p>
       ${button}
     `;
 
@@ -97,19 +95,7 @@ function renderProgressCards(progressData) {
   if (!container) return;
   container.innerHTML = "";
 
-  const courses = [
-    "HTML Basics",
-    "HTML Advanced",
-    "CSS Basics",
-    "CSS Advanced",
-    "JavaScript Basics",
-    "JavaScript Advanced",
-    "Backend Basics",
-    "Final Project & Deployment",
-  ];
-
-  courses.forEach((title, index) => {
-    const row = progressData[index] || {};
+  progressData.forEach((row) => {
     const score = row.progress || 0;
     const hasAttempted = score > 0;
 
@@ -117,7 +103,9 @@ function renderProgressCards(progressData) {
     card.className = "bg-white rounded-lg shadow p-4";
 
     card.innerHTML = `
-      <h3 class="text-base md:text-lg font-bold text-violet-700 mb-2">Class ${index + 1}: ${title}</h3>
+      <h3 class="text-base md:text-lg font-bold text-violet-700 mb-2">
+        Class ${row.classes.order_number}: ${row.classes.name}
+      </h3>
       <div class="w-full bg-gray-200 rounded-full h-4 md:h-6 mb-2">
         <div class="h-4 md:h-6 rounded-full transition-all duration-500 ${hasAttempted ? "bg-green-600" : "bg-violet-600"}" 
              style="width:${hasAttempted ? "100" : score}%"></div>
@@ -138,7 +126,7 @@ function renderOverall(progressData) {
   const overallQuote = document.getElementById("overall-quote");
   if (!overallBar) return;
 
-  const totalClasses = 8;
+  const totalClasses = progressData.length;
   const overall =
     progressData.reduce((sum, row) => sum + (row.progress || 0), 0) /
     totalClasses;
@@ -164,10 +152,10 @@ function renderOverall(progressData) {
 
 // Main render function
 async function renderProgress() {
-  const userId = sessionStorage.getItem("userId");
-  if (!userId) return;
+  const registrationId = sessionStorage.getItem("registrationId"); // ✅ use registrationId
+  if (!registrationId) return;
 
-  const progressData = await getUserProgress(userId);
+  const progressData = await getUserProgress(registrationId);
 
   if (document.getElementById("overall-bar")) {
     // Progress page

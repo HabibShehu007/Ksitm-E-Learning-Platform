@@ -69,7 +69,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     // ✅ Fetch registration info
     const { data: registration, error: regError } = await window.supabase
       .from("registrations")
-      .select("course_id, progress")
+      .select("id,course_id, progress")
       .eq("user_id", user.id)
       .maybeSingle();
 
@@ -80,6 +80,9 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     // ✅ Store values smartly
     if (application?.course_name) {
       sessionStorage.setItem("courseName", application.course_name);
+    }
+    if (registration?.id) {
+      sessionStorage.setItem("registrationId", registration.id); // <-- store registration_id
     }
     if (application?.status) {
       sessionStorage.setItem("courseStatus", application.status);

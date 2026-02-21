@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Development Class 5</title>
+    <link href="/src/output.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <script type="module" src="./js/webClass5.js"></script>
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+      // Initialize Supabase client
+      const supabase = createClient(
+        "https://cwyiyplxadmcevejshtl.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3eWl5cGx4YWRtY2V2ZWpzaHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg4MjI3MDcsImV4cCI6MjA4NDM5ODcwN30.bbMmrLZphjkUOl_m8HlfqwKZ08lkCZ7Vj39edpm3_LY",
+      );
+
+      window.supabase = supabase;
+    </script>
+  </head>
+  <body
+    class="bg-gray-200 font-sans min-h-screen flex flex-col items-center justify-center p-6"
+  >
+    <!-- Back Arrow -->
+    <a
+      href="../pages/portal.html"
+      class="absolute top-6 left-6 text-violet-700 text-2xl"
+    >
+      <i class="fas fa-arrow-left"></i>
+    </a>
+
+    <!-- Page Content -->
+    <div class="w-full max-w-3xl">
+      <h1 class="text-2xl font-bold text-violet-900 mb-6 text-center">
+        Web Development Class 5
+      </h1>
+
+      <!-- Modules Container -->
+      <div id="modules5" class="space-y-4"></div>
+    </div>
+
+    <!-- Quiz Modal -->
+    <div
+      id="quizModal-5"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center"
+    >
+      <div
+        class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full text-center"
+      >
+        <i
+          id="modalIcon-5"
+          class="fas fa-trophy text-yellow-500 text-5xl mb-4 animate-bounce"
+        ></i>
+        <h2 id="modalTitle-5" class="text-2xl font-bold mb-2">
+          Quiz Completed!
+        </h2>
+        <p id="modalMessage-5" class="text-lg mb-4"></p>
+        <a
+          id="modalOk-5"
+          href="../pages/portal.html"
+          class="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700 transition"
+        >
+          OK
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

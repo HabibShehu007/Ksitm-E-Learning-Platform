@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Web Development Class 1</title>
+    <title>Web Development Class 4</title>
     <link href="/src/output.css" rel="stylesheet" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
-    <script defer src="./js/webClass1.js"></script>
+    <script type="module" src="./js/webClass4.js"></script>
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
@@ -27,7 +27,7 @@
   >
     <!-- Back Arrow -->
     <a
-      href="../portal.html"
+      href="../pages/portal.html"
       class="absolute top-6 left-6 text-violet-700 text-2xl"
     >
       <i class="fas fa-arrow-left"></i>
@@ -36,32 +36,32 @@
     <!-- Page Content -->
     <div class="w-full max-w-3xl">
       <h1 class="text-2xl font-bold text-violet-900 mb-6 text-center">
-        Web Development Class 1
+        Web Development Class 3
       </h1>
 
       <!-- Modules Container -->
-      <div id="modules" class="space-y-4">
-        <!-- JS will inject collapsible module cards here -->
-      </div>
+      <div id="modules4" class="space-y-4"></div>
     </div>
 
-    <!-- Quiz Modal (global, triggered by JS) -->
+    <!-- Quiz Modal -->
     <div
-      id="quizModal"
+      id="quizModal-4"
       class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center"
     >
       <div
         class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full text-center"
       >
         <i
-          id="modalIcon"
+          id="modalIcon-4"
           class="fas fa-trophy text-yellow-500 text-5xl mb-4 animate-bounce"
         ></i>
-        <h2 id="modalTitle" class="text-2xl font-bold mb-2">Quiz Completed!</h2>
-        <p id="modalMessage" class="text-lg mb-4"></p>
+        <h2 id="modalTitle-4" class="text-2xl font-bold mb-2">
+          Quiz Completed!
+        </h2>
+        <p id="modalMessage-4" class="text-lg mb-4"></p>
         <a
-          id="modalOk"
-          href="../portal.html"
+          id="modalOk-4"
+          href="../pages/portal.html"
           class="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700 transition"
         >
           OK
