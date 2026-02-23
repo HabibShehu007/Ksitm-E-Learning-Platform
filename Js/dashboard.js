@@ -79,6 +79,7 @@ async function checkApplicationStatus() {
     } else {
       // No application yet
       exploreBtn?.classList.remove("hidden");
+      setTimeout(() => exploreBtn?.classList.add("opacity-100"), 10);
       document.querySelectorAll(".preview-course").forEach((btn) => {
         btn.classList.remove("hidden");
       });
