@@ -49,43 +49,51 @@ async function checkApplicationStatus() {
     const pendingNotice = document.getElementById("pendingNotice");
     const rejectedNotice = document.getElementById("rejectedNotice");
 
-    // Reset notices
+    // Reset state
     pendingNotice?.classList.add("hidden");
     rejectedNotice?.classList.add("hidden");
-    exploreBtn?.classList.add("hidden");
+    exploreBtn?.classList.add("hidden", "opacity-0");
     courseContainer?.classList.add("hidden");
-
     document.querySelectorAll(".preview-course").forEach((btn) => {
       btn.classList.add("hidden");
     });
 
+    // Handle statuses
     if (application?.status === "pending") {
+      // Pending → show pending notice
       pendingNotice?.classList.remove("hidden");
       togglePortalLinks(false);
     } else if (application?.status === "rejected") {
+      // Rejected → show rejected notice
       rejectedNotice?.classList.remove("hidden");
       togglePortalLinks(false);
     } else if (application?.status === "approved") {
+      // Approved → show explore button + previews
       exploreBtn?.classList.remove("hidden");
+      setTimeout(() => exploreBtn?.classList.add("opacity-100"), 10);
+
       document.querySelectorAll(".preview-course").forEach((btn) => {
         btn.classList.remove("hidden");
       });
 
       exploreBtn.onclick = () => {
         courseContainer?.classList.remove("hidden");
+        setTimeout(() => courseContainer?.classList.add("opacity-100"), 10);
       };
 
       togglePortalLinks(true);
     } else {
-      // No application yet
+      // No application yet → allow exploring
       exploreBtn?.classList.remove("hidden");
       setTimeout(() => exploreBtn?.classList.add("opacity-100"), 10);
+
       document.querySelectorAll(".preview-course").forEach((btn) => {
         btn.classList.remove("hidden");
       });
 
       exploreBtn.onclick = () => {
         courseContainer?.classList.remove("hidden");
+        setTimeout(() => courseContainer?.classList.add("opacity-100"), 10);
       };
 
       togglePortalLinks(false);
