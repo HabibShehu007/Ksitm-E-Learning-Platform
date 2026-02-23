@@ -37,7 +37,7 @@ async function checkApplicationStatus() {
       .from("applications")
       .select("status, course_name")
       .eq("user_id", userId)
-      .maybeSingle(); // ✅ safe: returns null if no application
+      .maybeSingle();
 
     if (error) {
       console.error("Error fetching application status:", error.message);
@@ -50,61 +50,42 @@ async function checkApplicationStatus() {
     const rejectedNotice = document.getElementById("rejectedNotice");
 
     // Reset notices
-    if (pendingNotice) pendingNotice.classList.add("hidden");
-    if (rejectedNotice) rejectedNotice.classList.add("hidden");
+    pendingNotice?.classList.add("hidden");
+    rejectedNotice?.classList.add("hidden");
+    exploreBtn?.classList.add("hidden");
+    courseContainer?.classList.add("hidden");
 
-    if (application && application.status === "pending") {
-      // Pending → show pending notice
-      if (courseContainer) courseContainer.style.display = "none";
-      if (exploreBtn) exploreBtn.style.display = "none";
-      if (pendingNotice) pendingNotice.classList.remove("hidden");
+    document.querySelectorAll(".preview-course").forEach((btn) => {
+      btn.classList.add("hidden");
+    });
 
-      document
-        .querySelectorAll(".preview-course")
-        .forEach((btn) => (btn.style.display = "none"));
-
+    if (application?.status === "pending") {
+      pendingNotice?.classList.remove("hidden");
       togglePortalLinks(false);
-    } else if (application && application.status === "rejected") {
-      // Rejected → show rejected notice
-      if (courseContainer) courseContainer.style.display = "none";
-      if (exploreBtn) exploreBtn.style.display = "none";
-      if (rejectedNotice) rejectedNotice.classList.remove("hidden");
-
-      document
-        .querySelectorAll(".preview-course")
-        .forEach((btn) => (btn.style.display = "none"));
-
+    } else if (application?.status === "rejected") {
+      rejectedNotice?.classList.remove("hidden");
       togglePortalLinks(false);
-    } else if (application && application.status === "approved") {
-      // Approved → unlock dashboard + show portal link
-      if (exploreBtn) exploreBtn.style.display = "inline-block";
-      if (courseContainer) courseContainer.style.display = "none"; // hidden until explore clicked
+    } else if (application?.status === "approved") {
+      exploreBtn?.classList.remove("hidden");
+      document.querySelectorAll(".preview-course").forEach((btn) => {
+        btn.classList.remove("hidden");
+      });
 
-      document
-        .querySelectorAll(".preview-course")
-        .forEach((btn) => (btn.style.display = "inline-block"));
-
-      if (exploreBtn) {
-        exploreBtn.onclick = () => {
-          if (courseContainer) courseContainer.style.display = "block";
-        };
-      }
+      exploreBtn.onclick = () => {
+        courseContainer?.classList.remove("hidden");
+      };
 
       togglePortalLinks(true);
     } else {
-      // No application yet → unlock dashboard (explore courses)
-      if (exploreBtn) exploreBtn.style.display = "inline-block";
-      if (courseContainer) courseContainer.style.display = "none";
+      // No application yet
+      exploreBtn?.classList.remove("hidden");
+      document.querySelectorAll(".preview-course").forEach((btn) => {
+        btn.classList.remove("hidden");
+      });
 
-      document
-        .querySelectorAll(".preview-course")
-        .forEach((btn) => (btn.style.display = "inline-block"));
-
-      if (exploreBtn) {
-        exploreBtn.onclick = () => {
-          if (courseContainer) courseContainer.style.display = "block";
-        };
-      }
+      exploreBtn.onclick = () => {
+        courseContainer?.classList.remove("hidden");
+      };
 
       togglePortalLinks(false);
     }
@@ -113,7 +94,7 @@ async function checkApplicationStatus() {
   }
 }
 
-// Logout logic (desktop + mobile)
+// Logout logic
 function setupLogout() {
   const logoutBtn = document.getElementById("logoutBtn");
   const logoutBtnMobile = document.getElementById("logoutBtnMobile");
@@ -128,13 +109,13 @@ function setupLogout() {
   });
 }
 
-// Setup message badge to show count of messages
+// Setup message badge
 function setupMessageBadge() {
   const badgeDesktop = document.getElementById("messageBadge");
   const badgeMobile = document.getElementById("messageBadgeMobile");
 
   [badgeDesktop, badgeMobile].forEach((badge) => {
-    if (badge) badge.classList.add("hidden");
+    badge?.classList.add("hidden");
   });
 
   const userId = sessionStorage.getItem("userId");
@@ -185,11 +166,9 @@ function setupMobileNav() {
     });
   }
 
-  if (overlay) {
-    overlay.addEventListener("click", () => {
-      closeMenu.click();
-    });
-  }
+  overlay?.addEventListener("click", () => {
+    closeMenu?.click();
+  });
 }
 
 // Course modals
@@ -219,49 +198,43 @@ function setupCourseModals() {
     });
   });
 
-  if (closeModal) {
-    closeModal.addEventListener("click", () => {
-      content.classList.remove("scale-100", "opacity-100");
-      content.classList.add("scale-95", "opacity-0");
-      setTimeout(() => {
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
-      }, 300);
-    });
-  }
+  closeModal?.addEventListener("click", () => {
+    content.classList.remove("scale-100", "opacity-100");
+    content.classList.add("scale-95", "opacity-0");
+    setTimeout(() => {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }, 300);
+  });
 
-  if (enrollBtn) {
-    enrollBtn.addEventListener("click", async () => {
-      const userId = sessionStorage.getItem("userId");
-      if (!userId) return;
+  enrollBtn?.addEventListener("click", async () => {
+    const userId = sessionStorage.getItem("userId");
+    if (!userId) return;
 
-      try {
-        const { data: application, error } = await window.supabase
-          .from("applications")
-          .select("status")
-          .eq("user_id", userId)
-          .maybeSingle(); // ✅ safe for no application
+    try {
+      const { data: application, error } = await window.supabase
+        .from("applications")
+        .select("status")
+        .eq("user_id", userId)
+        .maybeSingle();
 
-        if (error) {
-          console.error("Error checking application:", error.message);
-          return;
-        }
-
-        if (application && application.status === "approved") {
-          // ✅ User already has an active course → show overlay
-          const overlay = document.getElementById("unfinishedOverlay");
-          if (overlay) overlay.classList.remove("hidden");
-        } else {
-          // ✅ Normal enrollment flow
-          const courseName = document.getElementById("modalTitle").textContent;
-          sessionStorage.setItem("selectedCourse", courseName);
-          window.location.href = "../Pages/application.html";
-        }
-      } catch (err) {
-        console.error("Unexpected error on enroll:", err);
+      if (error) {
+        console.error("Error checking application:", error.message);
+        return;
       }
-    });
-  }
+
+      if (application?.status === "approved") {
+        const overlay = document.getElementById("unfinishedOverlay");
+        overlay?.classList.remove("hidden");
+      } else {
+        const courseName = document.getElementById("modalTitle").textContent;
+        sessionStorage.setItem("selectedCourse", courseName);
+        window.location.href = "../Pages/application.html";
+      }
+    } catch (err) {
+      console.error("Unexpected error on enroll:", err);
+    }
+  });
 }
 
 // Initialize all logic on page load
