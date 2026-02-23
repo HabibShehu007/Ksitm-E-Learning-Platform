@@ -130,10 +130,15 @@
 
           <button
             type="submit"
+            id="portalLoginBtn"
             class="w-full bg-gradient-to-r from-violet-600 to-purple-700 hover:from-violet-700 hover:to-purple-800 text-white py-3 sm:py-4 rounded-lg flex items-center justify-center gap-2 text-base sm:text-lg transition duration-200 shadow-md"
           >
             <i class="fas fa-sign-in-alt"></i>
-            Access Portal
+            <span id="btnText">Access Portal</span>
+            <span
+              id="btnLoader"
+              class="hidden animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"
+            ></span>
           </button>
         </form>
       </section>

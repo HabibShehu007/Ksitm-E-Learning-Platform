@@ -6,12 +6,22 @@ document.querySelector("form").addEventListener("submit", async (e) => {
   const name = document.getElementById("name").value.trim();
   const phone = document.getElementById("phone").value.trim();
   const email = document.getElementById("email").value.trim();
-  const dob = document.getElementById("dob").value.trim(); // ✅ new
-  const address = document.getElementById("address").value.trim(); // ✅ new
+  const dob = document.getElementById("dob").value.trim();
+  const address = document.getElementById("address").value.trim();
   const password = document.getElementById("password").value.trim();
   const confirmPassword = document
     .getElementById("confirmPassword")
     .value.trim();
+
+  const btn = document.getElementById("signupBtn");
+  const btnText = document.getElementById("signupBtnText");
+  const btnLoader = document.getElementById("signupBtnLoader");
+
+  // Show loader with animation
+  btn.disabled = true;
+  btnText.textContent = "Creating...";
+  btnLoader.classList.remove("hidden");
+  btnLoader.classList.add("animate-spin", "animate-pulse");
 
   // validations
   if (
@@ -24,25 +34,34 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     !password ||
     !confirmPassword
   ) {
-    return showModal("error", "⚠️ All fields are required.");
+    setTimeout(() => {
+      showModal("error", "⚠️ All fields are required.");
+      resetButton();
+    }, 3000);
+    return;
   }
   if (!email.includes("@")) {
-    return showModal("warning", "📧 Invalid email format.");
+    setTimeout(() => {
+      showModal("warning", "📧 Invalid email format.");
+      resetButton();
+    }, 3000);
+    return;
   }
   if (password !== confirmPassword) {
-    return showModal("error", "🔑 Passwords do not match.");
+    setTimeout(() => {
+      showModal("error", "🔑 Passwords do not match.");
+      resetButton();
+    }, 3000);
+    return;
   }
 
-  // Show loading state
-  showModal("info", "⏳ Creating your account... Please wait.");
-
   try {
-    // Supabase signup with email + password
+    // Supabase signup
     const { data, error } = await window.supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { username, name, phone, email, dob, address }, // ✅ include metadata
+        data: { username, name, phone, email, dob, address },
       },
     });
 
@@ -50,44 +69,57 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       console.error("Signup error:", error);
       return setTimeout(() => {
         showModal("error", "🚫 " + error.message);
-      }, 2000);
+        resetButton();
+      }, 3000);
     }
 
-    // ✅ Insert profile info into the user_profiles table
+    // ✅ Insert profile info
     const userId = data.user?.id;
     if (userId) {
       const { error: profileError } = await window.supabase
         .from("user_profiles")
-        .insert({
-          id: userId,
-          username,
-          name,
-          phone,
-          email,
-          dob, // ✅ new
-          address, // ✅ new
-        });
+        .insert({ id: userId, username, name, phone, email, dob, address });
 
       if (profileError) {
         console.error("Profile insert error:", profileError);
         return setTimeout(() => {
           showModal("error", "⚠️ Failed to save profile info.");
-        }, 2000);
+          resetButton();
+        }, 3000);
       }
     }
 
-    // Success modal
+    // ✅ Success modal after loader spins
     setTimeout(() => {
       showModal(
         "success",
-        "🎉 Account created successfully! You can now log in."
+        "🎉 Account created successfully! You can now log in.",
       );
-    }, 2000);
+      resetButton();
+
+      // Redirect only when user presses Continue
+      const closeBtn = document.getElementById("modalCloseBtn");
+      if (closeBtn) {
+        closeBtn.onclick = () => {
+          closeModal();
+          window.location.href = "../Pages/login.html";
+        };
+      }
+    }, 3000);
   } catch (err) {
     console.error("Unexpected signup error:", err);
     setTimeout(() => {
       showModal("error", "⚠️ Something went wrong. Please try again.");
-    }, 2000);
+      resetButton();
+    }, 3000);
+  }
+
+  // Helper function to reset button state
+  function resetButton() {
+    btn.disabled = false;
+    btnText.textContent = "Sign Up";
+    btnLoader.classList.add("hidden");
+    btnLoader.classList.remove("animate-spin", "animate-pulse");
   }
 });
 

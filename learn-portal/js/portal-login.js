@@ -44,8 +44,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       e.preventDefault();
       const regNumber = regInput.value.trim();
 
+      const btn = document.getElementById("portalLoginBtn");
+      const btnText = document.getElementById("btnText");
+      const btnLoader = document.getElementById("btnLoader");
+
+      // Show loader
+      btn.disabled = true;
+      btnText.textContent = "Loading...";
+      btnLoader.classList.remove("hidden");
+
       if (!regNumber) {
-        showModal("error", "⚠️ Please enter your registration number.");
+        setTimeout(() => {
+          showModal("error", "⚠️ Please enter your registration number.");
+          resetButton();
+        }, 3000);
         return;
       }
 
@@ -58,7 +70,10 @@ document.addEventListener("DOMContentLoaded", async () => {
           .single();
 
         if (regError || !regRecord) {
-          showModal("error", "❌ Invalid Registration Number.");
+          setTimeout(() => {
+            showModal("error", "❌ Invalid Registration Number.");
+            resetButton();
+          }, 3000);
           return;
         }
 
@@ -70,30 +85,49 @@ document.addEventListener("DOMContentLoaded", async () => {
           .single();
 
         if (appError || !application) {
-          showModal("error", "⚠️ No application record found.");
+          setTimeout(() => {
+            showModal("error", "⚠️ No application record found.");
+            resetButton();
+          }, 3000);
           return;
         }
 
         if (application.status !== "approved") {
-          showModal("warning", "⏳ You are not admitted yet.");
+          setTimeout(() => {
+            showModal("warning", "⏳ You are not admitted yet.");
+            resetButton();
+          }, 3000);
           return;
         }
 
         // Step 3: Congratulatory modal
-        showModal(
-          "success",
-          `👋 Welcome back ${application.full_name}! Continue your learning in ${application.course_name}.`,
-        );
+        setTimeout(() => {
+          showModal(
+            "success",
+            `👋 Welcome back ${application.full_name}! Continue your learning in ${application.course_name}.`,
+          );
+          resetButton();
 
-        // Step 4: Redirect after modal close
-        if (modalCloseBtn) {
-          modalCloseBtn.addEventListener("click", () => {
-            window.location.href = `../Learn_Dashbaord/pages/portal.html?reg=${regRecord.registration_number}&course=${application.course_name}`;
-          });
-        }
+          // Step 4: Redirect after modal close
+          if (modalCloseBtn) {
+            modalCloseBtn.addEventListener("click", () => {
+              window.location.href = `../Learn_Dashbaord/pages/portal.html?reg=${regRecord.registration_number}&course=${application.course_name}`;
+            });
+          }
+        }, 3000);
       } catch (err) {
         console.error("Unexpected error:", err);
-        showModal("error", "⚠️ Something went wrong. Please try again.");
+        setTimeout(() => {
+          showModal("error", "⚠️ Something went wrong. Please try again.");
+          resetButton();
+        }, 3000);
+      }
+
+      // Helper function to reset button state
+      function resetButton() {
+        btn.disabled = false;
+        btnText.textContent = "Access Portal";
+        btnLoader.classList.add("hidden");
       }
     });
   }

@@ -7,14 +7,30 @@ document.querySelector("form").addEventListener("submit", async (e) => {
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value.trim();
 
+  const btn = document.getElementById("loginBtn");
+  const btnText = document.getElementById("loginBtnText");
+  const btnLoader = document.getElementById("loginBtnLoader");
+
+  // Show loader with animation
+  btn.disabled = true;
+  btnText.textContent = "Logging in...";
+  btnLoader.classList.remove("hidden");
+  btnLoader.classList.add("animate-spin", "animate-pulse"); // spin + pulse
+
   if (!email || !password) {
-    return showModal("error", "⚠️ Please enter both email and password.");
+    setTimeout(() => {
+      showModal("error", "⚠️ Please enter both email and password.");
+      resetButton();
+    }, 3000);
+    return;
   }
   if (!email.includes("@")) {
-    return showModal("warning", "📧 Invalid email format.");
+    setTimeout(() => {
+      showModal("warning", "📧 Invalid email format.");
+      resetButton();
+    }, 3000);
+    return;
   }
-
-  showModal("info", "⏳ Logging you in...");
 
   try {
     // Supabase login
@@ -27,14 +43,16 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       console.error("Login error:", error.message);
       return setTimeout(() => {
         showModal("error", "❌ " + error.message);
-      }, 1000);
+        resetButton();
+      }, 3000);
     }
 
     const user = data?.user || data.session?.user;
     if (!user) {
       return setTimeout(() => {
         showModal("error", "⚠️ No user session returned.");
-      }, 1000);
+        resetButton();
+      }, 3000);
     }
 
     // ✅ Fetch profile info
@@ -49,7 +67,7 @@ document.querySelector("form").addEventListener("submit", async (e) => {
     }
 
     // ✅ Store profile in sessionStorage
-    sessionStorage.setItem("userId", user.id); // UUID from Supabase Auth
+    sessionStorage.setItem("userId", user.id);
     sessionStorage.setItem("userEmail", user.email);
     sessionStorage.setItem("userName", profile?.name || "Guest");
     sessionStorage.setItem("userUsername", profile?.username || "");
@@ -82,19 +100,19 @@ document.querySelector("form").addEventListener("submit", async (e) => {
       sessionStorage.setItem("courseName", application.course_name);
     }
     if (registration?.id) {
-      sessionStorage.setItem("registrationId", registration.id); // <-- store registration_id
+      sessionStorage.setItem("registrationId", registration.id);
     }
     if (application?.status) {
       sessionStorage.setItem("courseStatus", application.status);
     }
     if (registration?.course_id) {
-      sessionStorage.setItem("courseId", registration.course_id); // UUID
+      sessionStorage.setItem("courseId", registration.course_id);
     }
     if (registration?.progress !== undefined) {
       sessionStorage.setItem("courseProgress", registration.progress);
     }
 
-    // ✅ Always route to dashboard
+    // ✅ Show success modal after loader spins
     setTimeout(() => {
       const displayName = profile?.name || user.email;
       const courseMsg =
@@ -106,16 +124,31 @@ document.querySelector("form").addEventListener("submit", async (e) => {
         "success",
         `✅ Welcome back, ${displayName}! You’ve logged in successfully.${courseMsg}`,
       );
+      resetButton();
 
-      setTimeout(() => {
-        window.location.href = "../Pages/dashboard.html";
-      }, 2500);
-    }, 1000);
+      // Redirect only when user presses Continue
+      const closeBtn = document.getElementById("modalCloseBtn");
+      if (closeBtn) {
+        closeBtn.onclick = () => {
+          closeModal();
+          window.location.href = "../Pages/dashboard.html";
+        };
+      }
+    }, 3000);
   } catch (err) {
     console.error("Unexpected error:", err);
     setTimeout(() => {
       showModal("error", "⚠️ Something went wrong. Please try again.");
-    }, 1000);
+      resetButton();
+    }, 3000);
+  }
+
+  // Helper function to reset button state
+  function resetButton() {
+    btn.disabled = false;
+    btnText.textContent = "Login";
+    btnLoader.classList.add("hidden");
+    btnLoader.classList.remove("animate-spin", "animate-pulse");
   }
 });
 
