@@ -6,270 +6,197 @@ document.addEventListener("DOMContentLoaded", () => {
   const module1 = {
     id: 1, // replace with actual UUID from Supabase
     type: "theory",
-    title: "Module 1: Introduction to JavaScript Basics",
+    title: "Module 1: Final Project & Deployment",
     content: `
     <div class="space-y-8">
 
-      <!-- Variables -->
+      <!-- Final Project Overview -->
       <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
         <div class="flex-shrink-0 text-violet-700 text-3xl mb-3 sm:mb-0">
-          <i class="fas fa-code"></i>
+          <i class="fas fa-project-diagram"></i>
         </div>
         <div class="w-full">
-          <h3 class="text-xl font-bold text-violet-800 mb-2">JavaScript Variables</h3>
+          <h3 class="text-xl font-bold text-violet-800 mb-2">Final Project Overview</h3>
           <p class="text-gray-900 font-medium leading-relaxed">
-            Variables store data values. You can declare them using <code>let</code>, <code>const</code>, or <code>var</code>.
+            In this final class, you will combine everything you’ve learned — frontend, advanced JavaScript, and backend with Node.js — into a complete project. The goal is to build a functional web application and prepare it for deployment.
           </p>
-          <div class="overflow-x-auto mt-3">
-            <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;p id="message"&gt;&lt;/p&gt;
-
-&lt;!-- JavaScript --&gt;
-let greeting = "Hello, World!";
-document.getElementById("message").textContent = greeting;
-            </pre>
-          </div>
         </div>
       </section>
 
-      <!-- Functions -->
+      <!-- Project Structure -->
       <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
         <div class="flex-shrink-0 text-green-600 text-3xl mb-3 sm:mb-0">
-          <i class="fas fa-cogs"></i>
+          <i class="fas fa-folder-open"></i>
         </div>
         <div class="w-full">
-          <h3 class="text-xl font-bold text-green-700 mb-2">JavaScript Functions</h3>
+          <h3 class="text-xl font-bold text-green-700 mb-2">Project Structure</h3>
           <p class="text-gray-900 font-medium leading-relaxed">
-            Functions group reusable code. You can call them to perform actions.
+            Organize your project with clear separation of concerns: frontend files, backend server code, and configuration files. A typical Node.js project uses <code>package.json</code> to manage dependencies.
           </p>
           <div class="overflow-x-auto mt-3">
             <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;button onclick="sayHello()"&gt;Click Me&lt;/button&gt;
-
-&lt;!-- JavaScript --&gt;
-function sayHello() {
-  alert("Hello from JavaScript!");
-}
+my-app/
+  ├── public/
+  ├── src/
+  ├── server.js
+  ├── package.json
             </pre>
           </div>
         </div>
       </section>
 
-      <!-- DOM Manipulation -->
+      <!-- Environment Variables -->
       <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
         <div class="flex-shrink-0 text-blue-600 text-3xl mb-3 sm:mb-0">
-          <i class="fas fa-sitemap"></i>
+          <i class="fas fa-key"></i>
         </div>
         <div class="w-full">
-          <h3 class="text-xl font-bold text-blue-700 mb-2">DOM Manipulation</h3>
+          <h3 class="text-xl font-bold text-blue-700 mb-2">Environment Variables</h3>
           <p class="text-gray-900 font-medium leading-relaxed">
-            JavaScript can change HTML content and styles dynamically by targeting elements in the DOM.
+            Use environment variables to store sensitive information like API keys and database credentials. Create a <code>.env</code> file and load it with packages like <code>dotenv</code>.
           </p>
           <div class="overflow-x-auto mt-3">
             <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;div id="box"&gt;Original Text&lt;/div&gt;
+// .env
+PORT=3000
+DB_URL=mongodb://localhost:27017/mydb
 
-&lt;!-- JavaScript --&gt;
-document.getElementById("box").textContent = "Updated with JavaScript!";
-document.getElementById("box").style.color = "red";
+// server.js
+require('dotenv').config();
+const port = process.env.PORT;
             </pre>
           </div>
         </div>
       </section>
 
-      <!-- Events -->
+      <!-- Deployment Options -->
       <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
-        <div class="flex-shrink-0 text-violet-700 text-3xl mb-3 sm:mb-0">
-          <i class="fas fa-bolt"></i>
+        <div class="flex-shrink-0 text-yellow-600 text-3xl mb-3 sm:mb-0">
+          <i class="fas fa-cloud-upload-alt"></i>
         </div>
         <div class="w-full">
-          <h3 class="text-xl font-bold text-violet-800 mb-2">JavaScript Events</h3>
+          <h3 class="text-xl font-bold text-yellow-700 mb-2">Deployment Options</h3>
           <p class="text-gray-900 font-medium leading-relaxed">
-            Events let you respond to user actions like clicks, key presses, or mouse movements.
+            You can deploy Node.js applications to platforms like <strong>Heroku</strong>, <strong>Vercel</strong>, or <strong>Netlify</strong>. Deployment involves pushing your code to a Git repository and connecting it to the hosting service.
           </p>
           <div class="overflow-x-auto mt-3">
             <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;button id="btn"&gt;Click Me&lt;/button&gt;
-
-&lt;!-- JavaScript --&gt;
-document.getElementById("btn").addEventListener("click", function() {
-  alert("Button was clicked!");
-});
+# Example: Deploying to Heroku
+heroku login
+heroku create my-app
+git push heroku main
+heroku open
             </pre>
           </div>
         </div>
       </section>
 
-    
-
+      <!-- Conclusion Section -->
+      <section class="bg-violet-800 text-white p-6 rounded-lg shadow-lg mt-12 max-w-3xl mx-auto text-center">
+        <div class="mb-4 flex justify-center">
+          <i class="fas fa-flag-checkered text-5xl text-yellow-400"></i>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold mb-3">Final Class Completed</h3>
+          <p class="text-base leading-relaxed">
+            You’ve completed the <strong>Final Project & Deployment Module</strong>, learning how to structure projects, use environment variables, and deploy applications.  
+            Congratulations on finishing the course — you are now ready to build and deploy real-world applications!
+          </p>
+        </div>
+      </section>
     </div>
-    <!-- Arrays -->
-<section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
-  <div class="flex-shrink-0 text-violet-700 text-3xl mb-3 sm:mb-0">
-    <i class="fas fa-list"></i>
-  </div>
-  <div class="w-full">
-    <h3 class="text-xl font-bold text-violet-800 mb-2">JavaScript Arrays</h3>
-    <p class="text-gray-900 font-medium leading-relaxed">
-      Arrays store multiple values in a single variable. You can access items by their index.
-    </p>
-    <div class="overflow-x-auto mt-3">
-      <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;ul id="fruits"&gt;&lt;/ul&gt;
-
-&lt;!-- JavaScript --&gt;
-let fruits = ["Apple", "Banana", "Cherry"];
-let list = document.getElementById("fruits");
-
-fruits.forEach(function(fruit) {
-  let li = document.createElement("li");
-  li.textContent = fruit;
-  list.appendChild(li);
-});
-      </pre>
-    </div>
-  </div>
-</section>
-<!-- Conditionals -->
-<section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
-  <div class="flex-shrink-0 text-green-600 text-3xl mb-3 sm:mb-0">
-    <i class="fas fa-random"></i>
-  </div>
-  <div class="w-full">
-    <h3 class="text-xl font-bold text-green-700 mb-2">JavaScript Conditionals</h3>
-    <p class="text-gray-900 font-medium leading-relaxed">
-      Conditionals let you run code only when certain conditions are true, using <code>if</code>, <code>else</code>, and <code>else if</code>.
-    </p>
-    <div class="overflow-x-auto mt-3">
-      <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;p id="status"&gt;&lt;/p&gt;
-
-&lt;!-- JavaScript --&gt;
-let age = 18;
-let status = document.getElementById("status");
-
-if (age &gt;= 18) {
-  status.textContent = "You are an adult.";
-} else {
-  status.textContent = "You are a minor.";
-}
-      </pre>
-    </div>
-  </div>
-</section>
-<!-- Conclusion Section -->
-<section class="bg-violet-800 text-white p-6 rounded-lg shadow-lg mt-12 max-w-3xl mx-auto text-center">
-  <div class="mb-4 flex justify-center">
-    <i class="fas fa-award text-5xl text-yellow-400"></i>
-  </div>
-  <div>
-    <h3 class="text-2xl font-bold mb-3">Module 1 Completed</h3>
-    <p class="text-base leading-relaxed">
-      You’ve completed <strong>JavaScript Basics Module 1</strong>, covering variables, functions, DOM manipulation, events, arrays, and conditionals.  
-      In <strong>Module 2</strong>, you’ll apply these concepts in a practical demonstration.
-    </p>
-  </div>
-</section>
-
-
   `,
   };
 
   const module2 = {
     id: 2, // replace with actual UUID
     type: "video",
-    title: "Module 2: Know the Basics of JavaScript in 10 Minutes",
-    videoUrl: "https://www.youtube.com/embed/LO5eTH4Pe8E",
+    title: "Module 2: Deploying Your Node.js Project to the Cloud",
+    videoUrl: "https://www.youtube.com/embed/2V1UUhBJ62Y", // example: Heroku/Render deployment tutorial
     conclusion: `
 <!-- Conclusion Section -->
 <section class="bg-violet-800 text-white p-6 rounded-lg shadow-lg mt-8 text-center">
   <div class="mb-4 flex justify-center">
-    <i class="fas fa-lightbulb text-4xl text-yellow-400"></i>
+    <i class="fas fa-rocket text-4xl text-yellow-400"></i>
   </div>
   <h3 class="text-xl font-bold mb-2">Next: Final Quiz</h3>
   <p class="text-base leading-relaxed">
-    You’ve explored JavaScript fundamentals including variables, functions, DOM manipulation, events, arrays, and conditionals.  
-    In the next module, you’ll test your knowledge with a quiz to reinforce these skills.
+    You’ve now seen how to take a Node.js project from your local machine and deploy it to a live server using cloud platforms.  
+    In the next module, you’ll test your knowledge of project structure, environment variables, and deployment best practices to complete the course.
   </p>
 </section>
-    `,
+  `,
   };
 
   const module3 = {
     type: "exam",
-    order_number: 5, // ✅ same as parent class
-    title: "Final Module: JavaScript Basics Quiz",
+    order_number: 8, // ✅ same as parent class
+    title: "Final Module: Project & Deployment Quiz",
     questions: [
       {
         question:
-          "Which keyword is used to declare a variable that can change its value?",
-        options: ["const", "let", "var", "static"],
+          "Which file is used to manage dependencies in a Node.js project?",
+        options: ["index.js", "package.json", "server.js", ".env"],
         answer: 1,
       },
       {
-        question:
-          "Which keyword declares a variable whose value cannot be reassigned?",
-        options: ["var", "let", "const", "static"],
-        answer: 2,
-      },
-      {
-        question:
-          "Which method is used to select an element by its ID in the DOM?",
-        options: [
-          "document.querySelector()",
-          "document.getElementById()",
-          "document.getElementsByClassName()",
-          "document.getElementByTagName()",
-        ],
+        question: "Which file is commonly used to store environment variables?",
+        options: ["config.js", ".env", "settings.json", "variables.js"],
         answer: 1,
       },
       {
-        question: "Which event is triggered when a user clicks a button?",
-        options: ["mouseover", "keydown", "click", "submit"],
-        answer: 2,
-      },
-      {
-        question: "Which symbol is used to access array elements by index?",
-        options: ["{}", "()", "[]", "<>"],
-        answer: 2,
-      },
-      {
-        question: "Which loop is commonly used to iterate through arrays?",
-        options: ["for", "while", "forEach", "All of the above"],
-        answer: 3,
-      },
-      {
-        question:
-          "Which conditional statement runs code only if a condition is true?",
-        options: ["if", "else", "switch", "case"],
+        question: "Which command initializes a new Node.js project?",
+        options: ["npm init", "node start", "npm install", "project init"],
         answer: 0,
       },
       {
-        question: "Which property changes the text content of an HTML element?",
-        options: ["innerHTML", "textContent", "value", "content"],
-        answer: 1,
+        question:
+          "Which environment variable is typically used to define the server port?",
+        options: ["PORT", "SERVER_PORT", "APP_PORT", "NODE_PORT"],
+        answer: 0,
+      },
+      {
+        question: "Which platform can be used to deploy Node.js applications?",
+        options: ["Heroku", "Vercel", "Netlify", "All of the above"],
+        answer: 3,
+      },
+      {
+        question: "Which command pushes code to Heroku for deployment?",
+        options: [
+          "git push heroku main",
+          "heroku deploy",
+          "npm run deploy",
+          "node deploy",
+        ],
+        answer: 0,
       },
       {
         question:
-          "Which function displays a popup alert message in the browser?",
-        options: ["prompt()", "alert()", "confirm()", "message()"],
-        answer: 1,
+          "Which file should NOT be committed to GitHub because it contains secrets?",
+        options: ["server.js", "package.json", ".env", "README.md"],
+        answer: 2,
       },
       {
-        question: "Which method adds a new event listener to an element?",
+        question:
+          "Which tool is used to load environment variables from a .env file?",
+        options: ["dotenv", "config", "env-loader", "node-env"],
+        answer: 0,
+      },
+      {
+        question:
+          "Which command installs all dependencies listed in package.json?",
+        options: ["npm install", "npm start", "node install", "npm run"],
+        answer: 0,
+      },
+      {
+        question: "Which step comes last in deployment?",
         options: [
-          "element.onEvent()",
-          "element.addEventListener()",
-          "element.attachEvent()",
-          "element.listen()",
+          "Writing code",
+          "Testing locally",
+          "Pushing to Git",
+          "Opening the live app",
         ],
-        answer: 1,
+        answer: 3,
       },
     ],
   };

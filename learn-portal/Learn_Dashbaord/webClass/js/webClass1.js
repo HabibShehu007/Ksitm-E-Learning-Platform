@@ -1,4 +1,5 @@
 import { submitQuiz } from "./submitQuiz.js";
+import { getClassIdByOrder } from "./submitQuiz.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Define simple test modules
@@ -269,8 +270,8 @@ document.addEventListener("DOMContentLoaded", () => {
     `,
   };
   const module3 = {
-    id: "55e67cf5-da0c-4dc2-8d20-484c080ebec1",
     type: "exam",
+    order_number: 1, // ✅ same as parent class
     title: "Final Module: HTML Basics Quiz",
     questions: [
       {
@@ -426,8 +427,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (module.type === "exam") {
-      const registrationId = sessionStorage.getItem("registrationId");
-      const classId = module.id;
+      const userId = sessionStorage.getItem("userId");
+      const courseId = sessionStorage.getItem("courseId");
+      const classId = await getClassIdByOrder(
+        userId,
+        courseId,
+        module.order_number,
+      );
+
+      console.log("Page load check:");
+      console.log("userId:", userId);
+      console.log("courseId:", courseId);
+      console.log("orderNumber:", module.order_number);
+
+      if (!classId) {
+        console.error("No class_id found for order:", module.order_number);
+        return; // 🚫 stop here
+      }
 
       // Modal references
       const quizModal = document.getElementById("quizModal");
@@ -435,34 +451,41 @@ document.addEventListener("DOMContentLoaded", () => {
       const modalIcon = document.getElementById("modalIcon");
       const modalTitle = document.getElementById("modalTitle");
       const modalOk = document.getElementById("modalOk");
+      const modalContent = document.getElementById("quizModalContent");
 
       // 🔎 Check if quiz already passed
       const { data, error } = await window.supabase
         .from("class_progress")
         .select("progress")
-        .eq("registration_id", registrationId)
         .eq("class_id", classId)
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error("Error checking progress:", error);
         return;
       }
 
-      if (data && data.progress >= 70) {
+      if (data && data.progress === 100) {
         // ✅ Already passed — show info modal
         modalIcon.className = "fas fa-info-circle text-blue-500 text-5xl mb-4";
         modalTitle.textContent = "Quiz Already Completed";
         modalMessage.textContent =
           "You’ve already passed this quiz. No need to retake it.";
+
+        // Show modal
         quizModal.classList.remove("hidden");
+        modalContent.classList.remove("opacity-0", "scale-95");
+        modalContent.classList.add("opacity-100", "scale-100");
 
         modalOk.onclick = () => {
+          // Hide modal
           quizModal.classList.add("hidden");
-          window.location.href = "portal.html"; // ✅ redirect back
+          modalContent.classList.remove("opacity-100", "scale-100");
+          modalContent.classList.add("opacity-0", "scale-95");
+          window.location.href = "portal.html";
         };
 
-        return; // 🚫 stop here, don’t render quiz
+        return; // 🚫 stop here
       }
 
       // ✅ Otherwise, render quiz normally
@@ -524,9 +547,7 @@ document.addEventListener("DOMContentLoaded", () => {
             (opt, i) => `
           <label class="block cursor-pointer">
             <input type="radio" name="question-${currentQuestion}" value="${i}" class="hidden peer" ${answers[currentQuestion] === i ? "checked" : ""}>
-            <div class="p-3 border rounded-lg transition 
-                        peer-checked:bg-violet-100 peer-checked:text-violet-700 peer-checked:border-violet-600 
-                        hover:bg-violet-50">
+            <div class="p-3 border rounded-lg transition peer-checked:bg-violet-100 peer-checked:text-violet-700 peer-checked:border-violet-600 hover:bg-violet-50">
               ${opt}
             </div>
           </label>
@@ -575,43 +596,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
             console.log("Code 6 → module.id:", module.id);
 
-            if (score >= 70) {
-              // 🔥 Call submitQuiz.js
-              await submitQuiz(registrationId, classId, score);
+            // 🔄 Show loading spinner in button
+            nextBtn.disabled = true;
+            const originalText = nextBtn.innerHTML;
+            nextBtn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i>Submitting...`;
 
-              modalIcon.className =
-                "fas fa-trophy text-yellow-500 text-5xl mb-4 animate-bounce";
-              modalTitle.textContent = "Quiz Completed!";
-              modalMessage.textContent = `Your Score: ${score}%. 🎉 Great job! You passed and your progress has been updated.`;
-              quizModal.classList.remove("hidden");
+            try {
+              if (score >= 70) {
+                await submitQuiz(userId, courseId, module.order_number, score);
 
-              modalOk.onclick = () => {
-                quizModal.classList.add("hidden");
-                window.location.href = "portal.html"; // ✅ redirect after passing
-              };
-            } else {
-              modalIcon.className =
-                "fas fa-exclamation-circle text-red-500 text-5xl mb-4 animate-pulse";
-              modalTitle.textContent = "Quiz Completed!";
-              modalMessage.textContent = `Your Score: ${score}%. ❌ You need at least 70% to proceed. Please retake the quiz.`;
-              quizModal.classList.remove("hidden");
+                modalIcon.className =
+                  "fas fa-trophy text-yellow-500 text-5xl mb-4 animate-bounce";
+                modalTitle.textContent = "Quiz Completed!";
+                modalMessage.textContent = `Your Score: ${score}%. 🎉 Great job! You passed and your progress has been updated.`;
 
-              modalOk.onclick = () => {
-                quizModal.classList.add("hidden");
-                currentQuestion = 0;
-                answers = Array(module.questions.length).fill(null);
-                renderQuestion();
-              };
+                quizModal.classList.remove("hidden");
+                modalContent.classList.remove("opacity-0", "scale-95");
+                modalContent.classList.add("opacity-100", "scale-100");
+
+                modalOk.onclick = () => {
+                  quizModal.classList.add("hidden");
+                  modalContent.classList.remove("opacity-100", "scale-100");
+                  modalContent.classList.add("opacity-0", "scale-95");
+                  window.location.href = "portal.html";
+                };
+              } else {
+                modalIcon.className =
+                  "fas fa-exclamation-circle text-red-500 text-5xl mb-4 animate-pulse";
+                modalTitle.textContent = "Quiz Completed!";
+                modalMessage.textContent = `Your Score: ${score}%. ❌ You need at least 70% to proceed. Please retake the quiz.`;
+
+                quizModal.classList.remove("hidden");
+                modalContent.classList.remove("opacity-0", "scale-95");
+                modalContent.classList.add("opacity-100", "scale-100");
+
+                modalOk.onclick = () => {
+                  quizModal.classList.add("hidden");
+                  modalContent.classList.remove("opacity-100", "scale-100");
+                  modalContent.classList.add("opacity-0", "scale-95");
+                  currentQuestion = 0;
+                  answers = Array(module.questions.length).fill(null);
+                  renderQuestion();
+                };
+              }
+            } finally {
+              // 🔄 Reset button back to normal
+              nextBtn.disabled = false;
+              nextBtn.innerHTML = originalText;
             }
           }
-        }
-      });
-
-      // Back button
-      backBtn.addEventListener("click", () => {
-        if (currentQuestion > 0) {
-          currentQuestion--;
-          renderQuestion();
         }
       });
 

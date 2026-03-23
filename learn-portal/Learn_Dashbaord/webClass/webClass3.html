@@ -9,16 +9,15 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
-    <script type="module" src="./js/webClass3.js"></script>
+    <!-- ✅ Use type="module" so imports work -->
+    <script defer type="module" src="./js/webClass3.js"></script>
+
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-      // Initialize Supabase client
       const supabase = createClient(
-        "https://cwyiyplxadmcevejshtl.supabase.co",
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3eWl5cGx4YWRtY2V2ZWpzaHRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg4MjI3MDcsImV4cCI6MjA4NDM5ODcwN30.bbMmrLZphjkUOl_m8HlfqwKZ08lkCZ7Vj39edpm3_LY",
+        "https://vdvligxfmncegwajtmdl.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkdmxpZ3hmbW5jZWd3YWp0bWRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2NDg0NDksImV4cCI6MjA4OTIyNDQ0OX0.jKOC_pMapltD-ZDPKI4gSDbTvx0x3z8Zbe2DgIAiEAg",
       );
-
       window.supabase = supabase;
     </script>
   </head>
@@ -40,29 +39,47 @@
       </h1>
 
       <!-- Modules Container -->
-      <div id="modules3" class="space-y-4"></div>
+      <div id="modules" class="space-y-4">
+        <!-- JS will inject collapsible module cards here -->
+      </div>
     </div>
 
-    <!-- Quiz Modal -->
+    <!-- Quiz Modal (global, triggered by JS) -->
     <div
-      id="quizModal-3"
-      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center"
+      id="quizModal"
+      class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50"
     >
       <div
-        class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full text-center"
+        class="bg-white p-6 sm:p-8 rounded-lg shadow-xl max-w-md w-11/12 sm:w-full text-center transform transition-all duration-300 ease-out scale-95 opacity-0"
+        id="quizModalContent"
       >
-        <i
-          id="modalIcon-3"
-          class="fas fa-trophy text-yellow-500 text-5xl mb-4 animate-bounce"
-        ></i>
-        <h2 id="modalTitle-3" class="text-2xl font-bold mb-2">
+        <!-- Icon -->
+        <div class="mb-6 flex justify-center">
+          <i
+            id="modalIcon"
+            class="fas fa-trophy text-yellow-500 text-6xl animate-bounce"
+          ></i>
+        </div>
+
+        <!-- Heading -->
+        <h2
+          id="modalTitle"
+          class="text-2xl sm:text-3xl font-extrabold text-violet-800 mb-4"
+        >
           Quiz Completed!
         </h2>
-        <p id="modalMessage-3" class="text-lg mb-4"></p>
+
+        <!-- Message -->
+        <p
+          id="modalMessage"
+          class="text-gray-700 text-sm sm:text-base font-medium leading-relaxed mb-6"
+        ></p>
+
+        <!-- OK Button -->
         <a
-          id="modalOk-3"
+          id="modalOk"
           href="../pages/portal.html"
-          class="bg-violet-600 text-white px-4 py-2 rounded hover:bg-violet-700 transition"
+          class="bg-violet-700 text-white px-6 py-2 rounded-lg font-semibold hover:bg-violet-800 transition-colors duration-300"
         >
           OK
         </a>

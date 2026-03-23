@@ -77,6 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Close buttons
   document.getElementById("closeSuccess").addEventListener("click", () => {
     closeModal(successModal, successContent);
+    window.location.href = "../Pages/status.html"; // redirect only after user clicks
   });
   document.getElementById("closeError").addEventListener("click", () => {
     closeModal(errorModal, errorContent);
@@ -88,17 +89,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     .addEventListener("submit", async (e) => {
       e.preventDefault();
 
+      const btn = document.getElementById("submitBtn");
+      const btnText = document.getElementById("submitBtnText");
+      const btnLoader = document.getElementById("submitBtnLoader");
+
+      // Show loader
+      btn.disabled = true;
+      btnText.textContent = "Submitting...";
+      btnLoader.classList.remove("hidden");
+
       try {
         // Collect form data
         const applicationData = {
-          user_id: user.id, // 👈 critical for RLS
+          user_id: user.id,
           full_name: document.getElementById("fullName").value.trim(),
           email: document.getElementById("email").value.trim(),
           phone: document.getElementById("phone").value.trim(),
-          dob: document.getElementById("dob").value, // ✅ from user_profiles
-          address: document.getElementById("address").value.trim(), // ✅ from user_profiles
-          gender: document.getElementById("gender").value, // 👈 user selects
-          motivation: document.getElementById("motivation").value.trim(), // 👈 user writes
+          dob: document.getElementById("dob").value,
+          address: document.getElementById("address").value.trim(),
+          gender: document.getElementById("gender").value,
+          motivation: document.getElementById("motivation").value.trim(),
           start_date: document.getElementById("startDate").value,
           course_name: selectedCourse,
           status: "pending",
@@ -111,20 +121,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (error) throw error;
 
-        // Show success modal
+        // Success modal
         successModal.querySelector("p").textContent =
           `Thank you, ${applicationData.full_name}! Your application for ${selectedCourse} has been received.`;
         showModal(successModal, successContent);
-
-        // Redirect after delay
-        setTimeout(() => {
-          window.location.href = "../Pages/status.html";
-        }, 2500);
       } catch (err) {
         console.error("Application error:", err);
         errorModal.querySelector("p").textContent =
           "Oops! Something went wrong. Please try again.";
         showModal(errorModal, errorContent);
+      } finally {
+        // Reset button state
+        btn.disabled = false;
+        btnText.textContent = "Submit Application";
+        btnLoader.classList.add("hidden");
       }
     });
 });

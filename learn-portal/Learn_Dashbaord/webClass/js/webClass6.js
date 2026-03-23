@@ -6,185 +6,147 @@ document.addEventListener("DOMContentLoaded", () => {
   const module1 = {
     id: 1, // replace with actual UUID from Supabase
     type: "theory",
-    title: "Module 1: Introduction to JavaScript Basics",
+    title: "Module 1: Advanced JavaScript Concepts",
     content: `
     <div class="space-y-8">
 
-      <!-- Variables -->
+      <!-- Closures -->
       <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
         <div class="flex-shrink-0 text-violet-700 text-3xl mb-3 sm:mb-0">
-          <i class="fas fa-code"></i>
+          <i class="fas fa-lock"></i>
         </div>
         <div class="w-full">
-          <h3 class="text-xl font-bold text-violet-800 mb-2">JavaScript Variables</h3>
+          <h3 class="text-xl font-bold text-violet-800 mb-2">Closures</h3>
           <p class="text-gray-900 font-medium leading-relaxed">
-            Variables store data values. You can declare them using <code>let</code>, <code>const</code>, or <code>var</code>.
+            A closure is a function that retains access to its lexical scope, even when executed outside of that scope.
           </p>
           <div class="overflow-x-auto mt-3">
             <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;p id="message"&gt;&lt;/p&gt;
+function makeCounter() {
+  let count = 0;
+  return function() {
+    count++;
+    return count;
+  };
+}
 
-&lt;!-- JavaScript --&gt;
-let greeting = "Hello, World!";
-document.getElementById("message").textContent = greeting;
+const counter = makeCounter();
+console.log(counter()); // 1
+console.log(counter()); // 2
             </pre>
           </div>
         </div>
       </section>
 
-      <!-- Functions -->
+      <!-- Promises & Async/Await -->
       <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
         <div class="flex-shrink-0 text-green-600 text-3xl mb-3 sm:mb-0">
-          <i class="fas fa-cogs"></i>
+          <i class="fas fa-sync-alt"></i>
         </div>
         <div class="w-full">
-          <h3 class="text-xl font-bold text-green-700 mb-2">JavaScript Functions</h3>
+          <h3 class="text-xl font-bold text-green-700 mb-2">Promises & Async/Await</h3>
           <p class="text-gray-900 font-medium leading-relaxed">
-            Functions group reusable code. You can call them to perform actions.
+            Promises represent asynchronous operations. <code>async/await</code> makes working with promises easier and more readable.
           </p>
           <div class="overflow-x-auto mt-3">
             <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;button onclick="sayHello()"&gt;Click Me&lt;/button&gt;
-
-&lt;!-- JavaScript --&gt;
-function sayHello() {
-  alert("Hello from JavaScript!");
+function fetchData() {
+  return new Promise(resolve => {
+    setTimeout(() => resolve("Data loaded"), 1000);
+  });
 }
+
+async function load() {
+  const result = await fetchData();
+  console.log(result);
+}
+
+load();
             </pre>
           </div>
         </div>
       </section>
 
-      <!-- DOM Manipulation -->
+      <!-- ES6 Classes -->
       <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
         <div class="flex-shrink-0 text-blue-600 text-3xl mb-3 sm:mb-0">
-          <i class="fas fa-sitemap"></i>
+          <i class="fas fa-chalkboard-teacher"></i>
         </div>
         <div class="w-full">
-          <h3 class="text-xl font-bold text-blue-700 mb-2">DOM Manipulation</h3>
+          <h3 class="text-xl font-bold text-blue-700 mb-2">ES6 Classes</h3>
           <p class="text-gray-900 font-medium leading-relaxed">
-            JavaScript can change HTML content and styles dynamically by targeting elements in the DOM.
+            Classes provide a cleaner syntax for creating objects and handling inheritance in JavaScript.
           </p>
           <div class="overflow-x-auto mt-3">
             <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;div id="box"&gt;Original Text&lt;/div&gt;
+class Animal {
+  constructor(name) {
+    this.name = name;
+  }
+  speak() {
+    console.log(\`\${this.name} makes a noise.\`);
+  }
+}
 
-&lt;!-- JavaScript --&gt;
-document.getElementById("box").textContent = "Updated with JavaScript!";
-document.getElementById("box").style.color = "red";
+class Dog extends Animal {
+  speak() {
+    console.log(\`\${this.name} barks.\`);
+  }
+}
+
+const dog = new Dog("Rex");
+dog.speak(); // Rex barks.
             </pre>
           </div>
         </div>
       </section>
 
-      <!-- Events -->
+      <!-- Modules -->
       <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
         <div class="flex-shrink-0 text-violet-700 text-3xl mb-3 sm:mb-0">
-          <i class="fas fa-bolt"></i>
+          <i class="fas fa-box-open"></i>
         </div>
         <div class="w-full">
-          <h3 class="text-xl font-bold text-violet-800 mb-2">JavaScript Events</h3>
+          <h3 class="text-xl font-bold text-violet-800 mb-2">JavaScript Modules</h3>
           <p class="text-gray-900 font-medium leading-relaxed">
-            Events let you respond to user actions like clicks, key presses, or mouse movements.
+            ES6 modules allow you to split code into separate files and import/export functionality.
           </p>
           <div class="overflow-x-auto mt-3">
             <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;button id="btn"&gt;Click Me&lt;/button&gt;
+// math.js
+export function add(a, b) {
+  return a + b;
+}
 
-&lt;!-- JavaScript --&gt;
-document.getElementById("btn").addEventListener("click", function() {
-  alert("Button was clicked!");
-});
+// main.js
+import { add } from './math.js';
+console.log(add(2, 3)); // 5
             </pre>
           </div>
         </div>
       </section>
 
-    
-
+      <!-- Conclusion Section -->
+      <section class="bg-violet-800 text-white p-6 rounded-lg shadow-lg mt-12 max-w-3xl mx-auto text-center">
+        <div class="mb-4 flex justify-center">
+          <i class="fas fa-award text-5xl text-yellow-400"></i>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold mb-3">Module 1 Completed</h3>
+          <p class="text-base leading-relaxed">
+            You’ve completed <strong>Advanced JavaScript Module 1</strong>, covering closures, promises, async/await, ES6 classes, and modules.  
+            In <strong>Module 2</strong>, you’ll apply these advanced concepts in practical coding exercises.
+          </p>
+        </div>
+      </section>
     </div>
-    <!-- Arrays -->
-<section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
-  <div class="flex-shrink-0 text-violet-700 text-3xl mb-3 sm:mb-0">
-    <i class="fas fa-list"></i>
-  </div>
-  <div class="w-full">
-    <h3 class="text-xl font-bold text-violet-800 mb-2">JavaScript Arrays</h3>
-    <p class="text-gray-900 font-medium leading-relaxed">
-      Arrays store multiple values in a single variable. You can access items by their index.
-    </p>
-    <div class="overflow-x-auto mt-3">
-      <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;ul id="fruits"&gt;&lt;/ul&gt;
-
-&lt;!-- JavaScript --&gt;
-let fruits = ["Apple", "Banana", "Cherry"];
-let list = document.getElementById("fruits");
-
-fruits.forEach(function(fruit) {
-  let li = document.createElement("li");
-  li.textContent = fruit;
-  list.appendChild(li);
-});
-      </pre>
-    </div>
-  </div>
-</section>
-<!-- Conditionals -->
-<section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
-  <div class="flex-shrink-0 text-green-600 text-3xl mb-3 sm:mb-0">
-    <i class="fas fa-random"></i>
-  </div>
-  <div class="w-full">
-    <h3 class="text-xl font-bold text-green-700 mb-2">JavaScript Conditionals</h3>
-    <p class="text-gray-900 font-medium leading-relaxed">
-      Conditionals let you run code only when certain conditions are true, using <code>if</code>, <code>else</code>, and <code>else if</code>.
-    </p>
-    <div class="overflow-x-auto mt-3">
-      <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;p id="status"&gt;&lt;/p&gt;
-
-&lt;!-- JavaScript --&gt;
-let age = 18;
-let status = document.getElementById("status");
-
-if (age &gt;= 18) {
-  status.textContent = "You are an adult.";
-} else {
-  status.textContent = "You are a minor.";
-}
-      </pre>
-    </div>
-  </div>
-</section>
-<!-- Conclusion Section -->
-<section class="bg-violet-800 text-white p-6 rounded-lg shadow-lg mt-12 max-w-3xl mx-auto text-center">
-  <div class="mb-4 flex justify-center">
-    <i class="fas fa-award text-5xl text-yellow-400"></i>
-  </div>
-  <div>
-    <h3 class="text-2xl font-bold mb-3">Module 1 Completed</h3>
-    <p class="text-base leading-relaxed">
-      You’ve completed <strong>JavaScript Basics Module 1</strong>, covering variables, functions, DOM manipulation, events, arrays, and conditionals.  
-      In <strong>Module 2</strong>, you’ll apply these concepts in a practical demonstration.
-    </p>
-  </div>
-</section>
-
-
   `,
   };
 
   const module2 = {
     id: 2, // replace with actual UUID
     type: "video",
-    title: "Module 2: Know the Basics of JavaScript in 10 Minutes",
+    title: "Module 2: Know Advanced JavaScript in 10 Minutes",
     videoUrl: "https://www.youtube.com/embed/LO5eTH4Pe8E",
     conclusion: `
 <!-- Conclusion Section -->
@@ -203,73 +165,92 @@ if (age &gt;= 18) {
 
   const module3 = {
     type: "exam",
-    order_number: 5, // ✅ same as parent class
-    title: "Final Module: JavaScript Basics Quiz",
+    order_number: 6, // ✅ same as parent class
+    title: "Final Module: Advanced JavaScript Quiz",
     questions: [
       {
-        question:
-          "Which keyword is used to declare a variable that can change its value?",
-        options: ["const", "let", "var", "static"],
-        answer: 1,
-      },
-      {
-        question:
-          "Which keyword declares a variable whose value cannot be reassigned?",
-        options: ["var", "let", "const", "static"],
-        answer: 2,
-      },
-      {
-        question:
-          "Which method is used to select an element by its ID in the DOM?",
+        question: "What is a closure in JavaScript?",
         options: [
-          "document.querySelector()",
-          "document.getElementById()",
-          "document.getElementsByClassName()",
-          "document.getElementByTagName()",
+          "A function bundled with its lexical scope",
+          "A variable declared with const",
+          "A block of code inside an if statement",
+          "A method that closes the browser tab",
         ],
-        answer: 1,
-      },
-      {
-        question: "Which event is triggered when a user clicks a button?",
-        options: ["mouseover", "keydown", "click", "submit"],
-        answer: 2,
-      },
-      {
-        question: "Which symbol is used to access array elements by index?",
-        options: ["{}", "()", "[]", "<>"],
-        answer: 2,
-      },
-      {
-        question: "Which loop is commonly used to iterate through arrays?",
-        options: ["for", "while", "forEach", "All of the above"],
-        answer: 3,
-      },
-      {
-        question:
-          "Which conditional statement runs code only if a condition is true?",
-        options: ["if", "else", "switch", "case"],
         answer: 0,
       },
       {
-        question: "Which property changes the text content of an HTML element?",
-        options: ["innerHTML", "textContent", "value", "content"],
+        question: "Which keyword is used to define a class in ES6?",
+        options: ["function", "class", "object", "constructor"],
+        answer: 1,
+      },
+      {
+        question: "What does the 'async' keyword before a function mean?",
+        options: [
+          "The function runs synchronously",
+          "The function always returns a Promise",
+          "The function executes immediately",
+          "The function blocks other code",
+        ],
         answer: 1,
       },
       {
         question:
-          "Which function displays a popup alert message in the browser?",
-        options: ["prompt()", "alert()", "confirm()", "message()"],
+          "Which method is used to attach multiple event handlers to the same element?",
+        options: [
+          "element.onClick()",
+          "element.attachEvent()",
+          "element.addEventListener()",
+          "element.setEventHandler()",
+        ],
+        answer: 2,
+      },
+      {
+        question:
+          "Which statement correctly imports a function from another module?",
+        options: [
+          "include add from 'math.js';",
+          "import { add } from './math.js';",
+          "require(add) from 'math.js';",
+          "load add from 'math.js';",
+        ],
         answer: 1,
       },
       {
-        question: "Which method adds a new event listener to an element?",
+        question: "What does 'await' do inside an async function?",
         options: [
-          "element.onEvent()",
-          "element.addEventListener()",
-          "element.attachEvent()",
-          "element.listen()",
+          "Pauses execution until the Promise resolves",
+          "Runs code in parallel",
+          "Declares a variable",
+          "Stops the program completely",
         ],
+        answer: 0,
+      },
+      {
+        question:
+          "Which built-in object is used to handle asynchronous operations?",
+        options: ["Promise", "Array", "Object", "Function"],
+        answer: 0,
+      },
+      {
+        question: "What is the output of: console.log(typeof NaN)?",
+        options: ["'NaN'", "'undefined'", "'number'", "'object'"],
+        answer: 2,
+      },
+      {
+        question: "Which operator is used for optional chaining in JavaScript?",
+        options: ["??", "?.", "::", "--"],
         answer: 1,
+      },
+      {
+        question:
+          "Which method converts a JSON string into a JavaScript object?",
+        options: [
+          "JSON.parse()",
+          "JSON.stringify()",
+          "Object.fromJSON()",
+          "JSON.toObject()",
+        ],
+        answer: 0,
       },
     ],
   };

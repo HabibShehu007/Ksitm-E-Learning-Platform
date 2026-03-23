@@ -217,7 +217,11 @@ function setupCourseModals() {
   });
 
   enrollBtn?.addEventListener("click", async () => {
-    const userId = sessionStorage.getItem("userId");
+    const {
+      data: { user },
+    } = await window.supabase.auth.getUser();
+    const userId = user?.id;
+
     if (!userId) return;
 
     try {

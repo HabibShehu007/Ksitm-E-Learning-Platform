@@ -1,7 +1,7 @@
 // Fetch progress data for the logged-in user from Supabase
-async function getUserProgress(registrationId) {
-  if (!registrationId) {
-    console.error("No registrationId found in sessionStorage");
+async function getUserProgress(userId, courseId) {
+  if (!userId || !courseId) {
+    console.error("Missing userId or courseId in sessionStorage");
     return [];
   }
 
@@ -15,7 +15,8 @@ async function getUserProgress(registrationId) {
       classes ( name, order_number )
     `,
     )
-    .eq("registration_id", registrationId);
+    .eq("user_id", userId)
+    .eq("course_id", courseId);
 
   if (error) {
     console.error("Error fetching class progress:", error);
@@ -31,26 +32,21 @@ async function getUserProgress(registrationId) {
 // Dashboard cards (portal.html)
 function getClassIcon(orderNumber) {
   switch (orderNumber) {
-    case 1: // HTML Basics
-    case 2: // HTML Advanced
+    case 1:
+    case 2:
       return "fab fa-html5";
-
-    case 3: // CSS Basics
-    case 4: // CSS Advanced
+    case 3:
+    case 4:
       return "fab fa-css3-alt";
-
-    case 5: // JavaScript Basics
-    case 6: // JavaScript Advanced
+    case 5:
+    case 6:
       return "fab fa-js";
-
-    case 7: // Backend
+    case 7:
       return "fab fa-node-js";
-
-    case 8: // Final Project & Deployment
+    case 8:
       return "fas fa-cloud-upload-alt";
-
     default:
-      return "fas fa-book"; // fallback
+      return "fas fa-book";
   }
 }
 
@@ -97,7 +93,6 @@ function renderProgressCards(progressData) {
 
   progressData.forEach((row) => {
     const score = row.progress || 0;
-    const hasAttempted = score > 0;
 
     const card = document.createElement("div");
     card.className = "bg-white rounded-lg shadow p-4";
@@ -107,11 +102,11 @@ function renderProgressCards(progressData) {
         Class ${row.classes.order_number}: ${row.classes.name}
       </h3>
       <div class="w-full bg-gray-200 rounded-full h-4 md:h-6 mb-2">
-        <div class="h-4 md:h-6 rounded-full transition-all duration-500 ${hasAttempted ? "bg-green-600" : "bg-violet-600"}" 
-             style="width:${hasAttempted ? "100" : score}%"></div>
+        <div class="h-4 md:h-6 rounded-full transition-all duration-500 ${score === 100 ? "bg-green-600" : "bg-violet-600"}" 
+             style="width:${score}%"></div>
       </div>
       <p class="text-xs md:text-sm font-medium">
-        ${hasAttempted ? `Completed (Score: ${score}%)` : `${score}% completed`}
+        ${score === 100 ? "Completed ✅" : "Not started ❌"}
       </p>
     `;
 
@@ -149,20 +144,18 @@ function renderOverall(progressData) {
     overallQuote.textContent = "Every journey begins with a single step 🚀";
   }
 }
-
 // Main render function
 async function renderProgress() {
-  const registrationId = sessionStorage.getItem("registrationId"); // ✅ use registrationId
-  if (!registrationId) return;
+  const userId = sessionStorage.getItem("userId");
+  const courseId = sessionStorage.getItem("courseId");
+  if (!userId || !courseId) return;
 
-  const progressData = await getUserProgress(registrationId);
+  const progressData = await getUserProgress(userId, courseId);
 
   if (document.getElementById("overall-bar")) {
-    // Progress page
     renderProgressCards(progressData);
     renderOverall(progressData);
   } else {
-    // Dashboard
     renderClassCards(progressData);
   }
 }

@@ -383,9 +383,6 @@
   .mt-4 {
     margin-top: calc(var(--spacing) * 4);
   }
-  .mt-5 {
-    margin-top: calc(var(--spacing) * 5);
-  }
   .mt-6 {
     margin-top: calc(var(--spacing) * 6);
   }
@@ -929,6 +926,9 @@
   .bg-green-600 {
     background-color: var(--color-green-600);
   }
+  .bg-green-700 {
+    background-color: var(--color-green-700);
+  }
   .bg-orange-50 {
     background-color: var(--color-orange-50);
   }
@@ -1353,6 +1353,9 @@
   }
   .italic {
     font-style: italic;
+  }
+  .underline {
+    text-decoration-line: underline;
   }
   .placeholder-transparent {
     &::placeholder {

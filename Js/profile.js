@@ -28,9 +28,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ✅ Fetch course only from application table
     const { data: applicationData, error: appError } = await supabase
-      .from("application")
+      .from("applications")
       .select("course")
-      .eq("id", userId)
+      .eq("user_id", userId)
       .single();
 
     if (appError) {

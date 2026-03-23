@@ -100,10 +100,9 @@ export async function loadApplications() {
     alert("Unexpected error occurred.");
   }
 }
-
-// ------------------ Approve Application ------------------
 export async function approveApplication(appId, userId, courseName, fullName) {
   try {
+    // 1. Get course info
     const { data: courseData, error: courseError } = await window.supabase
       .from("courses")
       .select("id, name")
@@ -118,44 +117,72 @@ export async function approveApplication(appId, userId, courseName, fullName) {
 
     const courseId = courseData.id;
 
-    // Sequential registration number
+    // 2. Generate registration number
     const year = new Date().getFullYear();
     const prefix = "ELP/KSITM/" + courseName.substring(0, 3).toUpperCase();
 
     const startOfYear = new Date(year, 0, 1).toISOString();
     const endOfYear = new Date(year, 11, 31, 23, 59, 59).toISOString();
 
-    const { count, error: regError } = await window.supabase
+    const { count } = await window.supabase
       .from("registrations")
       .select("id", { count: "exact", head: true })
       .eq("course_id", courseId)
       .gte("created_at", startOfYear)
       .lte("created_at", endOfYear);
 
-    if (regError) {
-      console.error("Error counting registrations:", regError);
+    const sequence = String((count || 0) + 1).padStart(3, "0");
+    const regNumber = `${prefix}/${year}/${sequence}`;
+
+    // 3. Insert registration and return id
+    const { data: regData, error: regInsertError } = await window.supabase
+      .from("registrations")
+      .insert({
+        user_id: userId,
+        course_id: courseId,
+        registration_number: regNumber,
+        progress: 0,
+        created_at: new Date().toISOString(),
+      })
+      .select("id")
+      .single();
+
+    if (regInsertError) {
+      console.error("Registration insert error:", regInsertError);
       return;
     }
 
-    const sequence = String((count || 0) + 1).padStart(3, "0");
-    const regNumber = `${prefix}/${year}/${sequence}`;
-    console.log("Generated Registration Number:", regNumber);
+    // 4. Seed class_progress rows for all classes in this course
+    const { data: classes } = await window.supabase
+      .from("classes")
+      .select("id")
+      .eq("course_id", courseId);
 
-    await window.supabase.from("registrations").insert({
-      user_id: userId,
-      course_id: courseId,
-      registration_number: regNumber,
-      created_at: new Date().toISOString(),
-    });
+    if (classes?.length) {
+      const progressRows = classes.map((c) => ({
+        registration_id: regData.id,
+        class_id: c.id,
+        progress: 0,
+        updated_at: new Date().toISOString(),
+      }));
 
+      const { error: cpError } = await window.supabase
+        .from("class_progress")
+        .insert(progressRows);
+
+      if (cpError) {
+        console.error("Error seeding class_progress:", cpError);
+      }
+    }
+
+    // 5. Update application status
     await window.supabase
       .from("applications")
       .update({ status: "approved" })
       .eq("id", appId);
 
-    const messageText = `🎉 Congratulations ${fullName}! Your admission has been approved.\n\nCourse: ${courseName}\nRegistration Number: ${regNumber}\n\nPlease copy and keep these credentials safe.
-    
-    👉 You can now access your Learning Portal from the navigation links to start your courses.`;
+    // 6. Notify user
+    const messageText = `🎉 Congratulations ${fullName}! Your admission has been approved.\n\nCourse: ${courseName}\nRegistration Number: ${regNumber}\n\n👉 You can now access your Learning Portal to start your classes.`;
 
     await window.supabase.from("messages").insert({
       user_id: userId,

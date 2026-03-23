@@ -6,185 +6,129 @@ document.addEventListener("DOMContentLoaded", () => {
   const module1 = {
     id: 1, // replace with actual UUID from Supabase
     type: "theory",
-    title: "Module 1: Introduction to JavaScript Basics",
+    title: "Module 1: Introduction to Node.js Basics",
     content: `
     <div class="space-y-8">
 
-      <!-- Variables -->
-      <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
-        <div class="flex-shrink-0 text-violet-700 text-3xl mb-3 sm:mb-0">
-          <i class="fas fa-code"></i>
-        </div>
-        <div class="w-full">
-          <h3 class="text-xl font-bold text-violet-800 mb-2">JavaScript Variables</h3>
-          <p class="text-gray-900 font-medium leading-relaxed">
-            Variables store data values. You can declare them using <code>let</code>, <code>const</code>, or <code>var</code>.
-          </p>
-          <div class="overflow-x-auto mt-3">
-            <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;p id="message"&gt;&lt;/p&gt;
-
-&lt;!-- JavaScript --&gt;
-let greeting = "Hello, World!";
-document.getElementById("message").textContent = greeting;
-            </pre>
-          </div>
-        </div>
-      </section>
-
-      <!-- Functions -->
+      <!-- What is Node.js -->
       <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
         <div class="flex-shrink-0 text-green-600 text-3xl mb-3 sm:mb-0">
-          <i class="fas fa-cogs"></i>
+          <i class="fab fa-node-js"></i>
         </div>
         <div class="w-full">
-          <h3 class="text-xl font-bold text-green-700 mb-2">JavaScript Functions</h3>
+          <h3 class="text-xl font-bold text-green-700 mb-2">What is Node.js?</h3>
           <p class="text-gray-900 font-medium leading-relaxed">
-            Functions group reusable code. You can call them to perform actions.
+            Node.js is a runtime environment that allows you to run JavaScript code outside the browser, built on Chrome's V8 engine. It is widely used for building fast, scalable backend applications.
           </p>
-          <div class="overflow-x-auto mt-3">
-            <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;button onclick="sayHello()"&gt;Click Me&lt;/button&gt;
-
-&lt;!-- JavaScript --&gt;
-function sayHello() {
-  alert("Hello from JavaScript!");
-}
-            </pre>
-          </div>
         </div>
       </section>
 
-      <!-- DOM Manipulation -->
-      <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
-        <div class="flex-shrink-0 text-blue-600 text-3xl mb-3 sm:mb-0">
-          <i class="fas fa-sitemap"></i>
-        </div>
-        <div class="w-full">
-          <h3 class="text-xl font-bold text-blue-700 mb-2">DOM Manipulation</h3>
-          <p class="text-gray-900 font-medium leading-relaxed">
-            JavaScript can change HTML content and styles dynamically by targeting elements in the DOM.
-          </p>
-          <div class="overflow-x-auto mt-3">
-            <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;div id="box"&gt;Original Text&lt;/div&gt;
-
-&lt;!-- JavaScript --&gt;
-document.getElementById("box").textContent = "Updated with JavaScript!";
-document.getElementById("box").style.color = "red";
-            </pre>
-          </div>
-        </div>
-      </section>
-
-      <!-- Events -->
+      <!-- Installing Node.js -->
       <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
         <div class="flex-shrink-0 text-violet-700 text-3xl mb-3 sm:mb-0">
-          <i class="fas fa-bolt"></i>
+          <i class="fas fa-download"></i>
         </div>
         <div class="w-full">
-          <h3 class="text-xl font-bold text-violet-800 mb-2">JavaScript Events</h3>
+          <h3 class="text-xl font-bold text-violet-800 mb-2">Installing Node.js</h3>
           <p class="text-gray-900 font-medium leading-relaxed">
-            Events let you respond to user actions like clicks, key presses, or mouse movements.
+            You can download Node.js from <a href="https://nodejs.org" target="_blank" class="text-violet-600 underline">nodejs.org</a>. Once installed, you can check the version using:
           </p>
           <div class="overflow-x-auto mt-3">
             <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;button id="btn"&gt;Click Me&lt;/button&gt;
+node -v
+npm -v
+            </pre>
+          </div>
+        </div>
+      </section>
 
-&lt;!-- JavaScript --&gt;
-document.getElementById("btn").addEventListener("click", function() {
-  alert("Button was clicked!");
+      <!-- Hello World with Node.js -->
+      <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
+        <div class="flex-shrink-0 text-blue-600 text-3xl mb-3 sm:mb-0">
+          <i class="fas fa-terminal"></i>
+        </div>
+        <div class="w-full">
+          <h3 class="text-xl font-bold text-blue-700 mb-2">Hello World Example</h3>
+          <p class="text-gray-900 font-medium leading-relaxed">
+            You can run JavaScript files directly with Node.js. Create a file <code>app.js</code> and run it using <code>node app.js</code>.
+          </p>
+          <div class="overflow-x-auto mt-3">
+            <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
+// app.js
+console.log("Hello from Node.js!");
+            </pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Built-in Modules -->
+      <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
+        <div class="flex-shrink-0 text-yellow-600 text-3xl mb-3 sm:mb-0">
+          <i class="fas fa-cubes"></i>
+        </div>
+        <div class="w-full">
+          <h3 class="text-xl font-bold text-yellow-700 mb-2">Built-in Modules</h3>
+          <p class="text-gray-900 font-medium leading-relaxed">
+            Node.js comes with built-in modules like <code>fs</code> (file system), <code>http</code> (server), and <code>path</code>. You can import them using <code>require()</code>.
+          </p>
+          <div class="overflow-x-auto mt-3">
+            <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
+const fs = require('fs');
+fs.writeFileSync('test.txt', 'Hello Node.js');
+            </pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Creating a Simple Server -->
+      <section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
+        <div class="flex-shrink-0 text-red-600 text-3xl mb-3 sm:mb-0">
+          <i class="fas fa-server"></i>
+        </div>
+        <div class="w-full">
+          <h3 class="text-xl font-bold text-red-700 mb-2">Creating a Simple Server</h3>
+          <p class="text-gray-900 font-medium leading-relaxed">
+            Node.js makes it easy to create web servers using the <code>http</code> module.
+          </p>
+          <div class="overflow-x-auto mt-3">
+            <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('Hello World from Node.js Server');
+});
+
+server.listen(3000, () => {
+  console.log('Server running at http://localhost:3000/');
 });
             </pre>
           </div>
         </div>
       </section>
 
-    
-
+      <!-- Conclusion Section -->
+      <section class="bg-green-700 text-white p-6 rounded-lg shadow-lg mt-12 max-w-3xl mx-auto text-center">
+        <div class="mb-4 flex justify-center">
+          <i class="fas fa-award text-5xl text-yellow-400"></i>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold mb-3">Module 1 Completed</h3>
+          <p class="text-base leading-relaxed">
+            You’ve completed <strong>Node.js Basics Module 1</strong>, covering installation, running scripts, built-in modules, and creating a simple server.  
+            In <strong>Module 2</strong>, you’ll explore Express.js and building RESTful APIs.
+          </p>
+        </div>
+      </section>
     </div>
-    <!-- Arrays -->
-<section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
-  <div class="flex-shrink-0 text-violet-700 text-3xl mb-3 sm:mb-0">
-    <i class="fas fa-list"></i>
-  </div>
-  <div class="w-full">
-    <h3 class="text-xl font-bold text-violet-800 mb-2">JavaScript Arrays</h3>
-    <p class="text-gray-900 font-medium leading-relaxed">
-      Arrays store multiple values in a single variable. You can access items by their index.
-    </p>
-    <div class="overflow-x-auto mt-3">
-      <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;ul id="fruits"&gt;&lt;/ul&gt;
-
-&lt;!-- JavaScript --&gt;
-let fruits = ["Apple", "Banana", "Cherry"];
-let list = document.getElementById("fruits");
-
-fruits.forEach(function(fruit) {
-  let li = document.createElement("li");
-  li.textContent = fruit;
-  list.appendChild(li);
-});
-      </pre>
-    </div>
-  </div>
-</section>
-<!-- Conditionals -->
-<section class="flex flex-col sm:flex-row items-start sm:space-x-4 bg-gray-50 p-6 rounded-lg shadow-sm">
-  <div class="flex-shrink-0 text-green-600 text-3xl mb-3 sm:mb-0">
-    <i class="fas fa-random"></i>
-  </div>
-  <div class="w-full">
-    <h3 class="text-xl font-bold text-green-700 mb-2">JavaScript Conditionals</h3>
-    <p class="text-gray-900 font-medium leading-relaxed">
-      Conditionals let you run code only when certain conditions are true, using <code>if</code>, <code>else</code>, and <code>else if</code>.
-    </p>
-    <div class="overflow-x-auto mt-3">
-      <pre class="bg-gray-100 p-3 rounded-lg font-mono text-sm whitespace-pre-wrap break-words">
-&lt;!-- HTML --&gt;
-&lt;p id="status"&gt;&lt;/p&gt;
-
-&lt;!-- JavaScript --&gt;
-let age = 18;
-let status = document.getElementById("status");
-
-if (age &gt;= 18) {
-  status.textContent = "You are an adult.";
-} else {
-  status.textContent = "You are a minor.";
-}
-      </pre>
-    </div>
-  </div>
-</section>
-<!-- Conclusion Section -->
-<section class="bg-violet-800 text-white p-6 rounded-lg shadow-lg mt-12 max-w-3xl mx-auto text-center">
-  <div class="mb-4 flex justify-center">
-    <i class="fas fa-award text-5xl text-yellow-400"></i>
-  </div>
-  <div>
-    <h3 class="text-2xl font-bold mb-3">Module 1 Completed</h3>
-    <p class="text-base leading-relaxed">
-      You’ve completed <strong>JavaScript Basics Module 1</strong>, covering variables, functions, DOM manipulation, events, arrays, and conditionals.  
-      In <strong>Module 2</strong>, you’ll apply these concepts in a practical demonstration.
-    </p>
-  </div>
-</section>
-
-
   `,
   };
 
   const module2 = {
     id: 2, // replace with actual UUID
     type: "video",
-    title: "Module 2: Know the Basics of JavaScript in 10 Minutes",
+    title:
+      "Module 2: Know The Basics of Backend Development Using NodeJs in 10 Minutes",
     videoUrl: "https://www.youtube.com/embed/LO5eTH4Pe8E",
     conclusion: `
 <!-- Conclusion Section -->
@@ -203,72 +147,79 @@ if (age &gt;= 18) {
 
   const module3 = {
     type: "exam",
-    order_number: 5, // ✅ same as parent class
-    title: "Final Module: JavaScript Basics Quiz",
+    order_number: 7, // ✅ same as parent class
+    title: "Final Module: Node.js Basics Quiz",
     questions: [
       {
-        question:
-          "Which keyword is used to declare a variable that can change its value?",
-        options: ["const", "let", "var", "static"],
-        answer: 1,
-      },
-      {
-        question:
-          "Which keyword declares a variable whose value cannot be reassigned?",
-        options: ["var", "let", "const", "static"],
-        answer: 2,
-      },
-      {
-        question:
-          "Which method is used to select an element by its ID in the DOM?",
+        question: "What is Node.js primarily used for?",
         options: [
-          "document.querySelector()",
-          "document.getElementById()",
-          "document.getElementsByClassName()",
-          "document.getElementByTagName()",
+          "Running JavaScript in the browser",
+          "Running JavaScript outside the browser",
+          "Styling HTML pages",
+          "Managing relational databases",
         ],
         answer: 1,
       },
       {
-        question: "Which event is triggered when a user clicks a button?",
-        options: ["mouseover", "keydown", "click", "submit"],
-        answer: 2,
-      },
-      {
-        question: "Which symbol is used to access array elements by index?",
-        options: ["{}", "()", "[]", "<>"],
-        answer: 2,
-      },
-      {
-        question: "Which loop is commonly used to iterate through arrays?",
-        options: ["for", "while", "forEach", "All of the above"],
-        answer: 3,
-      },
-      {
-        question:
-          "Which conditional statement runs code only if a condition is true?",
-        options: ["if", "else", "switch", "case"],
+        question: "Which command checks the installed Node.js version?",
+        options: ["node -v", "npm -version", "nodejs --check", "version node"],
         answer: 0,
       },
       {
-        question: "Which property changes the text content of an HTML element?",
-        options: ["innerHTML", "textContent", "value", "content"],
+        question:
+          "Which built-in module is used to create a web server in Node.js?",
+        options: ["fs", "http", "path", "os"],
         answer: 1,
       },
       {
         question:
-          "Which function displays a popup alert message in the browser?",
-        options: ["prompt()", "alert()", "confirm()", "message()"],
+          "Which function is used to import built-in modules in Node.js?",
+        options: ["import()", "require()", "include()", "load()"],
         answer: 1,
       },
       {
-        question: "Which method adds a new event listener to an element?",
+        question: "Which command runs a JavaScript file with Node.js?",
         options: [
-          "element.onEvent()",
-          "element.addEventListener()",
-          "element.attachEvent()",
-          "element.listen()",
+          "run app.js",
+          "node app.js",
+          "execute app.js",
+          "start app.js",
         ],
+        answer: 1,
+      },
+      {
+        question: "Which built-in module is used to work with the file system?",
+        options: ["http", "fs", "path", "events"],
+        answer: 1,
+      },
+      {
+        question: "What does npm stand for?",
+        options: [
+          "Node Package Manager",
+          "New Programming Method",
+          "Network Protocol Module",
+          "Node Program Manager",
+        ],
+        answer: 0,
+      },
+      {
+        question: "Which method writes content to a file synchronously?",
+        options: [
+          "fs.writeFile()",
+          "fs.writeFileSync()",
+          "fs.appendFile()",
+          "fs.createWriteStream()",
+        ],
+        answer: 1,
+      },
+      {
+        question: "Which port is commonly used for local Node.js servers?",
+        options: ["80", "3000", "22", "8080"],
+        answer: 1,
+      },
+      {
+        question: "Which object represents the current process in Node.js?",
+        options: ["system", "process", "runtime", "global"],
         answer: 1,
       },
     ],

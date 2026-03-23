@@ -108,9 +108,15 @@ document.addEventListener("DOMContentLoaded", async () => {
           );
           resetButton();
 
-          // Step 4: Redirect after modal close
+          // Step 4: Save IDs in sessionStorage and redirect after modal close
           if (modalCloseBtn) {
             modalCloseBtn.addEventListener("click", () => {
+              // Store IDs for progress.js
+              sessionStorage.setItem("registrationId", regRecord.id);
+              sessionStorage.setItem("courseId", regRecord.course_id);
+              sessionStorage.setItem("userId", regRecord.user_id);
+
+              // Redirect to portal
               window.location.href = `../Learn_Dashbaord/pages/portal.html?reg=${regRecord.registration_number}&course=${application.course_name}`;
             });
           }
