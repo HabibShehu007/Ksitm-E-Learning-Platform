@@ -454,31 +454,33 @@ document.addEventListener("DOMContentLoaded", () => {
       const modalContent = document.getElementById("quizModalContent");
 
       // 🔎 Check if quiz already passed
-      const { data, error } = await window.supabase
+      const { data: progressRow, error } = await window.supabase
         .from("class_progress")
         .select("progress")
+        .eq("user_id", userId)
+        .eq("course_id", courseId)
         .eq("class_id", classId)
-        .maybeSingle();
+        .order("updated_at", { ascending: false })
+        .limit(1)
+        .single();
 
       if (error) {
         console.error("Error checking progress:", error);
         return;
       }
 
-      if (data && data.progress === 100) {
+      if (progressRow && progressRow.progress === 100) {
         // ✅ Already passed — show info modal
         modalIcon.className = "fas fa-info-circle text-blue-500 text-5xl mb-4";
         modalTitle.textContent = "Quiz Already Completed";
         modalMessage.textContent =
           "You’ve already passed this quiz. No need to retake it.";
 
-        // Show modal
         quizModal.classList.remove("hidden");
         modalContent.classList.remove("opacity-0", "scale-95");
         modalContent.classList.add("opacity-100", "scale-100");
 
         modalOk.onclick = () => {
-          // Hide modal
           quizModal.classList.add("hidden");
           modalContent.classList.remove("opacity-100", "scale-100");
           modalContent.classList.add("opacity-0", "scale-95");
