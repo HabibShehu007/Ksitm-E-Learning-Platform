@@ -7,7 +7,11 @@ export async function getClassIdByOrder(userId, courseId, orderNumber) {
     .eq("order_number", orderNumber)
     .maybeSingle();
 
-  if (classError || !classData) return null;
+  if (classError || !classData) {
+    console.error("❌ Error fetching class:", classError);
+    return null;
+  }
+
   const classId = classData.id;
 
   // 🔥 fetch registration_id
@@ -18,20 +22,22 @@ export async function getClassIdByOrder(userId, courseId, orderNumber) {
     .eq("course_id", courseId)
     .maybeSingle();
 
+  // Ensure progress row exists with proper IDs
   const { data: progressData } = await window.supabase
     .from("class_progress")
-    .select("class_id")
+    .select("id")
     .eq("user_id", userId)
     .eq("course_id", courseId)
     .eq("class_id", classId)
     .maybeSingle();
 
   if (!progressData) {
+    console.log("➡️ Creating new class_progress row");
     await window.supabase.from("class_progress").insert({
       user_id: userId,
       course_id: courseId,
       class_id: classId,
-      registration_id: reg?.id,
+      registration_id: reg?.id || null,
       progress: 0,
       updated_at: new Date(),
     });
@@ -42,7 +48,15 @@ export async function getClassIdByOrder(userId, courseId, orderNumber) {
 
 // Submit quiz and update progress
 export async function submitQuiz(userId, courseId, orderNumber, score) {
+  console.log("🔎 submitQuiz called with:", {
+    userId,
+    courseId,
+    orderNumber,
+    score,
+  });
+
   const classId = await getClassIdByOrder(userId, courseId, orderNumber);
+  console.log("➡️ Resolved classId:", classId);
   if (!classId) return;
 
   const { data: reg } = await window.supabase
@@ -52,39 +66,47 @@ export async function submitQuiz(userId, courseId, orderNumber, score) {
     .eq("course_id", courseId)
     .maybeSingle();
 
+  console.log("➡️ Registration row:", reg);
+
   if (!reg) {
     console.error("❌ No registration found for user/course");
     return;
   }
 
   const progressValue = score >= 70 ? 100 : 0;
+  console.log("➡️ Calculated progressValue:", progressValue);
 
-  const { error: updateError } = await window.supabase
+  // ✅ Update row with proper IDs
+  const { error: updateError, data: updateData } = await window.supabase
     .from("class_progress")
     .update({ progress: progressValue, updated_at: new Date() })
     .eq("user_id", userId)
     .eq("course_id", courseId)
-    .eq("class_id", classId)
-    .eq("registration_id", reg.id);
+    .eq("class_id", classId);
+
+  console.log("➡️ Update result:", { updateError, updateData });
 
   if (updateError) {
     console.error("❌ Error updating class progress:", updateError);
     return;
   }
 
+  // Fetch all progress rows for this user/course
   const { data: allProgress } = await window.supabase
     .from("class_progress")
     .select("progress")
     .eq("user_id", userId)
-    .eq("course_id", courseId)
-    .eq("registration_id", reg.id);
+    .eq("course_id", courseId);
+
+  console.log("➡️ All progress rows:", allProgress);
 
   const totalClasses = allProgress.length;
   const overall =
     allProgress.reduce((sum, row) => sum + (row.progress || 0), 0) /
-    totalClasses;
+    (totalClasses || 1);
 
   const overallInt = Math.round(overall);
+  console.log("➡️ Overall course progress:", overallInt);
 
   await window.supabase
     .from("registrations")
