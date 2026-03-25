@@ -39,76 +39,23 @@
           <i class="fas fa-graduation-cap mr-2"></i> KSITM
         </a>
 
-        <!-- Mobile toggler -->
-        <button class="md:hidden text-white text-2xl" id="navToggle">
+        <!-- Toggler (works for both desktop & mobile) -->
+        <button class="text-white text-2xl" id="navToggle">
           <i class="fas fa-bars"></i>
         </button>
-
-        <!-- Desktop Links -->
-        <ul
-          id="navLinks"
-          class="hidden md:flex gap-6 items-center text-white font-medium"
-        >
-          <li>
-            <a href="dashboard.html" class="hover:text-orange-300">
-              <i class="fas fa-home mr-1"></i> Home
-            </a>
-          </li>
-          <li>
-            <a href="profile.html" class="hover:text-orange-300">
-              <i class="fas fa-user-circle mr-1"></i> Profile
-            </a>
-          </li>
-          <li>
-            <a href="status.html" class="hover:text-orange-300">
-              <i class="fas fa-tasks mr-1"></i> Status
-            </a>
-          </li>
-          <li class="relative">
-            <a href="my-messages.html" class="hover:text-orange-300">
-              <i class="fas fa-bell mr-1"></i> My Messages
-            </a>
-            <span
-              id="messageBadge"
-              class="absolute -top-2 -right-3 bg-red-600 text-xs rounded-full px-2 hidden"
-            >
-              0
-            </span>
-          </li>
-
-          <!-- ✅ Learning Portal link (hidden by default) -->
-          <li>
-            <a
-              id="portalNavLinkDesktop"
-              href="../learn-portal/pages/portal-login.html"
-              class="hidden hover:text-orange-300 text-white px-3 py-1 font-semibold transition"
-            >
-              <i class="fas fa-graduation-cap mr-1"></i> Learning Portal
-            </a>
-          </li>
-
-          <li>
-            <button
-              id="logoutBtn"
-              class="bg-white text-violet-800 px-3 py-1 rounded-full hover:bg-gray-200"
-            >
-              <i class="fas fa-sign-out-alt mr-1"></i> Logout
-            </button>
-          </li>
-        </ul>
       </div>
     </nav>
 
-    <!-- Overlay (behind the drawer) -->
+    <!-- Overlay -->
     <div
       id="menuOverlay"
-      class="hidden fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ease-in-out md:hidden"
+      class="hidden fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ease-in-out"
     ></div>
 
-    <!-- Mobile Slide-in Menu -->
+    <!-- Drawer Menu (shared for desktop & mobile) -->
     <div
-      id="mobileMenu"
-      class="fixed inset-y-0 left-0 w-72 bg-violet-900 text-white transform -translate-x-full transition-transform duration-300 ease-in-out z-50 md:hidden"
+      id="drawerMenu"
+      class="fixed inset-y-0 right-0 w-72 md:w-96 bg-violet-900 text-white transform translate-x-full transition-transform duration-300 ease-in-out z-50"
     >
       <div class="px-6 py-8 space-y-8">
         <!-- Close button -->
@@ -125,11 +72,7 @@
             href="dashboard.html"
             class="flex items-center gap-3 hover:text-orange-300 transition"
           >
-            <span
-              class="flex items-center justify-center w-8 h-8 rounded-full bg-violet-700"
-              ><i class="fas fa-home"></i
-            ></span>
-            Home
+            <i class="fas fa-home"></i> Home
           </a>
           <hr class="border-violet-700 opacity-50" />
 
@@ -137,11 +80,7 @@
             href="profile.html"
             class="flex items-center gap-3 hover:text-orange-300 transition"
           >
-            <span
-              class="flex items-center justify-center w-8 h-8 rounded-full bg-violet-700"
-              ><i class="fas fa-user-circle"></i
-            ></span>
-            Profile
+            <i class="fas fa-user-circle"></i> Profile
           </a>
           <hr class="border-violet-700 opacity-50" />
 
@@ -149,11 +88,7 @@
             href="status.html"
             class="flex items-center gap-3 hover:text-orange-300 transition"
           >
-            <span
-              class="flex items-center justify-center w-8 h-8 rounded-full bg-violet-700"
-              ><i class="fas fa-tasks"></i
-            ></span>
-            Status
+            <i class="fas fa-tasks"></i> Status
           </a>
           <hr class="border-violet-700 opacity-50" />
 
@@ -161,40 +96,29 @@
             href="my-messages.html"
             class="flex items-center gap-3 hover:text-orange-300 relative transition"
           >
+            <i class="fas fa-bell"></i> My Messages
             <span
-              class="flex items-center justify-center w-8 h-8 rounded-full bg-violet-700"
-            >
-              <i class="fas fa-bell"></i>
-            </span>
-            My Messages
-            <span
-              id="messageBadgeMobile"
+              id="messageBadgeDrawer"
               class="absolute -top-2 left-32 bg-red-600 text-xs rounded-full px-2 hidden"
+              >0</span
             >
-              0
-            </span>
           </a>
           <hr class="border-violet-700 opacity-50" />
 
           <!-- ✅ Learning Portal link (hidden by default) -->
           <a
-            id="portalNavLinkMobile"
+            id="portalNavLinkDrawer"
             href="../learn-portal/pages/portal-login.html"
             class="hidden flex items-center gap-3 hover:text-orange-300 transition"
           >
-            <span
-              class="flex items-center justify-center w-8 h-8 rounded-full bg-violet-700"
-            >
-              <i class="fas fa-graduation-cap"></i>
-            </span>
-            Learning Portal
+            <i class="fas fa-graduation-cap"></i> Learning Portal
           </a>
           <hr class="border-violet-700 opacity-50" />
         </nav>
 
         <!-- Logout -->
         <button
-          id="logoutBtnMobile"
+          id="logoutBtnDrawer"
           class="mt-10 w-full py-3 rounded-full bg-white text-violet-800 font-bold hover:bg-gray-200 transition flex items-center justify-center gap-2"
         >
           <i class="fas fa-sign-out-alt"></i> Logout

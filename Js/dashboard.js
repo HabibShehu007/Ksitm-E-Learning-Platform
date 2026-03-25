@@ -15,15 +15,12 @@ function loadUserSession() {
 }
 
 // Helper: show or hide portal links
+// Helper: show or hide portal link in drawer
 function togglePortalLinks(show) {
-  const portalNavLinkDesktop = document.getElementById("portalNavLinkDesktop");
-  const portalNavLinkMobile = document.getElementById("portalNavLinkMobile");
+  const portalNavLinkDrawer = document.getElementById("portalNavLinkDrawer");
 
-  if (portalNavLinkDesktop) {
-    portalNavLinkDesktop.classList[show ? "remove" : "add"]("hidden");
-  }
-  if (portalNavLinkMobile) {
-    portalNavLinkMobile.classList[show ? "remove" : "add"]("hidden");
+  if (portalNavLinkDrawer) {
+    portalNavLinkDrawer.classList[show ? "remove" : "add"]("hidden");
   }
 }
 
@@ -105,27 +102,20 @@ async function checkApplicationStatus() {
 
 // Logout logic
 function setupLogout() {
-  const logoutBtn = document.getElementById("logoutBtn");
-  const logoutBtnMobile = document.getElementById("logoutBtnMobile");
+  const logoutBtnDrawer = document.getElementById("logoutBtnDrawer");
 
-  [logoutBtn, logoutBtnMobile].forEach((btn) => {
-    if (btn) {
-      btn.addEventListener("click", () => {
-        sessionStorage.clear();
-        window.location.href = "../Pages/login.html";
-      });
-    }
-  });
+  if (logoutBtnDrawer) {
+    logoutBtnDrawer.addEventListener("click", () => {
+      sessionStorage.clear();
+      window.location.href = "../Pages/login.html";
+    });
+  }
 }
 
 // Setup message badge
 function setupMessageBadge() {
-  const badgeDesktop = document.getElementById("messageBadge");
-  const badgeMobile = document.getElementById("messageBadgeMobile");
-
-  [badgeDesktop, badgeMobile].forEach((badge) => {
-    badge?.classList.add("hidden");
-  });
+  const badgeDrawer = document.getElementById("messageBadgeDrawer");
+  badgeDrawer?.classList.add("hidden");
 
   const userId = sessionStorage.getItem("userId");
   if (!userId) return;
@@ -139,37 +129,33 @@ function setupMessageBadge() {
         console.error("Error fetching message count:", error.message);
         return;
       }
-      if (count > 0) {
-        [badgeDesktop, badgeMobile].forEach((badge) => {
-          if (badge) {
-            badge.textContent = count;
-            badge.classList.remove("hidden");
-          }
-        });
+      if (count > 0 && badgeDrawer) {
+        badgeDrawer.textContent = count;
+        badgeDrawer.classList.remove("hidden");
       }
     });
 }
 
-// Mobile nav toggle
-function setupMobileNav() {
+// Unified nav toggle (desktop + mobile)
+function setupNavDrawer() {
   const navToggle = document.getElementById("navToggle");
-  const mobileMenu = document.getElementById("mobileMenu");
+  const drawerMenu = document.getElementById("drawerMenu");
   const closeMenu = document.getElementById("closeMenu");
   const overlay = document.getElementById("menuOverlay");
 
-  if (navToggle && mobileMenu && overlay) {
+  if (navToggle && drawerMenu && overlay) {
     navToggle.addEventListener("click", () => {
-      mobileMenu.classList.remove("-translate-x-full");
-      mobileMenu.classList.add("translate-x-0");
+      drawerMenu.classList.remove("translate-x-full");
+      drawerMenu.classList.add("translate-x-0");
       overlay.classList.remove("hidden");
       setTimeout(() => overlay.classList.add("opacity-100"), 10);
     });
   }
 
-  if (closeMenu && mobileMenu && overlay) {
+  if (closeMenu && drawerMenu && overlay) {
     closeMenu.addEventListener("click", () => {
-      mobileMenu.classList.remove("translate-x-0");
-      mobileMenu.classList.add("-translate-x-full");
+      drawerMenu.classList.remove("translate-x-0");
+      drawerMenu.classList.add("translate-x-full");
       overlay.classList.remove("opacity-100");
       setTimeout(() => overlay.classList.add("hidden"), 300);
     });
@@ -254,8 +240,8 @@ function setupCourseModals() {
 document.addEventListener("DOMContentLoaded", () => {
   loadUserSession();
   setupLogout();
-  setupMobileNav();
+  setupNavDrawer(); // 🔑 unified nav
   setupCourseModals();
   setupMessageBadge();
-  checkApplicationStatus(); // 🔑 lock/unlock dashboard
+  checkApplicationStatus();
 });
