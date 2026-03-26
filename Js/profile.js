@@ -38,6 +38,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       profilePic.src = profileData.avatar_url;
       profilePic.classList.remove("hidden");
       defaultAvatar.classList.add("hidden");
+
+      // Save in sessionStorage for dashboard.js
+      sessionStorage.setItem("userAvatarUrl", profileData.avatar_url);
     } else {
       profilePic.classList.add("hidden");
       defaultAvatar.classList.remove("hidden");
@@ -85,10 +88,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         .update({ avatar_url: publicUrl })
         .eq("id", userId);
 
+      // Save in sessionStorage for dashboard.js
+      sessionStorage.setItem("userAvatarUrl", publicUrl);
+
       // Update UI: switch to real picture
       profilePic.src = publicUrl;
       profilePic.classList.remove("hidden");
       defaultAvatar.classList.add("hidden");
+
+      // Also update drawer immediately if present
+      const drawerProfilePic = document.getElementById("drawerProfilePic");
+      const drawerDefaultAvatar = document.getElementById(
+        "drawerDefaultAvatar",
+      );
+      if (drawerProfilePic && drawerDefaultAvatar) {
+        drawerProfilePic.src = publicUrl;
+        drawerProfilePic.classList.remove("hidden");
+        drawerDefaultAvatar.classList.add("hidden");
+      }
 
       // Hide loader, show success modal
       loader.classList.add("hidden");

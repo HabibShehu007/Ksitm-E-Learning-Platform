@@ -2,6 +2,7 @@
 function loadUserSession() {
   const userName = sessionStorage.getItem("userName") || "Guest";
   const userEmail = sessionStorage.getItem("userEmail") || "Not Provided";
+  const avatarUrl = sessionStorage.getItem("userAvatarUrl") || null;
 
   const greeting = document.getElementById("userGreeting");
   const emailDisplay = document.getElementById("userEmailDisplay");
@@ -12,9 +13,30 @@ function loadUserSession() {
   if (emailDisplay) {
     emailDisplay.innerHTML = `Email: <span class="text-gray-800">${userEmail}</span>`;
   }
+
+  // Drawer profile elements
+  const drawerProfilePic = document.getElementById("drawerProfilePic");
+  const drawerDefaultAvatar = document.getElementById("drawerDefaultAvatar");
+  const drawerProfileName = document.getElementById("drawerProfileName");
+  const drawerProfileEmail = document.getElementById("drawerProfileEmail");
+
+  if (avatarUrl && drawerProfilePic && drawerDefaultAvatar) {
+    drawerProfilePic.src = avatarUrl;
+    drawerProfilePic.classList.remove("hidden");
+    drawerDefaultAvatar.classList.add("hidden");
+  } else {
+    drawerProfilePic?.classList.add("hidden");
+    drawerDefaultAvatar?.classList.remove("hidden");
+  }
+
+  if (drawerProfileName) {
+    drawerProfileName.textContent = userName;
+  }
+  if (drawerProfileEmail) {
+    drawerProfileEmail.textContent = userEmail;
+  }
 }
 
-// Helper: show or hide portal links
 // Helper: show or hide portal link in drawer
 function togglePortalLinks(show) {
   const portalNavLinkDrawer = document.getElementById("portalNavLinkDrawer");
