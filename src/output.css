@@ -341,6 +341,9 @@
   .left-24 {
     left: calc(var(--spacing) * 24);
   }
+  .left-28 {
+    left: calc(var(--spacing) * 28);
+  }
   .z-10 {
     z-index: 10;
   }
@@ -788,6 +791,14 @@
   .divide-gray-200 {
     :where(& > :not(:last-child)) {
       border-color: var(--color-gray-200);
+    }
+  }
+  .divide-violet-700\/40 {
+    :where(& > :not(:last-child)) {
+      border-color: color-mix(in srgb, oklch(49.1% 0.27 292.581) 40%, transparent);
+      @supports (color: color-mix(in lab, red, red)) {
+        border-color: color-mix(in oklab, var(--color-violet-700) 40%, transparent);
+      }
     }
   }
   .self-end {

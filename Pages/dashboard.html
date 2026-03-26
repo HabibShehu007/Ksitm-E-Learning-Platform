@@ -90,40 +90,46 @@
         </div>
 
         <!-- Links -->
-        <nav class="flex flex-col space-y-4 text-sm font-medium">
+        <nav
+          class="flex flex-col divide-y divide-violet-700/40 text-base font-medium"
+        >
           <a
             href="dashboard.html"
-            class="flex items-center gap-2 hover:text-orange-300 transition"
+            class="flex items-center gap-3 py-3 hover:text-orange-300 transition"
           >
             <i class="fas fa-home"></i> Home
           </a>
+
           <a
             href="status.html"
-            class="flex items-center gap-2 hover:text-orange-300 transition"
+            class="flex items-center gap-3 py-3 hover:text-orange-300 transition"
           >
             <i class="fas fa-tasks"></i> Status
           </a>
+
           <a
             href="my-messages.html"
-            class="flex items-center gap-2 hover:text-orange-300 relative transition"
+            class="flex items-center gap-3 py-3 hover:text-orange-300 relative transition"
           >
             <i class="fas fa-bell"></i> Messages
             <span
               id="messageBadgeDrawer"
-              class="absolute -top-2 left-24 bg-red-600 text-xs rounded-full px-2 hidden"
+              class="absolute -top-2 left-28 bg-red-600 text-xs rounded-full px-2 hidden"
               >0</span
             >
           </a>
+
           <a
             href="profile.html"
-            class="flex items-center gap-2 hover:text-orange-300 transition"
+            class="flex items-center gap-3 py-3 hover:text-orange-300 transition"
           >
             <i class="fas fa-user-circle"></i> Profile
           </a>
+
           <a
             id="portalNavLinkDrawer"
             href="../learn-portal/pages/portal-login.html"
-            class="hidden flex items-center gap-2 hover:text-orange-300 transition"
+            class="hidden flex items-center gap-3 py-3 hover:text-orange-300 transition"
           >
             <i class="fas fa-graduation-cap"></i> Learning Portal
           </a>
