@@ -125,11 +125,40 @@ async function checkApplicationStatus() {
 // Logout logic
 function setupLogout() {
   const logoutBtnDrawer = document.getElementById("logoutBtnDrawer");
+  const logoutModal = document.getElementById("logoutModal");
+  const logoutModalContent = document.getElementById("logoutModalContent");
+  const confirmLogoutBtn = document.getElementById("confirmLogoutBtn");
+  const cancelLogoutBtn = document.getElementById("cancelLogoutBtn");
 
   if (logoutBtnDrawer) {
-    logoutBtnDrawer.addEventListener("click", () => {
-      sessionStorage.clear();
-      window.location.href = "../Pages/login.html";
+    logoutBtnDrawer.addEventListener("click", (e) => {
+      e.preventDefault();
+      // Show modal
+      logoutModal.classList.remove("hidden");
+      setTimeout(() => {
+        logoutModalContent.classList.remove("scale-95", "opacity-0");
+        logoutModalContent.classList.add("scale-100", "opacity-100");
+      }, 10);
+    });
+  }
+
+  if (cancelLogoutBtn) {
+    cancelLogoutBtn.addEventListener("click", () => {
+      logoutModalContent.classList.remove("scale-100", "opacity-100");
+      logoutModalContent.classList.add("scale-95", "opacity-0");
+      setTimeout(() => logoutModal.classList.add("hidden"), 300);
+    });
+  }
+
+  if (confirmLogoutBtn) {
+    confirmLogoutBtn.addEventListener("click", async () => {
+      try {
+        await window.supabase.auth.signOut();
+        sessionStorage.clear();
+        window.location.href = "../Pages/login.html";
+      } catch (err) {
+        console.error("Logout error:", err);
+      }
     });
   }
 }
