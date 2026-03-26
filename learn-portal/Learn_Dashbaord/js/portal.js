@@ -21,20 +21,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // Close sidebar when clicking overlay
   sidebarOverlay.addEventListener("click", () => {
     sidebar.classList.remove("translate-x-0");
     sidebar.classList.add("translate-x-full");
     sidebarOverlay.classList.add("hidden");
   });
 
-  // ✅ Query applications table for this user
+  // ✅ Application query logic (unchanged)
   const userId = sessionStorage.getItem("userId");
-
   const courseId = sessionStorage.getItem("courseId");
-
   try {
-    const { data: application, error } = await supabase
+    const { data: application } = await supabase
       .from("applications")
       .select("full_name, course_name, status")
       .eq("user_id", userId)
@@ -62,6 +59,42 @@ document.addEventListener("DOMContentLoaded", async () => {
       userGreeting.textContent = "Hi Learner";
     }
   }
+
+  // ✅ Logout modal setup
+  function setupLogoutModal() {
+    const logoutBtnDrawer = document.getElementById("logoutBtnDrawer");
+    const logoutModal = document.getElementById("logoutModal");
+    const logoutModalContent = document.getElementById("logoutModalContent");
+    const confirmLogoutBtn = document.getElementById("confirmLogoutBtn");
+    const cancelLogoutBtn = document.getElementById("cancelLogoutBtn");
+
+    logoutBtnDrawer?.addEventListener("click", (e) => {
+      e.preventDefault();
+      logoutModal.classList.remove("hidden");
+      setTimeout(() => {
+        logoutModalContent.classList.remove("scale-95", "opacity-0");
+        logoutModalContent.classList.add("scale-100", "opacity-100");
+      }, 10);
+    });
+
+    cancelLogoutBtn?.addEventListener("click", () => {
+      logoutModalContent.classList.remove("scale-100", "opacity-100");
+      logoutModalContent.classList.add("scale-95", "opacity-0");
+      setTimeout(() => logoutModal.classList.add("hidden"), 300);
+    });
+
+    confirmLogoutBtn?.addEventListener("click", async () => {
+      try {
+        await window.supabase.auth.signOut();
+        sessionStorage.clear();
+        window.location.href = "/Pages/login.html";
+      } catch (err) {
+        console.error("Logout error:", err);
+      }
+    });
+  }
+
+  setupLogoutModal();
 
   // 🔑 Auto-create class_progress rows if missing
   async function ensureClassProgress(userId, courseId) {
