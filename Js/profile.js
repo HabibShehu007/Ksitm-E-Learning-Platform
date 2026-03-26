@@ -33,23 +33,34 @@ document.addEventListener("DOMContentLoaded", async () => {
     setText("dobDisplay", profileData?.dob || "Not Provided");
     setText("addressDisplay", profileData?.address || "Not Provided");
 
-    // ✅ Toggle avatar: show image if uploaded, else show Font Awesome icon
+    // ✅ Toggle avatar
     if (profileData?.avatar_url) {
       profilePic.src = profileData.avatar_url;
       profilePic.classList.remove("hidden");
       defaultAvatar.classList.add("hidden");
-
-      // Save in sessionStorage for dashboard.js
       sessionStorage.setItem("userAvatarUrl", profileData.avatar_url);
     } else {
       profilePic.classList.add("hidden");
       defaultAvatar.classList.remove("hidden");
     }
 
-    // ✅ Fetch course from applications
+    // ✅ Fetch registration info (reg number + course_id)
+    const { data: regData, error: regError } = await supabase
+      .from("registrations")
+      .select("registration_number, course_id")
+      .eq("user_id", userId)
+      .single();
+
+    if (regError) {
+      console.error("Registration fetch error:", regError);
+    }
+
+    setText("regNumberDisplay", regData?.registration_number || "Not Provided");
+
+    // ✅ Fetch course name from applications
     const { data: applicationData, error: appError } = await supabase
       .from("applications")
-      .select("course")
+      .select("course_name")
       .eq("user_id", userId)
       .single();
 
@@ -57,14 +68,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.error("Application fetch error:", appError);
     }
 
-    setText("courseDisplay", applicationData?.course || "No Course Selected");
+    setText(
+      "courseDisplay",
+      applicationData?.course_name || "No Course Selected",
+    );
 
-    // ✅ Handle avatar upload
+    // ✅ Handle avatar upload (unchanged)
     uploadInput?.addEventListener("change", async (event) => {
       const file = event.target.files[0];
       if (!file) return;
 
-      // Show loader
       loader.classList.remove("hidden");
 
       const filePath = `${userId}/${file.name}`;
@@ -78,36 +91,20 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      // Get public URL
       const { data } = supabase.storage.from("avatars").getPublicUrl(filePath);
       const publicUrl = data.publicUrl;
 
-      // Update DB
       await supabase
         .from("user_profiles")
         .update({ avatar_url: publicUrl })
         .eq("id", userId);
 
-      // Save in sessionStorage for dashboard.js
       sessionStorage.setItem("userAvatarUrl", publicUrl);
 
-      // Update UI: switch to real picture
       profilePic.src = publicUrl;
       profilePic.classList.remove("hidden");
       defaultAvatar.classList.add("hidden");
 
-      // Also update drawer immediately if present
-      const drawerProfilePic = document.getElementById("drawerProfilePic");
-      const drawerDefaultAvatar = document.getElementById(
-        "drawerDefaultAvatar",
-      );
-      if (drawerProfilePic && drawerDefaultAvatar) {
-        drawerProfilePic.src = publicUrl;
-        drawerProfilePic.classList.remove("hidden");
-        drawerDefaultAvatar.classList.add("hidden");
-      }
-
-      // Hide loader, show success modal
       loader.classList.add("hidden");
       successModal.classList.remove("hidden");
 
@@ -124,8 +121,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     setText("dobDisplay", "Not Provided");
     setText("addressDisplay", "Not Provided");
     setText("courseDisplay", "No Course Selected");
+    setText("regNumberDisplay", "Not Provided");
 
-    // Show default Font Awesome avatar
     profilePic.classList.add("hidden");
     defaultAvatar.classList.remove("hidden");
   }
